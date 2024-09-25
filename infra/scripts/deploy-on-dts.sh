@@ -39,9 +39,22 @@ REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
 DIR_NAME="petclinic-jul24"
 
 if [ -d "$DIR_NAME" ]; then
-  echo "Directory $DIR_NAME already exists. Pulling the latest changes..."
+  echo "Directory $DIR_NAME already exists. Pulling the latest changes from "prod-branch-main" ..."
   cd "$DIR_NAME" || exit
-  git pull origin main
+  git pull origin prod-branch-main
+else
+  echo "Directory $DIR_NAME does not exist. Cloning the repository..."
+  git clone "$REPO_URL"
+fi
+
+REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
+DIR_NAME="petclinic-jul24"
+DEFAULT_BRANCH="prod-branch-main"
+
+if [ -d "$DIR_NAME" ]; then
+  echo "Directory $DIR_NAME already exists. Pulling the latest changes from $DEFAULT_BRANCH ..."
+  cd "$DIR_NAME" || exit
+  git pull origin "$DEFAULT_BRANCH"
 else
   echo "Directory $DIR_NAME does not exist. Cloning the repository..."
   git clone "$REPO_URL"

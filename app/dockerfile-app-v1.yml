@@ -6,13 +6,14 @@ WORKDIR /app
 
 # Copy Maven wrapper and pom.xml files
 COPY app/.mvn/ .mvn
-COPY app/mvnw app/pom.xml ./
+COPY app/mvnw ./
+COPY app/pom.xml ./
 
 # Grant execute permissions to the Maven wrapper
 RUN chmod +x mvnw
 
 # Resolve the project dependencies
-RUN mvnw dependency:resolve
+RUN ./mvnw dependency:resolve
 
 # Copy the source code to the container
 COPY app/src/ src

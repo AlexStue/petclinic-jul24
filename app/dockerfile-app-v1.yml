@@ -5,20 +5,20 @@ FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 
 # Copy Maven wrapper and pom.xml files
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+COPY app/.mvn/ .mvn
+COPY mvnw app/pom.xml ./
 
 # Grant execute permissions to the Maven wrapper
-RUN chmod +x ./mvnw
+RUN chmod +x app//mvnw
 
 # Resolve the project dependencies
-RUN ./mvnw dependency:resolve
+RUN app//mvnw dependency:resolve
 
 # Copy the source code to the container
-COPY src/ src
+COPY app/src/ src
 
 # Default command to run the Spring Boot application
-CMD ["./mvnw", "spring-boot:run"]
+CMD ["app//mvnw", "spring-boot:run"]
 
 # Command to build docker-image:
 # docker build -t jul24-petclinic-image -f dockerfile-app.yml .

@@ -18,7 +18,7 @@ RUN mvnw dependency:resolve
 COPY app/src/ src
 
 # Default command to run the Spring Boot application
-CMD ["mvnw", "spring-boot:run"]
+CMD ["./mvnw", "spring-boot:run"]
 
 # Command to build docker-image:
 # docker build -t jul24-petclinic-image -f dockerfile-app.yml .

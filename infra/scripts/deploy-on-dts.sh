@@ -35,8 +35,8 @@ sudo apt-get update
 sudo apt-get install -y terraform
 
 # Step 2: Clone the repository containing the Terraform code
-REPO_URL="https://github.com/AlexStue/petclinic-jul24-ops.git"
-DIR_NAME="petclinic-jul24-ops"
+REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
+DIR_NAME="petclinic-jul24"
 
 if [ -d "$DIR_NAME" ]; then
   echo "Directory $DIR_NAME already exists. Pulling the latest changes..."
@@ -48,7 +48,7 @@ else
 fi
 
 # Step 3: Navigate to the Terraform directory and deploy infrastructure
-cd /home/ubuntu/petclinic-jul24-ops/terraform
+cd /home/ubuntu/petclinic-jul24/infra/terraform
 terraform init
 terraform plan
 terraform apply -auto-approve

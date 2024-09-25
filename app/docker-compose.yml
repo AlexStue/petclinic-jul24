@@ -4,9 +4,9 @@ services:
   petclinic:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-app-v1
       target: development
-    #image: alexstue/jul24-petclinic:1.0
+      #image: alexstue/jul24-petclinic:2.0
     ports:
       - "8000:8000"
       - "8080:8080"

@@ -18,7 +18,7 @@ jobs:
     - name: Extract Server IP
       id: extract_ip
       run: |
-        SERVER_IP=$(grep -A 3 -E '^variable "server_ip_tf"' terraform/variables.tf | grep 'default' | sed -n 's/.*default *= *"\([^"]*\)".*/\1/p')
+        SERVER_IP=$(grep -A 3 -E '^variable "server_ip_tf"' infra/terraform/variables.tf | grep 'default' | sed -n 's/.*default *= *"\([^"]*\)".*/\1/p')
         echo "SERVER_IP=${SERVER_IP}"
         echo "##[set-output name=server_ip;]${SERVER_IP}"
         echo "Extracted Server IP: ${SERVER_IP}"
@@ -39,7 +39,7 @@ jobs:
     - name: Copy script to server
       run: |
         echo "Copy script to server with IP: ${SERVER_IP}"
-        scp -o StrictHostKeyChecking=no scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+        scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
 
     - name: Run script via SSH
       run: |

@@ -5,9 +5,9 @@ FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 
 # Copy Maven wrapper and pom.xml files
-COPY app/.mvn/ .mvn
-COPY app/mvnw ./
-COPY app/pom.xml ./
+COPY .mvn/ .mvn
+COPY mvnw ./
+COPY pom.xml ./
 
 # Grant execute permissions to the Maven wrapper
 RUN chmod +x mvnw
@@ -16,7 +16,7 @@ RUN chmod +x mvnw
 RUN ./mvnw dependency:resolve
 
 # Copy the source code to the container
-COPY app/src/ src
+COPY src/ src
 
 # Default command to run the Spring Boot application
 CMD ["./mvnw", "spring-boot:run"]
@@ -26,4 +26,36 @@ CMD ["./mvnw", "spring-boot:run"]
 # docker images
 # docker tag jul24-petclinic-image alexstue/jul24-petclinic:1.0
 # docker push alexstue/jul24-petclinic:1.0
+
+# ---
+# backup
+
+# # Use the official Eclipse Temurin JDK 17 base image
+# FROM eclipse-temurin:17-jdk-jammy
+
+# # Set the working directory inside the container
+# WORKDIR /app
+
+# # Copy Maven wrapper and pom.xml files
+# COPY app/.mvn/ .mvn
+# COPY app/mvnw ./
+# COPY app/pom.xml ./
+
+# # Grant execute permissions to the Maven wrapper
+# RUN chmod +x mvnw
+
+# # Resolve the project dependencies
+# RUN ./mvnw dependency:resolve
+
+# # Copy the source code to the container
+# COPY app/src/ src
+
+# # Default command to run the Spring Boot application
+# CMD ["./mvnw", "spring-boot:run"]
+
+# # Command to build docker-image:
+# # docker build -t jul24-petclinic-image -f dockerfile-app.yml .
+# # docker images
+# # docker tag jul24-petclinic-image alexstue/jul24-petclinic:1.0
+# # docker push alexstue/jul24-petclinic:1.0
 

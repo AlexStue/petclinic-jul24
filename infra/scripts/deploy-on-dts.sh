@@ -47,7 +47,7 @@ if [ -d "$DIR_NAME" ]; then
   git pull origin "$DEFAULT_BRANCH"
 else
   echo "Directory $DIR_NAME does not exist. Cloning the repository..."
-  git clone "$REPO_URL"
+  git clone --branch "$DEFAULT_BRANCH" "$REPO_URL"
 fi
 
 # Step 3: Navigate to the Terraform directory and deploy infrastructure

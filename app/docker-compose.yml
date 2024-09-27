@@ -4,7 +4,7 @@ services:
   petclinic:
     build:
       context: .
-      dockerfile: Dockerfile-app-v1
+      dockerfile: dockerfile-app-v1
       target: development
       #image: alexstue/jul24-petclinic:latest
     ports:

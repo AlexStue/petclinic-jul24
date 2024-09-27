@@ -53,7 +53,18 @@ fi
 # Step 3: Navigate to the Terraform directory and deploy infrastructure
 cd /home/ubuntu/petclinic-jul24/infra/terraform
 terraform init
-terraform workspace new dev
+
+# Define the workspace name
+WORKSPACE_NAME="dev"
+# Check if the workspace exists
+if terraform workspace list | grep -q "$WORKSPACE_NAME"; then
+    echo "Workspace '$WORKSPACE_NAME' already exists. Switching to it."
+    terraform workspace select "$WORKSPACE_NAME"
+else
+    echo "Creating workspace '$WORKSPACE_NAME'."
+    terraform workspace new "$WORKSPACE_NAME"
+fi
+
 terraform plan
 terraform apply -auto-approve
 

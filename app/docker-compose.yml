@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile-app-v1
-      target: development
+      #target: development
       #image: alexstue/jul24-petclinic:latest
     ports:
       - "8000:8000"

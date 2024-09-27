@@ -1,9 +1,14 @@
+#
+# This Runner is to deploy or update the infrastructure on DTS-Server
+# In DEV-environment (namespace)
+#
+
 name: Deploy lates images on DTS via Terraform apply
 
 on:
   push:
     branches:
-      - prod-branch-main
+      - dev-branch
 
 jobs:
   deploy:
@@ -14,7 +19,7 @@ jobs:
     - name: Checkout code from the repository
       uses: actions/checkout@v3
 
-    # Step 4: Extract the server IP
+    # Step 4: Extract the server IP from terraform variables.tf 
     - name: Extract Server IP
       id: extract_ip
       run: |
@@ -35,12 +40,14 @@ jobs:
         cat ~/.ssh/known_hosts
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_DTS_PRIVATE_KEY }}
-
+      
+    # Step 6: Copy the script "infra/scripts/deploy-on-dts.sh" to the DTS-Server
     - name: Copy script to server
       run: |
         echo "Copy script to server with IP: ${SERVER_IP}"
         scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
 
+    # Step 7: Run the script "infra/scripts/deploy-on-dts.sh" on the DTS-Server
     - name: Run script via SSH
       run: |
         SERVER_IP=${{ steps.extract_ip.outputs.server_ip }}

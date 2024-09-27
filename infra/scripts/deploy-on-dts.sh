@@ -1,10 +1,12 @@
 #!/bin/bash
 # This script deploys the application on the remote server
+# In DEV-environment (namespace)
+#
 
 # Enable error handling: the script will exit on any command failure
 set -e
 
-# Function to handle apt-get lock
+# Function to handle apt-get lock if apt-get is already running automaticaly by the DTS-Server
 handle_lock() {
   local lock_file=$1
   local retries=10
@@ -34,22 +36,10 @@ handle_lock "/var/lib/dpkg/lock-frontend"
 sudo apt-get update
 sudo apt-get install -y terraform
 
-# Step 2: Clone the repository containing the Terraform code
+# Step 2: Check if Repo already exists and clone or update the repository
 REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
 DIR_NAME="petclinic-jul24"
-
-if [ -d "$DIR_NAME" ]; then
-  echo "Directory $DIR_NAME already exists. Pulling the latest changes from "prod-branch-main" ..."
-  cd "$DIR_NAME" || exit
-  git pull origin prod-branch-main
-else
-  echo "Directory $DIR_NAME does not exist. Cloning the repository..."
-  git clone "$REPO_URL"
-fi
-
-REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
-DIR_NAME="petclinic-jul24"
-DEFAULT_BRANCH="prod-branch-main"
+DEFAULT_BRANCH="dev-branch"
 
 if [ -d "$DIR_NAME" ]; then
   echo "Directory $DIR_NAME already exists. Pulling the latest changes from $DEFAULT_BRANCH ..."
@@ -63,6 +53,7 @@ fi
 # Step 3: Navigate to the Terraform directory and deploy infrastructure
 cd /home/ubuntu/petclinic-jul24/infra/terraform
 terraform init
+terraform workspace new dev
 terraform plan
 terraform apply -auto-approve
 

@@ -7,7 +7,7 @@ HowTo:
 Repo OPS: https://github.com/AlexStue/petclinic-jul24-ops.git
 - open the Repo to change the Server-IP inside the "/terraform/variables.tf" file and commit+push
 - a runner will be started and deploys the app on the DTS-Server
-- Wait a view minutes and open in browser: http://<DTS-IP>:30002
+- Wait a view minutes and open in browser: http://"DTS-IP":30002
 
 Repo DEV: https://github.com/AlexStue/petclinic-jul24-dev.git
 + Dockerfile: Implementation done
@@ -25,7 +25,7 @@ Protocol:
 
 2024.09.15: 
 - Terraform apply läuft durch
-- Webserver mit individueller Seite ist nach Terraform apply unter http://<DTS-IP>:30001 erreichbar
+- Webserver mit individueller Seite ist nach Terraform apply unter http://"DTS-IP":30001 erreichbar
 
 ausstehend: 
 - Wie wird Terraform gestartet? Über GitHub Actions? -> Yes inside GitHubActions

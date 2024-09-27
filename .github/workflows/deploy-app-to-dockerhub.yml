@@ -1,10 +1,14 @@
+#
+# This Runner is to compile the app to an docker-image and upload the image to Docker-Hub
+# In DEV-environment (namespace)
+#
+
 name: Docker-Build and Push Docker Image to DockerHub
-# bugfix
 
 on:
   push:
     branches:
-      - prod-branch-main
+      - dev-branch
 
 jobs:
   build:
@@ -22,12 +26,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build the Docker image
-      - name: Build the Docker image
+      # Build the Docker image using Docker Compose
+      - name: Build the Docker image with Docker Compose
         run: |
-          docker build -f app/dockerfile-app-v1.yml -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:2.0 .
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} docker-compose -f app/docker-compose.yml build
 
       # Push the Docker image to DockerHub
       - name: Push the Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:2.0
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest

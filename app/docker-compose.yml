@@ -1,4 +1,4 @@
-version: '3.8' # You can specify the version of Docker Compose if needed
+#version: '3.8'
 
 services:
   petclinic:
@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile-app-v1
       target: development
-      #image: alexstue/jul24-petclinic:2.0
+      #image: alexstue/jul24-petclinic:latest
     ports:
       - "8000:8000"
       - "8080:8080"

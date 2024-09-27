@@ -1,5 +1,6 @@
 provider "local" {}
 
+# ...
 resource "null_resource" "k3s_setup" {
   provisioner "local-exec" {
     command = <<-EOT
@@ -20,9 +21,12 @@ resource "null_resource" "k3s_setup" {
   }
 }
 
+# ...
 resource "null_resource" "apply_k8s_deployment" {
   provisioner "local-exec" {
     command = <<-EOT
+      echo "Creating Kubernetes dev-namespace"
+      kubectl create namespace dev-namespace
       echo "Applying Kubernetes deployment"
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/petclinic-combined.yml
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/nginx-combined.yml

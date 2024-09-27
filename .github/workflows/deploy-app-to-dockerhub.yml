@@ -34,6 +34,8 @@ jobs:
 
       # Build the Docker image using Docker Compose
       - name: Build the Docker image with Docker Compose
+        env:
+          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
         run: |
           docker-compose -f app/docker-compose.yml build
 

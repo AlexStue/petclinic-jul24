@@ -9,14 +9,12 @@ name: Infra-apply
 
 on:
   workflow_run:
-    workflows: ["App-build"]
-    branches:
-      - dev-branch
-    types:
-      - completed
+    workflows: [App-build]
+    types: [completed]
+    branches: [dev-branch]
 
 jobs:
-  job-2-deploy:
+  on-success:
     runs-on: ubuntu-latest
 
     steps:

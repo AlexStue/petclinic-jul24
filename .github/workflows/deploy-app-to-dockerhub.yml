@@ -9,8 +9,7 @@ name: App-build
 
 on:
   push:
-    branches:
-      - dev-branch
+    branches: [dev-branch]
 
 jobs:
   job-1-build:

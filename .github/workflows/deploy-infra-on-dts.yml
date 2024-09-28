@@ -1,17 +1,20 @@
 #
 # This Runner is to deploy or update the infrastructure on DTS-Server
 # In DEV-environment (namespace)
-#
+# 
+# Deploy lates images on DTS via Terraform apply
+# 
 
-name: Deploy lates images on DTS via Terraform apply
+name: 
 
 on:
-  push:
-    branches:
-      - dev-branch
+  workflow_run:
+    workflows: ["App-build"]
+    types:
+      - completed
 
 jobs:
-  deploy:
+  job-2-deploy:
     runs-on: ubuntu-latest
 
     steps:

@@ -54,7 +54,7 @@ fi
 cd /home/ubuntu/petclinic-jul24/infra/terraform
 terraform init
 
-# Define the workspace name
+# Define the workspace name in terraform
 WORKSPACE_NAME="dev"
 # Check if the workspace exists
 if terraform workspace list | grep -q "$WORKSPACE_NAME"; then

@@ -7,11 +7,13 @@
 
 name: InfraApply
 
-on:
-  workflow_run:
-    workflows: ["AppBuild"]
-    types: [completed]
-    branches: [dev-branch]
+on: 
+  workflow_call:
+    inputs:
+      name: 
+        description: 'Hi'
+        required: true
+        type: 'string'
 
 jobs:
   on-success:

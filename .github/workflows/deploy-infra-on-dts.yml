@@ -10,6 +10,8 @@ name: Infra-apply
 on:
   workflow_run:
     workflows: ["App-build"]
+    branches:
+      - dev-branch
     types:
       - completed
 

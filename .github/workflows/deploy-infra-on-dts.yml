@@ -5,11 +5,11 @@
 # Deploy lates images on DTS via Terraform apply
 # 
 
-name: Infra-apply
+name: InfraApply
 
 on:
   workflow_run:
-    workflows: [App-build]
+    workflows: [AppBuild]
     types: [completed]
     branches: [dev-branch]
 

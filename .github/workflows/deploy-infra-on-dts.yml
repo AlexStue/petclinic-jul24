@@ -9,7 +9,7 @@ name: InfraApply
 
 on:
   workflow_run:
-    workflows: [AppBuild]
+    workflows: ["AppBuild"]
     types: [completed]
     branches: [dev-branch]
 

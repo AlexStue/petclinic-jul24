@@ -45,12 +45,14 @@ spec:
     spec:
       containers:
       - name: controller
-        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.33.0  # Example image version
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.33.0
         args:
           - /nginx-ingress-controller
           - --configmap=$(POD_NAMESPACE)/nginx-ingress-controller
-          - --publish-service=$(POD_NAMESPACE)/nginx-ingress-lb  # Service to publish
-          - --namespace=dev  # Restrict to the dev namespace
+          - --publish-service=$(POD_NAMESPACE)/nginx-ingress-lb
+          # Remove this line or replace with the correct argument:
+          # - --namespace=dev  # This causes the error
+          - --watch-namespace=dev  # Use this if you want to restrict it to the dev namespace
 ---
 apiVersion: v1
 kind: Service

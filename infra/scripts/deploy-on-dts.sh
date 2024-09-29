@@ -65,7 +65,7 @@ else
     terraform workspace new "$WORKSPACE_NAME"
 fi
 
-terraform plan
+#terraform plan
 terraform apply -auto-approve
 
 # After this, your application should be up and running on the server.

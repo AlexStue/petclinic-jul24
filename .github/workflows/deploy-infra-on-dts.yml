@@ -7,13 +7,17 @@
 
 name: InfraApply
 
-on: 
-  workflow_call:
-    inputs:
-      name: 
-        description: 'Hi'
-        required: true
-        type: 'string'
+# on: 
+#   workflow_call:
+#     inputs:
+#       name: 
+#         description: 'Hi'
+#         required: true
+#         type: 'string'
+
+on:
+  push:
+    branches: [dev-branch]
 
 jobs:
   on-success:
@@ -41,8 +45,8 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ steps.extract_ip.outputs.server_ip }} >> ~/.ssh/known_hosts
         echo "Server IP is: ${{ steps.extract_ip.outputs.server_ip }}"
-        echo "Known hosts:"
-        cat ~/.ssh/known_hosts
+        #echo "Known hosts:"
+        #cat ~/.ssh/known_hosts
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_DTS_PRIVATE_KEY }}
       

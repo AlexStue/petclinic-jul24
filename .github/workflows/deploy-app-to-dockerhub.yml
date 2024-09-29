@@ -11,12 +11,12 @@ on:
   push:
     branches: [dev-branch]
 
+# jobs:
+#   useCallable:
+#     uses: ./.github/workflows/deploy-infra-on-dts.yml
+#     with:
+#       name: 'Hi'
 jobs:
-  useCallable:
-    uses: ./.github/workflows/deploy-infra-on-dts.yml
-    with:
-      name: 'Hi'
-
   job-1-build:
     runs-on: ubuntu-latest
 

@@ -7,17 +7,9 @@
 
 name: InfraApply
 
-on: 
-  workflow_call:
-    inputs:
-      name: 
-        description: 'Hi'
-        required: true
-        type: 'string'
-
-# on:
-#   push:
-#     branches: [dev-branch]
+on:
+  push:
+    branches: [dev-branch]
 
 jobs:
   job-2-roullout:

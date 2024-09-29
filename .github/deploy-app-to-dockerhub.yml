@@ -44,8 +44,3 @@ jobs:
       - name: Push the Docker image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
-
-  useCallable:
-    uses: ./.github/workflows/deploy-infra-on-dts.yml
-    with:
-      name: 'InfraApply'

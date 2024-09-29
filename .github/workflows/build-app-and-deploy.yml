@@ -1,0 +1,96 @@
+#
+# This Runner is to ...
+# In DEV-environment (namespace)
+# 
+# 
+# 
+
+name: AppBuild-DeployInfra
+
+on:
+  push:
+    branches: [dev-branch]
+
+jobs:
+
+#------------------------------------------------------------------------------
+  job-1-AppBuild:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Log in to DockerHub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build the Docker image using Docker Compose
+      - name: Build the Docker image with Docker Compose
+        env:
+          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+        run: |
+          docker-compose -f app/docker-compose.yml build
+
+      # Push the Docker image to DockerHub
+      - name: Push the Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+
+#------------------------------------------------------------------------------
+  job-2-DeployInfra:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code from the repository
+    - name: Checkout code from the repository
+      uses: actions/checkout@v3
+
+    # Step 4: Extract the server IP from terraform variables.tf 
+    - name: Extract Server IP
+      id: extract_ip
+      run: |
+        SERVER_IP=$(grep -A 3 -E '^variable "server_ip_tf"' infra/terraform/variables.tf | grep 'default' | sed -n 's/.*default *= *"\([^"]*\)".*/\1/p')
+        echo "SERVER_IP=${SERVER_IP}"
+        echo "##[set-output name=server_ip;]${SERVER_IP}"
+        echo "Extracted Server IP: ${SERVER_IP}"
+    
+    # Step 5: Set up SSH with the private key
+    - name: Set up SSH with private-key
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ steps.extract_ip.outputs.server_ip }} >> ~/.ssh/known_hosts
+        echo "Server IP is: ${{ steps.extract_ip.outputs.server_ip }}"
+        #echo "Known hosts:"
+        #cat ~/.ssh/known_hosts
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_DTS_PRIVATE_KEY }}
+      
+    # Step 6: Copy the script "infra/scripts/deploy-on-dts.sh" to the DTS-Server
+    - name: Copy script to server
+      run: |
+        echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
+        scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+
+    # Step 7: Run the script "infra/scripts/deploy-on-dts.sh" on the DTS-Server
+    - name: Run script via SSH
+      run: |
+        SERVER_IP=${{ steps.extract_ip.outputs.server_ip }}
+        echo "Deploying to server with IP: $SERVER_IP"
+        ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << 'EOF'
+          chmod +x /home/ubuntu/deploy-on-dts.sh
+          /home/ubuntu/deploy-on-dts.sh
+        EOF
+        

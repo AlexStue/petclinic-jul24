@@ -14,7 +14,10 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Only if no HTTPS for now
 spec:
   rules:
-  - host: dev-webapp.com
+  - host: dev.petclinicjul24.cloudns.ch
+  # ClouDNS
+  # Zone: petclinicjul24.cloudns.ch
+  # record: dev.
     http:
       paths:
       - path: /

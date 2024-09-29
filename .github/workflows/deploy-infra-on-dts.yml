@@ -7,20 +7,20 @@
 
 name: InfraApply
 
-# on: 
-#   workflow_call:
-#     inputs:
-#       name: 
-#         description: 'Hi'
-#         required: true
-#         type: 'string'
+on: 
+  workflow_call:
+    inputs:
+      name: 
+        description: 'Hi'
+        required: true
+        type: 'string'
 
-on:
-  push:
-    branches: [dev-branch]
+# on:
+#   push:
+#     branches: [dev-branch]
 
 jobs:
-  ob-2-roullout:
+  job-2-roullout:
     runs-on: ubuntu-latest
 
     steps:

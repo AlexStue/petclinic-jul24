@@ -11,11 +11,6 @@ on:
   push:
     branches: [dev-branch]
 
-# jobs:
-#   useCallable:
-#     uses: ./.github/workflows/deploy-infra-on-dts.yml
-#     with:
-#       name: 'Hi'
 jobs:
   job-1-build:
     runs-on: ubuntu-latest
@@ -49,3 +44,8 @@ jobs:
       - name: Push the Docker image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+
+  useCallable:
+    uses: ./.github/workflows/deploy-infra-on-dts.yml
+    with:
+      name: 'InfraApply'

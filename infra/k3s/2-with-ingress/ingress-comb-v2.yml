@@ -1,0 +1,65 @@
+# 
+# 1. Ingress: Ingress-Resource
+# 2. Service: Ingress-Controller Loadbalancer
+# 3. Deployment: Ingress-Controller
+# 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: dev
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Only if no HTTPS for now
+spec:
+  rules:
+  - host: dev-webapp.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingress-nginx
+    spec:
+      containers:
+      - name: controller
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.33.0  # Example image version
+        args:
+          - /nginx-ingress-controller
+          - --configmap=$(POD_NAMESPACE)/nginx-ingress-controller
+          - --publish-service=$(POD_NAMESPACE)/nginx-ingress-lb  # Service to publish
+          - --namespace=dev  # Restrict to the dev namespace
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-ingress-lb
+  namespace: dev
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: ingress-nginx  # Ensure this matches your ingress controller pod labels
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+---

@@ -1,3 +1,10 @@
+# 
+# 1. Deployment
+# 2. Service as NodePort 30001
+# 3. ConfigMap
+# 
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,4 +71,4 @@ data:
     <p>&nbsp;</p>
     <p><strong>New stuff incoming! Stay tuned.</strong></p>
     <p><strong>&nbsp;</strong></p>
-    ---
+---

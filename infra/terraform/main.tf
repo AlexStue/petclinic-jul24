@@ -31,11 +31,14 @@ resource "null_resource" "apply_k3s_deployment" {
       kubectl create namespace dev || echo "Namespace 'dev' already exists"
       echo "Applying Kubernetes deployment" | tee -a /tmp/kubectl-apply.log
       
-      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/petclinic-combined.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/petclinic-combined.yml
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/nginx-combined.yml
       
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/nginx-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-comb.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/nginx-comb.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-comb.yml | tee -a /tmp/kubectl-apply.log
+
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/tls-secret.yml | tee -a /tmp/kubectl-apply.log
     EOT
   }
   triggers = {

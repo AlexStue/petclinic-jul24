@@ -8,28 +8,29 @@ data:
     global:
     templates:
     - '/etc/alertmanager/*.tmpl'
-    route:
-      receiver: alert-emailer
-      group_by: ['alertname', 'priority']
-      group_wait: 10s
-      repeat_interval: 30m
-      routes:
-        - receiver: slack_demo
-        # Send severity=slack alerts to slack.
-          match:
-            severity: slack
-          group_wait: 10s
-          repeat_interval: 1m
+    # route:
+    #   receiver: alert-emailer
+    #   group_by: ['alertname', 'priority']
+    #   group_wait: 10s
+    #   repeat_interval: 30m
+    # route:
+    #   receiver: slack_demo
+    #   match:
+    #     severity: slack
+    #   group_wait: 10s
+    #   repeat_interval: 1m
  
     receivers:
-    - name: alert-emailer
-      email_configs:
-      - to: demo@devopscube.com
-        send_resolved: false
-        from: from-email@email.com
-        smarthost: smtp.eample.com:25
-        require_tls: false
-    - name: slack_demo
-      slack_configs:
-      - api_url: https://hooks.slack.com/services/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sz4Qk
-        channel: '#devopscube-demo'
+    # - name: alert-emailer
+    #   email_configs:
+    #   - to: demo@devopscube.com
+    #     send_resolved: false
+    #     from: from-email@email.com
+    #     smarthost: smtp.eample.com:25
+    #     require_tls: false
+    # - name: slack_demo
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/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sz4Qk
+    #              https://datascientest-qwb2569.slack.com/archives/D07AVMUUP9Q
+    #              https://datascientest-qwb2569.slack.com/archives/C07B5J0F6E4
+    #     channel: '#devopscube-demo'

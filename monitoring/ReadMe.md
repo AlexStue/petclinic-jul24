@@ -13,8 +13,6 @@ https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
 
 3. prometheus config:
     - pmth-svr-ConfigMap.yml
-        - pmth-svr-Rules.yml (not yet)
-        - pmth-svr-Scrape.yml (not yet)
     - kubectl apply -f pmth-svr-ConfigMap.yml
 
 4. prometheus server:
@@ -25,7 +23,6 @@ https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
 
 5. AlertManager config: https://devopscube.com/alert-manager-kubernetes-guide/
     - pmth-almg-ConfigMap.yml
-        - pmth-almg-Config.yml (not yet)
     - kubectl apply  -f pmth-almg-ConfigMap.yml
 
 6. AlertManager server:
@@ -33,7 +30,19 @@ https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
         - exposing AlertManager as Nodeport: 31000
     - kubectl apply  -f pmth-almg-comb.yml
 
-7. ToDo
+7. Grafana config: https://github.com/bibinwilson/kubernetes-grafana
+    - grfa-ConfigMap.yml
+    - kubectl apply  -f grfa-ConfigMap.yml
+
+8. Grafana server:
+    - grfa-comb.yml
+        - pvc missing
+        - Exposing Prometheus as NodePort: 32000
+        - User: admin, Pw: admin
+    - kubectl apply  -f grfa-comb.yml
+
+
+99. ToDo
     - k3s deply and services to infra
     - only configs in monitoring
     - 

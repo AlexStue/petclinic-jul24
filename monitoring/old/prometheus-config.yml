@@ -1,0 +1,6 @@
+
+
+
+rule_files:
+#  - "recording_rules.yml"
+  - "alerting_rules.yml"

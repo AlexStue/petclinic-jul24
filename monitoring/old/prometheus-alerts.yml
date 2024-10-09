@@ -1,0 +1,12 @@
+groups:
+  - name: my_first_alerting_rules_group
+    rules:
+      - alert: MyFirstAlert
+        expr: increase(nb_of_requests_total [1m]) > 20
+      - alert: MySecondAlert
+        expr: increase(nb_of_requests_total [1m]) > 10
+        for: 20s
+
+
+# You can check the validity of the rules using the promtool command:
+# prometheus/promtool check rules prometheus/alerting_rules.yml

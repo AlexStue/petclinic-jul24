@@ -3,7 +3,18 @@
 # 2. Service as NodePort 30006
 # 3. ConfigMap with prometheus.yml
 # 
-
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+  namespace: dev
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mbi  # Adjust storage as needed
 ---
 apiVersion: apps/v1
 kind: Deployment

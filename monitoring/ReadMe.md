@@ -1,36 +1,43 @@
 aktuell:
 https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
 
-https://github.com/techiescamp/kubernetes-prometheus.git
-
-1. access to metrics from Nodes, Pods, Deployments, etc:
+1. access to metrics: https://github.com/techiescamp/kubernetes-prometheus.git
     - pmth-ClusterRole.yml
         - ClusterRole
         - ClusterRoleBinding
     - kubectl apply -f pmth-ClusterRole.yml
 
-2. prometheus config:
+2.  NodeExporter as daemonset: https://github.com/bibinwilson/kubernetes-node-exporter.git
+    - pmth-exp-NodeExporter.yml
+    - kubectl apply  -f pmth-NodeExporter.yml 
+
+3. prometheus config:
     - pmth-svr-ConfigMap.yml
-        - pmth-svr-Rules.yml
-        - pmth-svr-Scrape.yml
-        - pmth-svr-Alert.yml (missing)
+        - pmth-svr-Rules.yml (not yet)
+        - pmth-svr-Scrape.yml (not yet)
     - kubectl apply -f pmth-svr-ConfigMap.yml
 
-3. prometheus server:
+4. prometheus server:
     - pmth-svr-comb.yml
         - pvc missing
         - Exposing Prometheus as NodePort: 30000
     - kubectl apply  -f pmth-svr-comb.yml
 
-4.  NodeExporter incl kube-state-metrics as daemonset:
-    - pmth-exp-NodeExporter.yml
-        - https://github.com/bibinwilson/kubernetes-node-exporter.git
-        - is 1. then still needed?
-    - kubectl apply  -f pmth-NodeExporter.yml 
+5. AlertManager config: https://devopscube.com/alert-manager-kubernetes-guide/
+    - pmth-almg-ConfigMap.yml
+        - pmth-almg-Config.yml (not yet)
+    - kubectl apply  -f pmth-almg-ConfigMap.yml
 
+6. AlertManager server:
+    - pmth-almg-comb.yml
+        - exposing AlertManager as Nodeport: 31000
+    - kubectl apply  -f pmth-almg-comb.yml
 
-
-5. ToDo
+7. ToDo
+    - k3s deply and services to infra
+    - only configs in monitoring
+    - 
+    - 
 
 
 
@@ -65,14 +72,6 @@ How Prometheus as k8s-Operator is structured:
     - prometheus.yml
         This is the main Prometheus configuration which holds all the scrape configs, service discovery details, storage locations, data retention configs, etc
     - prometheus-rules.yml
-
-
-
-
-
-
-
-
 
 ###
 

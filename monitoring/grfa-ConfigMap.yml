@@ -14,3 +14,13 @@ data:
         isDefault: true
         editable: true
         version: 1
+  grafana.ini: |
+    [smtp]
+    enabled = true
+    host = smtp.gmail.com:587
+    user = Alex Stu
+    password = StuAl777!
+    skip_verify = false
+    from_address = simplyalexstu@gmail.com
+    from_name = Grafana Alerts
+    ehlo_identity = grafana.local

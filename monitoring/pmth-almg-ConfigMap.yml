@@ -8,11 +8,11 @@ data:
     global:
     templates:
     - '/etc/alertmanager/*.tmpl'
-    # route:
-    #   receiver: alert-emailer
-    #   group_by: ['alertname', 'priority']
-    #   group_wait: 10s
-    #   repeat_interval: 30m
+    route:
+      receiver: alert-emailer
+      group_by: ['alertname', 'priority']
+      group_wait: 10s
+      repeat_interval: 30m
     # route:
     #   receiver: slack_demo
     #   match:
@@ -21,7 +21,7 @@ data:
     #   repeat_interval: 1m
  
     receivers:
-    # - name: alert-emailer
+    - name: alert-emailer
     #   email_configs:
     #   - to: demo@devopscube.com
     #     send_resolved: false
@@ -31,6 +31,4 @@ data:
     # - name: slack_demo
     #   slack_configs:
     #   - api_url: https://hooks.slack.com/services/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sz4Qk
-    #              https://datascientest-qwb2569.slack.com/archives/D07AVMUUP9Q
-    #              https://datascientest-qwb2569.slack.com/archives/C07B5J0F6E4
-    #     channel: '#devopscube-demo'
+    #     channel: 'devopscube-demo'

@@ -1,6 +1,8 @@
 aktuell:
 https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
 
+0. kubectl create namespace monitoring
+
 1. access to metrics: https://github.com/techiescamp/kubernetes-prometheus.git
     - pmth-ClusterRole.yml
         - ClusterRole

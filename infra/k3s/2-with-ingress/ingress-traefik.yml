@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: petclinic-ingress
-  namespace: default
+  namespace: dev
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/tls: "true"  # Enabling TLS

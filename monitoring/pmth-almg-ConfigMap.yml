@@ -22,6 +22,16 @@ data:
  
     receivers:
     - name: alert-emailer
+      email_configs:
+      - to: simplyalexstu@gmail.com
+        from: simplyalexstu@gmail.com
+        smarthost: smtp.gmail.com:587
+        auth_username: "simplyalexstu@gmail.com"
+        auth_identity: "simplyalexstu@gmail.com"
+        auth_password: "StuAl777!"
+
+    # receivers:
+    # - name: alert-emailer
     #   email_configs:
     #   - to: demo@devopscube.com
     #     send_resolved: false

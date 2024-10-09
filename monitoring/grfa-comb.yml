@@ -36,15 +36,15 @@ spec:
           - mountPath: /var/lib/grafana
             name: grafana-storage
           - mountPath: /etc/grafana/provisioning/datasources
-            name: grafana-datasources
+            name: grafana-configmap
             readOnly: false
       volumes:
         - name: grafana-storage
           emptyDir: {}
-        - name: grafana-datasources
+        - name: grafana-configmap
           configMap:
               defaultMode: 420
-              name: grafana-datasources
+              name: grafana-configmap
 ---
 apiVersion: v1
 kind: Service

@@ -23,6 +23,7 @@ data:
             labels:
               severity: critical
             annotations:
+              title: "High CPU Usage Alert"  # Added title
               summary: "High CPU Usage"
               description: "CPU usage is above 80% for more than 5 minutes."
             dashboardUid: rYdddlPWk
@@ -39,9 +40,7 @@ data:
     receivers:
       - orgId: 1
         name: grafana-to-Slack
-        receivers:
-          - uid: fe0ctqotdl8n4d
-            type: slack
-            settings:
-              url: https://hooks.slack.com/services/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
-            disableResolveMessage: false
+        type: slack  # Correctly define the receiver type at the receiver level
+        settings:
+          url: https://hooks.slack.com/services/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
+        disableResolveMessage: false

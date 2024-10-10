@@ -19,13 +19,13 @@ data:
         rules:
           - alert: HighCPUUsage
             expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
-            for: 5m
+            for: 30s
             labels:
               severity: critical
+            title: "High CPU Usage Alert"  # Title moved here
             annotations:
-              title: "High CPU Usage Alert"  # Added title
               summary: "High CPU Usage"
-              description: "CPU usage is above 80% for more than 5 minutes."
+              description: "CPU usage is above 80% for more than 30 seconds."
             dashboardUid: rYdddlPWk
             panelId: 77
             noDataState: NoData

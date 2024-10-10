@@ -15,7 +15,6 @@ spec:
       app: alertmanager
   template:
     metadata:
-      name: alertmanager
       labels:
         app: alertmanager
     spec:
@@ -29,26 +28,21 @@ spec:
         - name: alertmanager
           containerPort: 9093
         resources:
-            requests:
-              cpu: 500m
-              memory: 500M
-            limits:
-              cpu: 1
-              memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/alertmanager
-#        - name: templates-volume
-#          mountPath: /etc/alertmanager-templates
         - name: alertmanager
           mountPath: /alertmanager
       volumes:
       - name: config-volume
         configMap:
           name: alertmanager-configmap
-#      - name: templates-volume
-#        configMap:
-#          name: alertmanager-templates
       - name: alertmanager
         emptyDir: {}
 ---
@@ -58,8 +52,8 @@ metadata:
   name: alertmanager-service
   namespace: monitoring
   annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port:   '9093'
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9093'
 spec:
   selector: 
     app: alertmanager

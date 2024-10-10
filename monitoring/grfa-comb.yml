@@ -38,13 +38,21 @@ spec:
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-configmap
             readOnly: false
+          - mountPath: /etc/grafana/provisioning/alerting/alert-rules.yaml
+            name: grafana-configmap
+            subPath: alert-rules.yaml
+            readOnly: true
+          - mountPath: /etc/grafana/provisioning/notifiers/contact-points.yaml
+            name: grafana-configmap
+            subPath: contact-points.yaml
+            readOnly: true
       volumes:
         - name: grafana-storage
-          emptyDir: {}
+          emptyDir: {}  # You could use PersistentVolumeClaim (PVC) here if you want persistent storage across pod restarts
         - name: grafana-configmap
           configMap:
-              defaultMode: 420
-              name: grafana-configmap
+            defaultMode: 420
+            name: grafana-configmap
 ---
 apiVersion: v1
 kind: Service

@@ -1,57 +1,32 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboards
-  namespace: monitoring
-  labels:
-    grafana_dashboard: "1"  # Label for the sidecar to pick up
+  name: grafana-configmap
 data:
   dashboard.json: |
     {
-      "annotations": {
-        "list": [
+      "dashboard": {
+        "title": "Simple Dashboard",
+        "panels": [
           {
-            "builtIn": 1,
-            "datasource": {
-              "type": "grafana",
-              "uid": "-- Grafana --"
+            "type": "graph",
+            "title": "Sample Graph",
+            "targets": [
+              {
+                "target": "sample.metric"
+              }
+            ],
+            "xaxis": {
+              "mode": "time"
             },
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "target": {
-              "limit": 100,
-              "matchAny": false,
-              "tags": [],
-              "type": "dashboard"
-            },
-            "type": "dashboard"
+            "yaxes": [
+              {
+                "format": "short"
+              }
+            ]
           }
-        ]
-      },
-      "editable": true,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "expr": "kubelet_running_pods{job=\"apiserver\"}",
-              "legendFormat": "__auto",
-              "refId": "A"
-            }
-          ],
-          "title": "Panel Title",
-          "type": "timeseries"
-        }
-      ],
-      "title": "kubernetes pod count",
-      "uid": "lMa90ce7z"
+        ],
+        "schemaVersion": 26,
+        "version": 1
+      }
     }

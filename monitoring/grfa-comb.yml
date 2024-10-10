@@ -30,7 +30,7 @@ spec:
             memory: "1Gi"
             cpu: "400m"
           requests: 
-            memory: 500M
+            memory: "500Mi"  # Note: Changed to "500Mi" for consistency
             cpu: "200m"
         volumeMounts:
           - mountPath: /var/lib/grafana
@@ -40,12 +40,12 @@ spec:
             readOnly: true  # Ensure it is read-only
           - mountPath: /var/lib/grafana/dashboards
             name: grafana-configmap
-            readOnly: true  # This is the path for dashboards
-        env:  # Add this section to set the environment variables
+            readOnly: true  # Path for dashboards
+        env:  
           - name: GF_DASHBOARDS_JSON_ENABLED
             value: "true"
           - name: GF_DASHBOARDS_JSON_PATH
-            value: "/var/lib/grafana/dashboards/sample-dashboard.json"
+            value: "/var/lib/grafana/dashboards/dashboard.json"  # Adjusted to match configMap key
       volumes:
         - name: grafana-storage
           emptyDir: {}  # Change this to a PVC if you need persistent storage

@@ -14,3 +14,26 @@ data:
         type: prometheus
         url: http://prometheus-service.monitoring.svc:8080
         version: 1
+  sample-dashboard.json: |
+    {
+      "annotations": {
+        "list": []
+      },
+      "panels": [
+        {
+          "datasource": "Prometheus",
+          "id": 1,
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total[5m]))",
+              "legendFormat": "{{method}} {{status}}",
+              "refId": "A"
+            }
+          ],
+          "type": "graph"
+        }
+      ],
+      "schemaVersion": 16,
+      "title": "Sample Dashboard",
+      "version": 1
+    }

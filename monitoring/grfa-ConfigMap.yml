@@ -8,29 +8,29 @@ data:
     [alerting]
     enabled = true
 
-  # Alert rules
-  alert-rules.yaml: |
-    apiVersion: monitoring.coreos.com/v1
-    kind: PrometheusRule
-    metadata:
-      name: high-cpu-alert
-      namespace: monitoring
-    spec:
-      groups:
-        - name: Alerts-Server-CPU
-          rules:
-            - alert: HighCPUUsage
-              expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
-              for: 30s
-              labels:
-                severity: critical
-              annotations:
-                summary: "High CPU Usage"
-                description: "CPU usage is above 80% for more than 30 seconds."
-                dashboardUid: rYdddlPWk
-                panelId: 77
-              noDataState: NoData
-              execErrState: Error
+  # # Alert rules
+  # alert-rules.yaml: |
+  #   apiVersion: monitoring.coreos.com/v1
+  #   kind: PrometheusRule
+  #   metadata:
+  #     name: high-cpu-alert
+  #     namespace: monitoring
+  #   spec:
+  #     groups:
+  #       - name: Alerts-Server-CPU
+  #         rules:
+  #           - alert: HighCPUUsage
+  #             expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
+  #             for: 30s
+  #             labels:
+  #               severity: critical
+  #             annotations:
+  #               summary: "High CPU Usage"
+  #               description: "CPU usage is above 80% for more than 30 seconds."
+  #               dashboardUid: rYdddlPWk
+  #               panelId: 77
+  #             noDataState: NoData
+  #             execErrState: Error
 
   # Contact points for Slack notifications
   contact-points.yaml: |
@@ -51,3 +51,5 @@ data:
           slack_configs:
             - api_url: https://hooks.slack.com/services/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
               channel: '#alerts'
+
+

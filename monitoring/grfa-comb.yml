@@ -42,10 +42,10 @@ spec:
           #   name: grafana-configmap
           #   subPath: alert-rules.yml
           #   readOnly: true
-          - mountPath: /etc/grafana/provisioning/notifiers/notification_channels.yml
-            name: grafana-configmap
-            subPath: notification_channels.yml
-            readOnly: true
+          # - mountPath: /etc/grafana/provisioning/notifiers/notification_channels.yml
+          #   name: grafana-configmap
+          #   subPath: notification_channels.yml
+          #   readOnly: true
       volumes:
         - name: grafana-storage
           emptyDir: {}  # You could use PersistentVolumeClaim (PVC) here if you want persistent storage across pod restarts

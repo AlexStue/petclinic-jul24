@@ -1,39 +1,21 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-configmap
+  name: grafana-datasources
   namespace: monitoring
 data:
-  alert-rules.yml: |
-    # Sample Alerting Rules
-    apiVersion: monitoring.coreos.com/v1
-    kind: PrometheusRule
-    metadata:
-      name: example-alert
-      labels:
-        alert: example-alert
-    spec:
-      groups:
-        - name: example-alert-group
-          rules:
-            - alert: HighMemoryUsage
-              expr: node_memory_usage_bytes / node_memory_total_bytes * 100 > 80
-              for: 5m
-              labels:
-                severity: warning
-              annotations:
-                summary: "High memory usage detected on {{ $labels.instance }}"
-                description: "Memory usage is above 80% for more than 5 minutes."
-
-  contact-points.yml: |
-    apiVersion: v1
-    kind: ContactPoints
-    metadata:
-      name: example-contact-point
-    spec:
-      # Example configuration for a contact point
-      name: slack
-      type: slack
-      settings:
-        apiUrl: https://hooks.slack.com/services/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
-        channel: '#alerts'
+  prometheus.yml: |-
+    {
+        "apiVersion": 1,
+        "datasources": [
+            {
+               "access":"proxy",
+                "editable": true,
+                "name": "prometheus",
+                "orgId": 1,
+                "type": "prometheus",
+                "url": "http://prometheus-service.monitoring.svc:8080",
+                "version": 1
+            }
+        ]
+    }

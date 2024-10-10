@@ -6,7 +6,15 @@ metadata:
 data:
   config.yml: |-
     global:
-    templates:
-    - '/etc/alertmanager/*.tmpl'
+      resolve_timeout: 5m
+      
     route:
+      receiver: 'default-receiver'
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 3h
+
     receivers:
+    - name: default-receiver  # This can be a placeholder
+      # No slack_configs defined

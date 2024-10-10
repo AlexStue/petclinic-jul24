@@ -2,19 +2,6 @@
 # kubectl create -f config-map.yaml
 # 
 ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: prometheus-server-conf
-#   labels:
-#     name: prometheus-server-conf
-#   namespace: monitoring
-# data:
-#   prometheus.rules: |-
-
-#   prometheus.yml: |-
-
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -38,8 +25,8 @@ data:
     global:
       scrape_interval: 5s
       evaluation_interval: 5s
-    rule_files:
-      - /etc/prometheus/prometheus.rules
+    # rule_files:
+    #   - /etc/prometheus/prometheus.rules
     alerting:
       alertmanagers:
       - scheme: http

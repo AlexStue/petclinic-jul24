@@ -1,6 +1,6 @@
 # 
-# 
-# 
+# 1. Deamonset
+# 2. Service
 # 
 ---
 apiVersion: apps/v1

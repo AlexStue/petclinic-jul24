@@ -9,30 +9,47 @@ metadata:
   name: grafana-deployment
   namespace: monitoring
 spec:
-  replicas: 1  # Specify the number of replicas you want
-  selector:  # Add this field to define the selector
+  replicas: 1
+  selector:
     matchLabels:
-      app: grafana  # This should match the labels in the pod template
+      app: grafana
   template:
     metadata:
-      labels:  # Add labels here to match the selector
+      labels:
         app: grafana
     spec:
-      volumes:
-        - name: dashboards
-          configMap:
-            name: grafana-dashboards  # The name of the ConfigMap
       containers:
         - name: grafana
           image: grafana/grafana:latest
-          volumeMounts:
-            - name: dashboards
-              mountPath: /var/lib/grafana/dashboards  # The path where Grafana looks for dashboards
+          ports:
+            - containerPort: 3000
           env:
             - name: GF_DASHBOARDS_JSON_ENABLED
               value: "true"
             - name: GF_DASHBOARDS_JSON_PATH
               value: "/var/lib/grafana/dashboards/*.json"
+          volumeMounts:
+            - name: dashboards
+              mountPath: /var/lib/grafana/dashboards
+
+        - name: grafana-dashboard-sidecar
+          image: grafana/dashboard-sidecar:latest
+          env:
+            - name: SIDECAR_DASHBOARD_LABEL
+              value: grafana_dashboard   # The label that the sidecar should look for
+            - name: SIDECAR_DASHBOARD_LABEL_VALUE
+              value: "1"                 # The label value to filter by
+            - name: SIDECAR_SEARCH_NAMESPACE
+              value: "ALL"               # Set to ALL to search all namespaces
+          volumeMounts:
+            - name: dashboards
+              mountPath: /var/lib/grafana/dashboards
+
+      volumes:
+        - name: dashboards
+          configMap:
+            name: grafana-dashboards
+
 ---
 apiVersion: v1
 kind: Service

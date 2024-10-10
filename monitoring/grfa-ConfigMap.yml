@@ -8,9 +8,9 @@ data:
     [alerting]
     enabled = true
 
-  # Alert rules go in a separate YAML file
+  # Alert rules
   alert-rules.yaml: |
-    apiVersion: v1
+    apiVersion: monitoring.coreos.com/v1
     kind: PrometheusRule
     metadata:
       name: high-cpu-alert
@@ -20,7 +20,6 @@ data:
         - name: Alerts-Server-CPU
           rules:
             - alert: HighCPUUsage
-              uid: high-cpu-usage-alert # Add a UID here
               expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
               for: 30s
               labels:
@@ -32,17 +31,23 @@ data:
                 panelId: 77
               noDataState: NoData
               execErrState: Error
-              isPaused: false
-              notification_settings:
-                receiver: grafana-to-Slack
 
-  # Contact points go in a separate YAML file
+  # Contact points for Slack notifications
   contact-points.yaml: |
-    apiVersion: v1
-    receivers:
-      - orgId: 1
-        name: grafana-to-Slack
-        type: slack
-        settings:
-          url: https://hooks.slack.com/services/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
-        disableResolveMessage: false
+    apiVersion: monitoring.coreos.com/v1
+    kind: AlertmanagerConfig
+    metadata:
+      name: alertmanager-config
+      namespace: monitoring
+    spec:
+      route:
+        groupBy: ['alertname']
+        groupInterval: 5m
+        groupWait: 30s
+        repeatInterval: 1h
+        receiver: grafana-to-Slack
+      receivers:
+        - name: grafana-to-Slack
+          slack_configs:
+            - api_url: https://hooks.slack.com/services/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
+              channel: '#alerts'

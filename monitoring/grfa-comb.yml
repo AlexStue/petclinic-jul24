@@ -8,7 +8,14 @@ kind: Deployment
 metadata:
   name: grafana-deployment
 spec:
+  replicas: 1  # Specify the number of replicas you want
+  selector:  # Add this field to define the selector
+    matchLabels:
+      app: grafana  # This should match the labels in the pod template
   template:
+    metadata:
+      labels:  # Add labels here to match the selector
+        app: grafana
     spec:
       volumes:
         - name: dashboards
@@ -25,7 +32,6 @@ spec:
               value: "true"
             - name: GF_DASHBOARDS_JSON_PATH
               value: "/var/lib/grafana/dashboards/*.json"
-
 ---
 apiVersion: v1
 kind: Service

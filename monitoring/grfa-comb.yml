@@ -45,7 +45,7 @@ spec:
           - name: GF_DASHBOARDS_JSON_ENABLED
             value: "true"
           - name: GF_DASHBOARDS_JSON_PATH
-            value: "/var/lib/grafana/dashboards"
+            value: "/var/lib/grafana/dashboards/sample-dashboard.json"
       volumes:
         - name: grafana-storage
           emptyDir: {}  # Change this to a PVC if you need persistent storage

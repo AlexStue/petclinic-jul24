@@ -1,9 +1,7 @@
 # 
+# 1. Deployment
+# 2. Service as NodePort: 30000
 # 
-# 
-# 
-# 
-
 ---
 apiVersion: apps/v1
 kind: Deployment

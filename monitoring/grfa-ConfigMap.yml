@@ -14,13 +14,13 @@ data:
         isDefault: true
         editable: true
         version: 1
-  grafana.ini: |
-    [smtp]
-    enabled = true
-    host = smtp.gmail.com:587
-    user = simplyalexstu@gmail.com
-    password = StuAl777! # Consider using an App Password here
-    skip_verify = true
-    from_address = simplyalexstu@gmail.com
-    from_name = Grafana Alerts
-    ehlo_identity = grafana.local
+  # grafana.ini: |
+  #   [smtp]
+  #   enabled = true
+  #   host = smtp.gmail.com:587
+  #   user = simplyalexstu@gmail.com
+  #   password = StuAl777! # Consider using an App Password here
+  #   skip_verify = true
+  #   from_address = simplyalexstu@gmail.com
+  #   from_name = Grafana Alerts
+  #   ehlo_identity = grafana.local

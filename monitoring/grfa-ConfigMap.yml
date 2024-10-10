@@ -4,14 +4,44 @@ metadata:
   name: grafana-configmap
   namespace: monitoring
 data:
-  prometheus.yaml: |-
-    apiVersion: 1
-    datasources:
-      - name: "prometheus"
-        type: "prometheus"
-        access: "proxy"
-        url: "http://prometheus-service.monitoring.svc:8080"
-        isDefault: true
-        editable: true
-        version: 1
+  grafana.ini: |
+    [alerting]
+    enabled = true
 
+  # Alert rules go in a separate YAML file
+  alert-rules.yaml: |
+    apiVersion: 1
+    groups:
+      - orgId: 1
+        name: Alerts-Server-CPU
+        folder: Folder-Alerts-Server
+        interval: 5s
+        rules:
+          - alert: HighCPUUsage
+            expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High CPU Usage"
+              description: "CPU usage is above 80% for more than 5 minutes."
+            dashboardUid: rYdddlPWk
+            panelId: 77
+            noDataState: NoData
+            execErrState: Error
+            isPaused: false
+            notification_settings:
+              receiver: grafana-to-Slack
+
+  # Contact points go in a separate YAML file
+  contact-points.yaml: |
+    apiVersion: 1
+    receivers:
+      - orgId: 1
+        name: grafana-to-Slack
+        receivers:
+          - uid: fe0ctqotdl8n4d
+            type: slack
+            settings:
+              url: https://hooks.slack.com/services/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
+            disableResolveMessage: false

@@ -1,8 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-datasources
+  name: grafana-configmap
   namespace: monitoring
+  labels:
+    grafana_configmap: "1"
 data:
   prometheus.yaml: |-
     {
@@ -19,3 +21,84 @@ data:
             }
         ]
     }
+
+  # dashboard.json: |
+  #   {
+  #     "annotations": {
+  #       "list": [
+  #         {
+  #           "builtIn": 1,
+  #           "datasource": {
+  #             "type": "grafana",
+  #             "uid": "-- Grafana --"
+  #           },
+  #           "enable": true,
+  #           "hide": true,
+  #           "iconColor": "rgba(0, 211, 255, 1)",
+  #           "name": "Annotations & Alerts",
+  #           "target": {
+  #             "limit": 100,
+  #             "matchAny": false,
+  #             "tags": [],
+  #             "type": "dashboard"
+  #           },
+  #           "type": "dashboard"
+  #         }
+  #       ]
+  #     },
+  #     "editable": true,
+  #     "panels": [
+  #       {
+  #         "datasource": {
+  #           "type": "prometheus",
+  #           "uid": "prometheus"
+  #         },
+  #         "targets": [
+  #           {
+  #             "datasource": {
+  #               "type": "prometheus",
+  #               "uid": "prometheus"
+  #             },
+  #             "expr": "kubelet_running_pods{job=\"apiserver\"}",
+  #             "legendFormat": "__auto",
+  #             "refId": "A"
+  #           }
+  #         ],
+  #         "title": "Panel Title",
+  #         "type": "timeseries"
+  #       }
+  #     ],
+  #     "title": "kubernetes pod count",
+  #     "uid": "lMa90ce7z"
+  #   }
+
+
+
+
+
+
+
+
+
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: grafana-datasources
+#   namespace: monitoring
+# data:
+#   prometheus.yaml: |-
+#     {
+#         "apiVersion": 1,
+#         "datasources": [
+#             {
+#                "access":"proxy",
+#                 "editable": true,
+#                 "name": "prometheus",
+#                 "orgId": 1,
+#                 "type": "prometheus",
+#                 "url": "http://prometheus-service.monitoring.svc:8080",
+#                 "version": 1
+#             }
+#         ]
+#     }

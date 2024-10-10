@@ -1,26 +1,28 @@
-apiVersion: v1
 kind: ConfigMap
+apiVersion: v1
 metadata:
   name: alertmanager-configmap
   namespace: monitoring
 data:
   config.yml: |-
     global:
-      resolve_timeout: 5m
-      
+    templates:
+    - '/etc/alertmanager/*.tmpl'
     route:
-      receiver: 'slack-receiver'  # Updated to use the Slack receiver
-      group_by: ['alertname']
-      group_wait: 30s
-      group_interval: 5m
-      repeat_interval: 3h
+      receiver: grafana_slack
+      group_by: ['alertname', 'priority']
+      group_wait: 10s
+      repeat_interval: 3m
+      routes:
+        - receiver: grafana_slack
+        # Send severity=slack alerts to slack.
+          match:
+            severity: slack
+          group_wait: 10s
+          repeat_interval: 1m
 
     receivers:
-    - name: default-receiver  # Placeholder for other notifications
-      # No slack_configs defined
-
-    - name: slack-receiver
+    - name: grafana_slack
       slack_configs:
-      - api_url: 'https://hooks.slack.com/services/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'
-        channel: 'cicd'  # Change to your actual Slack channel
-        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+      - api_url: https://hooks.slack.com/services/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
+        channel: '#cicd'

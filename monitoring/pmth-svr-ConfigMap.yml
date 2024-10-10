@@ -10,23 +10,31 @@ metadata:
     name: prometheus-configmap
   namespace: monitoring
 data:
-  # prometheus.rules: |-
-  #   groups:
-  #   - name: devopscube demo alert
-  #     rules:
-  #     - alert: High Pod Memory
-  #       expr: sum(container_memory_usage_bytes) > 1
-  #       for: 1m
-  #       labels:
-  #         severity: slack
-  #       annotations:
-  #         summary: High Memory Usage
+  prometheus.rules: |-
+    groups:
+    - name: devopscube demo alert
+      rules:
+      - alert: High Pod Memory
+        expr: sum(container_memory_usage_bytes) > 1
+        for: 1m
+        labels:
+          severity: slack
+        annotations:
+          summary: High Memory Usage
+    - name: test-alerts
+      rules:
+      - alert: TestAlert
+        expr: vector(1)  # Always true, to trigger the alert
+        for: 2m
+        annotations:
+          summary: "Test Alert"
+          description: "This is a test alert for Alertmanager Slack integration."
   prometheus.yml: |-
     global:
       scrape_interval: 5s
       evaluation_interval: 5s
-    # rule_files:
-    #   - /etc/prometheus/prometheus.rules
+    rule_files:
+      - /etc/prometheus/prometheus.rules
     alerting:
       alertmanagers:
       - scheme: http

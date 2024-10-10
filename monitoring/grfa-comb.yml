@@ -38,12 +38,12 @@ spec:
         #     value: "true"
         #   - name: GF_DASHBOARDS_JSON_PATH
         #     value: "/var/lib/grafana/dashboards/*.json"
-          # - name: SIDECAR_DASHBOARD_LABEL
-          #   value: grafana_dashboard
-          # - name: SIDECAR_DASHBOARD_LABEL_VALUE
-          #   value: "1"
-          # - name: SIDECAR_SEARCH_NAMESPACE
-          #   value: "ALL"
+        #   - name: SIDECAR_DASHBOARD_LABEL
+        #     value: grafana_dashboard
+        #   - name: SIDECAR_DASHBOARD_LABEL_VALUE
+        #     value: "1"
+        #   - name: SIDECAR_SEARCH_NAMESPACE
+        #     value: "ALL"
 
         volumeMounts:
           - mountPath: /var/lib/grafana

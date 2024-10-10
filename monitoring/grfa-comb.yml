@@ -1,12 +1,13 @@
 # 
 # 1. Deployment
 # 2. Service as NodePort: 32000
-# 
+# kubectl describe deployment grafana-deployment -n monitoring
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana-deployment
+  namespace: monitoring
 spec:
   replicas: 1  # Specify the number of replicas you want
   selector:  # Add this field to define the selector

@@ -38,13 +38,13 @@ spec:
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-configmap
             readOnly: false
-          - mountPath: /etc/grafana/provisioning/alerting/alert-rules.yaml
+          - mountPath: /etc/grafana/provisioning/alerting/alert-rules.yml
             name: grafana-configmap
-            subPath: alert-rules.yaml
+            subPath: alert-rules.yml
             readOnly: true
-          - mountPath: /etc/grafana/provisioning/notifiers/contact-points.yaml
+          - mountPath: /etc/grafana/provisioning/notifiers/contact-points.yml
             name: grafana-configmap
-            subPath: contact-points.yaml
+            subPath: contact-points.yml
             readOnly: true
       volumes:
         - name: grafana-storage

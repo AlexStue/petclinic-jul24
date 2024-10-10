@@ -4,52 +4,36 @@ metadata:
   name: grafana-configmap
   namespace: monitoring
 data:
-  grafana.ini: |
-    [alerting]
-    enabled = true
+  alert-rules.yml: |
+    # Sample Alerting Rules
+    apiVersion: monitoring.coreos.com/v1
+    kind: PrometheusRule
+    metadata:
+      name: example-alert
+      labels:
+        alert: example-alert
+    spec:
+      groups:
+        - name: example-alert-group
+          rules:
+            - alert: HighMemoryUsage
+              expr: node_memory_usage_bytes / node_memory_total_bytes * 100 > 80
+              for: 5m
+              labels:
+                severity: warning
+              annotations:
+                summary: "High memory usage detected on {{ $labels.instance }}"
+                description: "Memory usage is above 80% for more than 5 minutes."
 
-  # # Alert rules
-  # alert-rules.yaml: |
-  #   apiVersion: monitoring.coreos.com/v1
-  #   kind: PrometheusRule
-  #   metadata:
-  #     name: high-cpu-alert
-  #     namespace: monitoring
-  #   spec:
-  #     groups:
-  #       - name: Alerts-Server-CPU
-  #         rules:
-  #           - alert: HighCPUUsage
-  #             expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
-  #             for: 30s
-  #             labels:
-  #               severity: critical
-  #             annotations:
-  #               summary: "High CPU Usage"
-  #               description: "CPU usage is above 80% for more than 30 seconds."
-  #               dashboardUid: rYdddlPWk
-  #               panelId: 77
-  #             noDataState: NoData
-  #             execErrState: Error
-
-  # Contact points for Slack notifications
-  # contact-points.yaml: |
-  #   apiVersion: monitoring.coreos.com/v1
-  #   kind: AlertmanagerConfig
-  #   metadata:
-  #     name: alertmanager-config
-  #     namespace: monitoring
-  #   spec:
-  #     route:
-  #       groupBy: ['alertname']
-  #       groupInterval: 5m
-  #       groupWait: 30s
-  #       repeatInterval: 1h
-  #       receiver: grafana-to-Slack
-  #     receivers:
-  #       - name: grafana-to-Slack
-  #         slack_configs:
-  #           - api_url: https://hooks.slack.com/services/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
-  #             channel: '#alerts'
-
-
+  contact-points.yml: |
+    apiVersion: v1
+    kind: ContactPoints
+    metadata:
+      name: example-contact-point
+    spec:
+      # Example configuration for a contact point
+      name: slack
+      type: slack
+      settings:
+        apiUrl: https://hooks.slack.com/services/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
+        channel: '#alerts'

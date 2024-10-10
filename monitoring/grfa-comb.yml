@@ -37,13 +37,20 @@ spec:
             name: grafana-storage
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-configmap
-            readOnly: false
+            readOnly: true  # Ensure it is read-only
+          - mountPath: /var/lib/grafana/dashboards
+            name: grafana-configmap
+            readOnly: true  # This is the path for dashboards
+        env:  # Add this section to set the environment variables
+          - name: GF_DASHBOARDS_JSON_ENABLED
+            value: "true"
+          - name: GF_DASHBOARDS_JSON_PATH
+            value: "/var/lib/grafana/dashboards"
       volumes:
         - name: grafana-storage
-          emptyDir: {}  # You could use PersistentVolumeClaim (PVC) here if you want persistent storage across pod restarts
+          emptyDir: {}  # Change this to a PVC if you need persistent storage
         - name: grafana-configmap
           configMap:
-            defaultMode: 420
             name: grafana-configmap
 ---
 apiVersion: v1
@@ -52,8 +59,8 @@ metadata:
   name: grafana-service
   namespace: monitoring
   annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port:   '3000'
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '3000'
 spec:
   selector: 
     app: grafana

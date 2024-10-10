@@ -51,6 +51,8 @@ https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
     - 
 
 kubectl apply -f grfa-ConfigMap.yml
+kubectl get pods -n monitoring
+
 kubectl rollout restart deployment grafana-deployment -n monitoring
 
 

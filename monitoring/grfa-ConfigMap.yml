@@ -14,3 +14,14 @@ data:
         type: prometheus
         url: http://prometheus-service.monitoring.svc:8080
         version: 1
+  notification_channels.yml: |-
+    apiVersion: 1
+    contactPoints:
+      - orgId: 1
+        name: grafana-to-slack
+        receivers:
+          - uid: ae0gc4jvdz8qoc
+            type: slack
+            settings:
+              url: https://hooks.slack.com/services/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
+            disableResolveMessage: false

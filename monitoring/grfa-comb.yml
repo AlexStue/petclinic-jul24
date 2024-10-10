@@ -7,8 +7,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana-deployment
-  labels:
-    app: grafana
 spec:
   replicas: 1
   selector:
@@ -25,71 +23,13 @@ spec:
         ports:
         - containerPort: 3000
         volumeMounts:
-        - name: grafana-dashboards
-          mountPath: /var/lib/grafana/dashboards/default
-        - name: dashboard-providers
+        - name: grafana-dashboard-volume
           mountPath: /etc/grafana/provisioning/dashboards
       volumes:
-      - name: grafana-dashboards
+      - name: grafana-dashboard-volume
         configMap:
-          name: grafana-configmap
-      - name: dashboard-providers
-        configMap:
-          name: grafana-configmap
-          items:
-          - key: dashboardProviders.yaml
-            path: dashboardproviders.yaml
+          name: grafana-dashboard-config
 
----
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: grafana-deployment
-#   namespace: monitoring
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: grafana
-#   template:
-#     metadata:
-#       name: grafana
-#       labels:
-#         app: grafana
-#     spec:
-#       containers:
-#       - name: grafana
-#         image: grafana/grafana:latest
-#         ports:
-#         - name: grafana
-#           containerPort: 3000
-#         resources:
-#           limits:
-#             memory: "1Gi"
-#             cpu: "400m"
-#           requests: 
-#             memory: "500Mi"  # Note: Changed to "500Mi" for consistency
-#             cpu: "200m"
-#         volumeMounts:
-#           - mountPath: /var/lib/grafana
-#             name: grafana-storage
-#           - mountPath: /etc/grafana/provisioning/datasources
-#             name: grafana-configmap
-#             readOnly: true  # Ensure it is read-only
-#           - mountPath: /var/lib/grafana/dashboards
-#             name: grafana-configmap
-#             readOnly: true  # Path for dashboards
-#         env:  
-#           - name: GF_DASHBOARDS_JSON_ENABLED
-#             value: "true"
-#           - name: GF_DASHBOARDS_JSON_PATH
-#             value: "/var/lib/grafana/dashboards/dashboard.json"  # Adjusted to match configMap key
-#       volumes:
-#         - name: grafana-storage
-#           emptyDir: {}  # Change this to a PVC if you need persistent storage
-#         - name: grafana-configmap
-#           configMap:
-#             name: grafana-configmap
 ---
 apiVersion: v1
 kind: Service

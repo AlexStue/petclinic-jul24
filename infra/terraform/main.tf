@@ -32,23 +32,23 @@ resource "null_resource" "apply_k3s_deployment" {
       kubectl create namespace monitoring || echo "Namespace 'dev' already exists"
       echo "Applying Kubernetes deployment" | tee -a /tmp/kubectl-apply.log
       
-      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/petclinic-combined.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/petclinic-combined.yml
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/nginx-combined.yml
       
       # kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/nginx-comb.yml | tee -a /tmp/kubectl-apply.log
       # kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-ClusterRole.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-exp-NodeExporter.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-comb.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-ClusterRole.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-exp-NodeExporter.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-comb.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
+      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-comb.yml | tee -a /tmp/kubectl-apply.log
 
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/tls-secret.yml | tee -a /tmp/kubectl-apply.log
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log
 
-      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log
-      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/tls-secret.yml | tee -a /tmp/kubectl-apply.log
     EOT
   }
   triggers = {

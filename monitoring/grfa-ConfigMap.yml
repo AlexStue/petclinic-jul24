@@ -10,37 +10,39 @@ data:
 
   # Alert rules go in a separate YAML file
   alert-rules.yaml: |
-    apiVersion: 1
-    groups:
-      - orgId: 1
-        name: Alerts-Server-CPU
-        folder: Folder-Alerts-Server
-        interval: 5s
-        rules:
-          - alert: HighCPUUsage
-            expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
-            for: 30s
-            labels:
-              severity: critical
-            title: "High CPU Usage Alert"  # Title moved here
-            annotations:
-              summary: "High CPU Usage"
-              description: "CPU usage is above 80% for more than 30 seconds."
-            dashboardUid: rYdddlPWk
-            panelId: 77
-            noDataState: NoData
-            execErrState: Error
-            isPaused: false
-            notification_settings:
-              receiver: grafana-to-Slack
+    apiVersion: v1
+    kind: PrometheusRule
+    metadata:
+      name: high-cpu-alert
+      namespace: monitoring
+    spec:
+      groups:
+        - name: Alerts-Server-CPU
+          rules:
+            - alert: HighCPUUsage
+              uid: high-cpu-usage-alert # Add a UID here
+              expr: avg(node_cpu_seconds_total{mode="idle"}) < 20
+              for: 30s
+              labels:
+                severity: critical
+              annotations:
+                summary: "High CPU Usage"
+                description: "CPU usage is above 80% for more than 30 seconds."
+                dashboardUid: rYdddlPWk
+                panelId: 77
+              noDataState: NoData
+              execErrState: Error
+              isPaused: false
+              notification_settings:
+                receiver: grafana-to-Slack
 
   # Contact points go in a separate YAML file
   contact-points.yaml: |
-    apiVersion: 1
+    apiVersion: v1
     receivers:
       - orgId: 1
         name: grafana-to-Slack
-        type: slack  # Correctly define the receiver type at the receiver level
+        type: slack
         settings:
           url: https://hooks.slack.com/services/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
         disableResolveMessage: false

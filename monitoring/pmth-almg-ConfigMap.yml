@@ -9,20 +9,33 @@ data:
     templates:
     - '/etc/alertmanager/*.tmpl'
     route:
-      receiver: grafana_slack
+      receiver: alert-emailer
       group_by: ['alertname', 'priority']
       group_wait: 10s
       repeat_interval: 3m
       routes:
-        - receiver: grafana_slack
+        - receiver: slack_demo
         # Send severity=slack alerts to slack.
           match:
             severity: slack
           group_wait: 10s
           repeat_interval: 1m
-
+ 
     receivers:
-    - name: grafana_slack
+    - name: alert-emailer
+      email_configs:
+      - to: demo@devopscube.com
+        send_resolved: false
+        from: from-email@email.com
+        smarthost: smtp.eample.com:25
+        require_tls: false
+    - name: slack_demo
       slack_configs:
       - api_url: https://hooks.slack.com/services/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
         channel: '#cicd'
+
+    # receivers:
+    # - name: grafana_slack
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/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
+    #     channel: '#cicd'

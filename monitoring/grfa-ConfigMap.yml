@@ -33,23 +33,23 @@ data:
   #             execErrState: Error
 
   # Contact points for Slack notifications
-  contact-points.yaml: |
-    apiVersion: monitoring.coreos.com/v1
-    kind: AlertmanagerConfig
-    metadata:
-      name: alertmanager-config
-      namespace: monitoring
-    spec:
-      route:
-        groupBy: ['alertname']
-        groupInterval: 5m
-        groupWait: 30s
-        repeatInterval: 1h
-        receiver: grafana-to-Slack
-      receivers:
-        - name: grafana-to-Slack
-          slack_configs:
-            - api_url: https://hooks.slack.com/services/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
-              channel: '#alerts'
+  # contact-points.yaml: |
+  #   apiVersion: monitoring.coreos.com/v1
+  #   kind: AlertmanagerConfig
+  #   metadata:
+  #     name: alertmanager-config
+  #     namespace: monitoring
+  #   spec:
+  #     route:
+  #       groupBy: ['alertname']
+  #       groupInterval: 5m
+  #       groupWait: 30s
+  #       repeatInterval: 1h
+  #       receiver: grafana-to-Slack
+  #     receivers:
+  #       - name: grafana-to-Slack
+  #         slack_configs:
+  #           - api_url: https://hooks.slack.com/services/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
+  #             channel: '#alerts'
 
 

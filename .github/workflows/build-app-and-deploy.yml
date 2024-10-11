@@ -88,11 +88,17 @@ jobs:
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
       
+    # # Step 6: Copy the script "infra/scripts/deploy-on-dts.sh" to the DTS-Server
+    # - name: Copy script to server
+    #   run: |
+    #     echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
+    #     scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+
     # Step 6: Copy the script "infra/scripts/deploy-on-dts.sh" to the DTS-Server
     - name: Copy script to server
       run: |
         echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
-        scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-dts.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
 
     # Step 7: Run the script "infra/scripts/deploy-on-dts.sh" on the DTS-Server
     - name: Run script via SSH

@@ -1,6 +1,6 @@
 variable "server_ip_tf" {
   description = "Public IP of the Ubuntu server where K3s will be installed."
-  default     = "54.246.76.22"
+  default     = "52.16.155.59"
 }
 
 variable "ssh_user" {

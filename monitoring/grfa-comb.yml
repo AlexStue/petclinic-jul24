@@ -39,7 +39,7 @@ spec:
             name: grafana-storage
 
           # Mount the datasource configuration
-          - mountPath: /etc/grafana/provisioning/datasources
+          - mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
             name: grafana-configmap
             subPath: prometheus.yaml
 

@@ -30,17 +30,30 @@ jobs:
         echo "Extracted Server IP: ${SERVER_IP}"
     
     # Step 5: Set up SSH with the private key
-    - name: Set up SSH with private-key
+    # - name: Set up SSH with private-key
+    #   run: |
+    #     mkdir -p ~/.ssh
+    #     echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan -H ${{ steps.extract_ip.outputs.server_ip }} >> ~/.ssh/known_hosts
+    #     echo "Server IP is: ${{ steps.extract_ip.outputs.server_ip }}"
+    #     #echo "Known hosts:"
+    #     #cat ~/.ssh/known_hosts
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_DTS_PRIVATE_KEY }}
+
+    # Step 5: Log in via SSH using password
+    - name: Install sshpass
       run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ steps.extract_ip.outputs.server_ip }} >> ~/.ssh/known_hosts
-        echo "Server IP is: ${{ steps.extract_ip.outputs.server_ip }}"
-        #echo "Known hosts:"
-        #cat ~/.ssh/known_hosts
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+
+    - name: Log in via SSH using password
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_DTS_PRIVATE_KEY }}
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+
       
     # Step 6: Copy the script "infra/scripts/deploy-on-dts.sh" to the DTS-Server
     - name: Copy script to server

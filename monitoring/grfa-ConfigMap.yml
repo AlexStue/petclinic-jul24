@@ -23,10 +23,14 @@ data:
     }
 
   grafana.ini: |
-    [auth.anonymous]
-    enabled = true
-    org_name = Main Org.
-    org_role = Viewer
+    [security]
+    admin_user = admin
+    admin_password = admin
+    # [auth.anonymous]
+    # enabled = true
+    # org_name = Main Org.
+    # org_role = Viewer
+
 
   # # Add the dashboard providers config to point to the mounted dashboard folder
   # dashboardProviders.yaml: |-

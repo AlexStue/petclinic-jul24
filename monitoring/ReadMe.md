@@ -55,6 +55,9 @@ kubectl get pods -n monitoring
 
 kubectl rollout restart deployment grafana-deployment -n monitoring
 
+100 - (max(irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+
+
 
 
 

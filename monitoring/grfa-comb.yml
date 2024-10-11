@@ -33,34 +33,39 @@ spec:
             memory: 500M
             cpu: "500m"
 
-        # env:
-        #   - name: GF_DASHBOARDS_JSON_ENABLED
-        #     value: "true"
-        #   - name: GF_DASHBOARDS_JSON_PATH
-        #     value: "/var/lib/grafana/dashboards/*.json"
-        #   - name: SIDECAR_DASHBOARD_LABEL
-        #     value: grafana_dashboard
-        #   - name: SIDECAR_DASHBOARD_LABEL_VALUE
-        #     value: "1"
-        #   - name: SIDECAR_SEARCH_NAMESPACE
-        #     value: "ALL"
-
+        # Mount the required volume for Grafana configuration and dashboards
         volumeMounts:
           - mountPath: /var/lib/grafana
             name: grafana-storage
+
+          # Mount the datasource configuration
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-configmap
-            readOnly: false
+            subPath: prometheus.yaml
+
+          - mountPath: /etc/grafana/grafana.ini
+            name: grafana-configmap
+            subPath: grafana.ini
+
+          # # Mount the dashboard providers configuration
+          # - mountPath: /etc/grafana/provisioning/dashboards
+          #   name: grafana-configmap
+          #   subPath: dashboardProviders.yaml
+
+          # # Mount the actual dashboards JSON configuration
           # - mountPath: /var/lib/grafana/dashboards
-          #   name: grafana-dashboards
+          #   name: grafana-configmap
+          #   subPath: dashboard.json
 
       volumes:
         - name: grafana-storage
           emptyDir: {}
+
+        # Single ConfigMap containing both the datasource, dashboard, and providers config
         - name: grafana-configmap
           configMap:
-              defaultMode: 420
-              name: grafana-configmap
+            name: grafana-configmap
+
 ---
 
 

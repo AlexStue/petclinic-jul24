@@ -86,9 +86,7 @@ jobs:
 
     - name: Log in via SSH using password
       run: |
-        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
-      env:
-        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
       
     # Step 6: Copy the script "infra/scripts/deploy-on-dts.sh" to the DTS-Server
     - name: Copy script to server

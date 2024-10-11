@@ -114,7 +114,8 @@ jobs:
         SERVER_IP=${{ steps.extract_ip.outputs.server_ip }}
         echo "Deploying to server with IP: $SERVER_IP"
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SERVER_IP << 'EOF'
-          chmod +x /home/ubuntu/deploy-on-dts.sh
-          /home/ubuntu/deploy-on-dts.sh
+          echo "${{ secrets.SSH_ALEX_SERVER_PW }}" | sudo -S chmod +x /home/ubuntu/deploy-on-dts.sh
+          echo "${{ secrets.SSH_ALEX_SERVER_PW }}" | sudo -S /home/ubuntu/deploy-on-dts.sh
         EOF
+  
   

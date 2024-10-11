@@ -24,18 +24,21 @@ data:
 
   grafana.ini: |
     [auth.anonymous]
+    # enable anonymous access
     enabled = true
-    org_role = Admin
+    # specify organization name that should be used for unauthenticated users
+    org_name = ORGANIZATION
 
-    [auth.basic]
-    enabled = false
-
-    [auth]
-    disable_login_form = true
-    
-    #[security]
-    #admin_user = admin
-    #admin_password = admin
+    # [auth.anonymous]
+    # enabled = true
+    # org_role = Admin
+    # [auth.basic]
+    # enabled = false
+    # [auth]
+    # disable_login_form = true
+    # security]
+    # admin_user = admin
+    # admin_password = admin
     # [auth.anonymous]
     # enabled = true
     # org_name = Main Org.

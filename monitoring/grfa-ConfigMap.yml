@@ -23,9 +23,19 @@ data:
     }
 
   grafana.ini: |
-    [security]
-    admin_user = admin
-    admin_password = admin
+    [auth.anonymous]
+    enabled = true
+    org_role = Admin
+
+    [auth.basic]
+    enabled = false
+
+    [auth]
+    disable_login_form = true
+    
+    #[security]
+    #admin_user = admin
+    #admin_password = admin
     # [auth.anonymous]
     # enabled = true
     # org_name = Main Org.

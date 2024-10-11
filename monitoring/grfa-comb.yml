@@ -29,9 +29,9 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "1000m"
-          requests: 
-            memory: 500M
-            cpu: "500m"
+          #requests: 
+          #  memory: 500M
+          #  cpu: "500m"
 
         # Mount the required volume for Grafana configuration and dashboards
         volumeMounts:
@@ -43,19 +43,19 @@ spec:
             name: grafana-configmap
             subPath: prometheus.yaml
 
-          - mountPath: /etc/grafana/grafana.ini
+          # - mountPath: /etc/grafana/grafana.ini
+          #   name: grafana-configmap
+          #   subPath: grafana.ini
+
+          # Mount the dashboard providers configuration
+          - mountPath: /etc/grafana/provisioning/dashboards
             name: grafana-configmap
-            subPath: grafana.ini
+            subPath: dashboardProviders.yaml
 
-          # # Mount the dashboard providers configuration
-          # - mountPath: /etc/grafana/provisioning/dashboards
-          #   name: grafana-configmap
-          #   subPath: dashboardProviders.yaml
-
-          # # Mount the actual dashboards JSON configuration
-          # - mountPath: /var/lib/grafana/dashboards
-          #   name: grafana-configmap
-          #   subPath: dashboard.json
+          # Mount the actual dashboards JSON configuration
+          - mountPath: /var/lib/grafana/dashboards
+            name: grafana-configmap
+            subPath: dashboard.json
 
       volumes:
         - name: grafana-storage

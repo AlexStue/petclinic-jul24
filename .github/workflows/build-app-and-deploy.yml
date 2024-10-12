@@ -15,7 +15,7 @@ on:
   push:
     branches: [dev-branch]
     paths:
-      - 'infra'  # Only trigger on changes in 'directory_one'
+      - 'infra/**'  # Only trigger on changes in 'directory_one'
         
 jobs:
 

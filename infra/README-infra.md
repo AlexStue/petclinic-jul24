@@ -15,7 +15,7 @@ Repo DEV: https://github.com/AlexStue/petclinic-jul24-dev.git
 + GitHub Action: Biuld and upload: Implementation and testing done.
 + Dockerhub image -> alexstue/jul24-petclinic:latest
 
-------------------
+--------------------
 Protocol:
 
 2024.09.14: 

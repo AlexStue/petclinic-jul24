@@ -7,10 +7,16 @@
 
 name: AppBuild-DeployInfra
 
+# on:
+#   push:
+#     branches: [dev-branch]
+
 on:
   push:
     branches: [dev-branch]
-
+    paths:
+      - 'infra'  # Only trigger on changes in 'directory_one'
+        
 jobs:
 
 #------------------------------------------------------------------------------

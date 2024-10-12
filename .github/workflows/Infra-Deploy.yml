@@ -1,0 +1,99 @@
+#
+# This Runner deploys or update the infrastucture on a server
+# 
+#   - Check out the code from the repository
+#   - Extract the server IP from terraform variables.tf 
+#   - Set up SSH with the private key or password to server
+#   - Copy the script "infra/scripts/deploy-on-dts.sh" to server
+#   - Run the script "infra/scripts/deploy-on-dts.sh" on server
+# 
+
+name: Infra-Deploy
+
+on:
+  push:
+    branches: [dev-branch]
+    paths:
+      - 'infra/**'  # Only trigger on changes in 'directory'
+      - 'monitoring/**'  # Only trigger on changes in 'directory'
+        
+jobs:
+
+#------------------------------------------------------------------------------
+  job-1-Infra-Deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the code from the repository
+    - name: Checkout code from the repository
+      uses: actions/checkout@v3
+
+
+    # Extract the server IP from terraform variables.tf 
+    - name: Extract Server IP
+      id: extract_ip
+      run: |
+        SERVER_IP=$(grep -A 3 -E '^variable "server_ip_tf"' infra/terraform/variables.tf | grep 'default' | sed -n 's/.*default *= *"\([^"]*\)".*/\1/p')
+        echo "SERVER_IP=${SERVER_IP}"
+        echo "##[set-output name=server_ip;]${SERVER_IP}"
+        echo "Extracted Server IP: ${SERVER_IP}"
+    
+
+    # Set up SSH with the private key to the DST-Server
+    # - name: Set up SSH with private-key
+    #   run: |
+    #     mkdir -p ~/.ssh
+    #     echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan -H ${{ steps.extract_ip.outputs.server_ip }} >> ~/.ssh/known_hosts
+    #     echo "Server IP is: ${{ steps.extract_ip.outputs.server_ip }}"
+    #     #echo "Known hosts:"
+    #     #cat ~/.ssh/known_hosts
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_DTS_PRIVATE_KEY }}
+
+    # Log in via SSH using password to the IONOS-Server
+    - name: Install sshpass
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+
+    - name: Log in via SSH using password
+      run: |
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
+      
+
+    # # Copy the script "infra/scripts/deploy-on-server.sh" to the DST-Server
+    # - name: Copy script to server
+    #   run: |
+    #     echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
+    #     scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-server.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+
+    # Copy the script "infra/scripts/deploy-on-server.sh" to the IONOS-Server
+    - name: Copy script to server
+      run: |
+        echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-server.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+
+
+    # Run the script "infra/scripts/deploy-on-server.sh" on the DST-Server
+    # - name: Run script via SSH
+    #   run: |
+    #     SERVER_IP=${{ steps.extract_ip.outputs.server_ip }}
+    #     echo "Deploying to server with IP: $SERVER_IP"
+    #     ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << 'EOF'
+    #       chmod +x /home/ubuntu/deploy-on-server.sh
+    #       /home/ubuntu/deploy-on-server.sh
+    #     EOF
+
+    # Run the script "infra/scripts/deploy-on-server.sh" on the IONOS-Server
+    - name: Run script via SSH
+      run: |
+        SERVER_IP=${{ steps.extract_ip.outputs.server_ip }}
+        echo "Deploying to server with IP: $SERVER_IP"
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SERVER_IP << 'EOF'
+          echo "${{ secrets.SSH_ALEX_SERVER_PW }}" | sudo -S chmod +x /home/ubuntu/deploy-on-server.sh
+          echo "${{ secrets.SSH_ALEX_SERVER_PW }}" | sudo -S /home/ubuntu/deploy-on-server.sh
+        EOF

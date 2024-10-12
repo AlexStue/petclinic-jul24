@@ -23,7 +23,7 @@ resource "null_resource" "k3s_setup" {
 
 #-----------------------------------------------------------------
 # Deploy k3s namespace DEV
-resource "null_resource" "apply_k3s_deployment" {
+resource "null_resource" "apply_k3s_manifests" {
   provisioner "local-exec" {
     command = <<-EOT
       echo "Creating Kubernetes dev"

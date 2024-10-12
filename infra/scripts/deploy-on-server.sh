@@ -1,12 +1,23 @@
 #!/bin/bash
-# This script deploys the application on the remote server
+# This script deploys the application on the server
 # In DEV-environment (namespace)
-#
+# 
+# - Enable error handling: the script will exit on any command failure
+# - Function to handle apt-get lock if apt-get is already running automaticaly by the Server
+# - Handle apt-get lock
+# - Download Terraform
+# - Install Terraform
+# - Check if Repo already exists and clone or update the repository
+# - Navigate to the Terraform directory and initialize terraform
+# - Define the workspace in terraform
+# - Check if the workspace exists
+# - Apply terraform and therefor start the scripts in /terraform
+# 
 
 # Enable error handling: the script will exit on any command failure
 set -e
 
-# Function to handle apt-get lock if apt-get is already running automaticaly by the DTS-Server
+# Function to handle apt-get lock if apt-get is already running automaticaly by the Server
 handle_lock() {
   local lock_file=$1
   local retries=10
@@ -25,18 +36,18 @@ handle_lock() {
   echo "Failed to acquire lock after multiple retries. Exiting."
   exit 1
 }
-
-# Step 1: Install Terraform on the remote server
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
-
 # Handle apt-get lock
 handle_lock "/var/lib/dpkg/lock-frontend"
 
+# Download Terraform
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
+
+# Install Terraform
 sudo apt-get update
 sudo apt-get install -y terraform
 
-# Step 2: Check if Repo already exists and clone or update the repository
+# Check if Repo already exists and clone or update the repository
 REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
 DIR_NAME="petclinic-jul24"
 DEFAULT_BRANCH="dev-branch"
@@ -50,11 +61,11 @@ else
   git clone --branch "$DEFAULT_BRANCH" "$REPO_URL"
 fi
 
-# Step 3: Navigate to the Terraform directory and deploy infrastructure
+# Navigate to the Terraform directory and initialize terraform
 cd /home/ubuntu/petclinic-jul24/infra/terraform
 terraform init
 
-# Define the workspace name in terraform
+# Define the workspace in terraform
 WORKSPACE_NAME="dev"
 # Check if the workspace exists
 if terraform workspace list | grep -q "$WORKSPACE_NAME"; then
@@ -65,7 +76,7 @@ else
     terraform workspace new "$WORKSPACE_NAME"
 fi
 
-#terraform plan
+# Apply terraform and therefor start the scripts in /terraform
 terraform apply -auto-approve
 
 # After this, your application should be up and running on the server.

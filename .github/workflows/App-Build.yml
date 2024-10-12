@@ -1,0 +1,56 @@
+#
+# This Runner builds die app
+# 
+#   - Check out the code from the repository
+#   - Extract the server IP from terraform variables.tf 
+#   - Set up SSH with the private key or password to server
+#   - Copy the script "infra/scripts/deploy-on-dts.sh" to server
+#   - Run the script "infra/scripts/deploy-on-dts.sh" on server
+# 
+
+name: App-Build
+
+on:
+  push:
+    branches: [dev-branch]
+    paths:
+      - 'app/**'  # Only trigger on changes in 'directory'
+        
+jobs:
+
+#------------------------------------------------------------------------------
+  job-1-App-Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Log in to DockerHub
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build the Docker image using Docker Compose
+      - name: Build the Docker image with Docker Compose
+        env:
+          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+        run: |
+          docker-compose -f app/docker-compose.yml build
+
+      # Push the Docker image to DockerHub
+      - name: Push the Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+
+  
+  

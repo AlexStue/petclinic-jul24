@@ -43,8 +43,12 @@ resource "null_resource" "apply_k3s_manifests" {
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-comb.yml | tee -a /tmp/kubectl-apply.log
-      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
-      # kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-comb.yml | tee -a /tmp/kubectl-apply.log
+      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
+      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-comb.yml | tee -a /tmp/kubectl-apply.log
+
+      kubectl rollout restart deployment prometheus-deployment -n monitoring
+      kubectl rollout restart deployment alertmanager-deployment -n monitoring
+      kubectl rollout restart deployment grafana-deployment -n monitoring
 
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/tls-secret.yml | tee -a /tmp/kubectl-apply.log
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/2-with-ingress/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log

@@ -26,12 +26,13 @@ spec:
         - name: grafana
           containerPort: 3000
         resources:
+          requests:
+            cpu: 20m
+            memory: 150Mi
           limits:
-            memory: "1Gi"
-            cpu: "1000m"
-          requests: 
-            memory: 500M
-            cpu: "500m"
+            cpu: 50m
+            memory: 200Mi
+
 
         # Mount the required volume for Grafana configuration and dashboards
         volumeMounts:

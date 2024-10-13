@@ -58,6 +58,46 @@ kubectl rollout restart deployment grafana-deployment -n monitoring
 100 - (max(irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
 stress --cpu 2 --timeout 10s
 
+kubectl top nodes
+kubectl top pods -n monitoring
+
+kubectl describe node <node-name>
+
+-----------
+
+kubectl top nodes
+NAME        CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+localhost   209m         10%    1214Mi          62%       
+
+kubectl top pods -n monitoring
+NAME                                       CPU    req    max        MEMORY     req     max
+alertmanager-deployment-5677d4d585-bj6nw   2m      10m    30m         27Mi      50Mi   100Mi  
+grafana-deployment-5df86d4c7-fl6q7         4m      20m    50m        107Mi     150Mi   200Mi
+node-exporter-q5nnx                        11m     20m    50m         13Mi      30Mi    50Mi
+prometheus-deployment-c45b5cfd-rzm8v       65m     80m   100m        263Mi     300Mi   500Mi
+
+kubectl describe node localhost
+  Resource           Requests          Limits
+  --------           --------          ------
+  cpu                1502m (75%)       3250m (162%)
+  memory             1884120320 (92%)  3422Mi (176%)
+  ephemeral-storage  0 (0%)            0 (0%)
+  hugepages-1Gi      0 (0%)            0 (0%)
+  hugepages-2Mi      0 (0%)            0 (0%)
+
+  Namespace                   Name                                        CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                                        ------------  ----------  ---------------  -------------  ---
+  kube-system                 coredns-7b98449c4-44ljw                     100m (5%)     0 (0%)      70Mi (3%)        170Mi (8%)     8d
+  kube-system                 local-path-provisioner-6795b5f9d8-fqrq4     0 (0%)        0 (0%)      0 (0%)           0 (0%)         8d
+  kube-system                 metrics-server-cdcc87586-nvxsn              100m (5%)     0 (0%)      70Mi (3%)        0 (0%)         8d
+  kube-system                 svclb-traefik-3066e353-w6kpb                0 (0%)        0 (0%)      0 (0%)           0 (0%)         8d
+  kube-system                 traefik-67f6c94c47-8rmb7                    0 (0%)        0 (0%)      0 (0%)           0 (0%)         8d
+  monitoring                  alertmanager-deployment-5677d4d585-bj6nw    500m (25%)    1 (50%)     500Mi (25%)      1Gi (52%)      12m
+  monitoring                  grafana-deployment-5df86d4c7-fl6q7          500m (25%)    1 (50%)     500M (24%)       1Gi (52%)      12m
+  monitoring                  node-exporter-q5nnx                         102m (5%)     250m (12%)  180Mi (9%)       180Mi (9%)     17h
+  monitoring                  prometheus-deployment-c45b5cfd-rzm8v        200m (10%)    1 (50%)     500Mi (25%)      1Gi (52%)      17h
+
+
 
 
 

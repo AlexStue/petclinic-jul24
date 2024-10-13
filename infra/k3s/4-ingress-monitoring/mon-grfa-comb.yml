@@ -1,13 +1,13 @@
 # 
 # 1. Deployment
 # 2. Service as NodePort: 32000
-# kubectl describe deployment grafana-deployment -n monitoring
+# 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana-deployment
-  namespace: monitoring
+  namespace: dev
 spec:
   replicas: 1
   selector:
@@ -28,11 +28,10 @@ spec:
         resources:
           requests:
             cpu: 20m
-            memory: 150Mi
+            memory: 120Mi
           limits:
             cpu: 50m
             memory: 200Mi
-
 
         # Mount the required volume for Grafana configuration and dashboards
         volumeMounts:
@@ -43,10 +42,6 @@ spec:
           - mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
             name: grafana-configmap
             subPath: prometheus.yaml
-
-          # - mountPath: /etc/grafana/grafana.ini
-          #   name: grafana-configmap
-          #   subPath: grafana.ini
 
           # Mount the dashboard providers configuration
           - mountPath: /etc/grafana/provisioning/dashboards/dashboardProviders.yaml
@@ -66,69 +61,12 @@ spec:
         - name: grafana-configmap
           configMap:
             name: grafana-configmap
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: grafana-deployment
-#   namespace: monitoring
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: grafana
-#   template:
-#     metadata:
-#       name: grafana
-#       labels:
-#         app: grafana
-#     spec:
-#       containers:
-#       - name: grafana
-#         image: grafana/grafana:latest
-#         ports:
-#         - name: grafana
-#           containerPort: 3000
-#         resources:
-#           limits:
-#             memory: "1Gi"
-#             cpu: "1000m"
-#           requests: 
-#             memory: 500M
-#             cpu: "500m"
-#         volumeMounts:
-#           - mountPath: /var/lib/grafana
-#             name: grafana-storage
-#           - mountPath: /etc/grafana/provisioning/datasources
-#             name: grafana-datasources
-#             readOnly: false
-#       volumes:
-#         - name: grafana-storage
-#           emptyDir: {}
-#         - name: grafana-datasources
-#           configMap:
-#               defaultMode: 420
-#               name: grafana-datasources
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: grafana-service
-  namespace: monitoring
+  namespace: dev
   annotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: '3000'

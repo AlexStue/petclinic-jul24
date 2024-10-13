@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-configmap
-  namespace: monitoring
+  namespace: dev
   labels:
     grafana_configmap: "1"
 data:
@@ -22,7 +22,7 @@ data:
         ]
     }
 
-  # Add the dashboard providers config to point to the mounted dashboard folder
+  # dashboard providers config to point to the mounted dashboard folder
   dashboardProviders.yaml: |-
     apiVersion: 1
     providers:
@@ -35,7 +35,7 @@ data:
         options:
           path: /var/lib/grafana/dashboards
 
-  # Add the dashboard JSON content here
+  # dashboard JSON content
   dashboard.json: |-
     {
       "annotations": {

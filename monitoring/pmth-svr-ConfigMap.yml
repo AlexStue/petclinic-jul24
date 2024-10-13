@@ -8,7 +8,7 @@ metadata:
   name: prometheus-configmap
   labels:
     name: prometheus-configmap
-  namespace: monitoring
+  namespace: dev
 data:
   prometheus.rules: |-
     groups:
@@ -139,3 +139,4 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
+---

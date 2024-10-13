@@ -49,6 +49,8 @@ jobs:
 
       # Build the Docker image using Dockerfile
       - name: Build the Docker image with Dockerfile
+        env:
+          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
         run: |
           docker build -t "$DOCKERHUB_IMAGE_NAME" -f app/dockerfile-app-v2 app/
 

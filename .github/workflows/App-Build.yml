@@ -52,9 +52,7 @@ jobs:
         env:
           DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
         run: |
-          #docker build -t app/dockerfile-app-v2 .
-          docker build -t app/dockerfile-app-v2 -f app/Dockerfile .
-
+          docker build -t app/dockerfile-app-v2 -f app/Dockerfile app
 
       # Push the Docker image to DockerHub
       - name: Push the Docker image

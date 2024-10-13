@@ -40,12 +40,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build the Docker image using Docker Compose
-      - name: Build the Docker image with Docker Compose
+      # # Build the Docker image using Docker Compose
+      # - name: Build the Docker image with Docker Compose
+      #   env:
+      #     DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+      #   run: |
+      #     docker-compose -f app/docker-compose.yml build
+
+      # Build the Docker image using Dockerfile
+      - name: Build the Docker image with Dockerfile
         env:
           DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
         run: |
-          docker-compose -f app/docker-compose.yml build
+          docker build -t app/dockerfile-app-v2 .
 
       # Push the Docker image to DockerHub
       - name: Push the Docker image

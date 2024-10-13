@@ -6,7 +6,8 @@ WORKDIR /app
 
 # Copy Maven wrapper and pom.xml files from the current context inside the app directory
 COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+COPY mvnw ./
+COPY pom.xml ./
 
 # Grant execute permissions to the Maven wrapper
 RUN chmod +x ./mvnw
@@ -21,10 +22,10 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # Stage 2: Run the application (without Maven)
-FROM eclipse-temurin:17-jdk-jammy
+#FROM eclipse-temurin:17-jdk-jammy
 
 # Set the working directory inside the container
-WORKDIR /app
+#WORKDIR /app
 
 # Copy only the JAR from the build stage to the runtime stage
 COPY --from=builder /app/target/*.jar app.jar

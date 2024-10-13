@@ -1,5 +1,5 @@
 # Stage 1: Build the application using Maven
-FROM eclipse-temurin:17-jdk-jammy as builder
+FROM eclipse-temurin:17-jdk-jammy AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -22,13 +22,13 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # Stage 2: Run the application (without Maven)
-#FROM eclipse-temurin:17-jdk-jammy
+FROM eclipse-temurin:17-jdk-jammy
 
 # Set the working directory inside the container
-#WORKDIR /app
+WORKDIR /app
 
 # Copy only the JAR from the build stage to the runtime stage
 COPY --from=builder /app/target/*.jar app.jar
 
 # Command to run the Spring Boot application
-CMD ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-jar", "app.jar"]  # Update to reflect the current WORKDIR

@@ -14,9 +14,8 @@ http://85.215.98.243
 curl http://85.215.98.243
 curl http://85.215.98.243:32058
 
-
-curl petclinic.dst-jul24.cloudns.be
-curl petclinic.dst-jul24.de
+nslookup petclinic.simply-stu.de
+ping petclinic.simply-stu.de
 
 curl petclinic.simply-stu.de
 

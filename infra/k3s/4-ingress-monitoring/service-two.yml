@@ -1,34 +1,39 @@
-# service2.yml
-#Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: micro2-deployment
-  labels:
-    app: micro2
+  name: app2-deployment
+  #namespace: dev
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: micro2
+      app: app2
   template:
     metadata:
       labels:
-        app: micro2
+        app: app2
     spec:
       containers:
-      - name: nginx
+      - name: app2
         image: nginx:1.19.10
+        # imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ---
 # service 
 apiVersion: v1
 kind: Service
 metadata:
-  name: lb-service-2
+  name: app2-service
 spec:
   selector:
-    app: micro2
+    app: app2
   ports:
-  - port: 8080
+  - port: 80

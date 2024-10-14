@@ -5,7 +5,8 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: petclinic.dst-jul24.cloudns.be
+    #- host: petclinic.dst-jul24.cloudns.be
+    - host: petclinic.dst-jul24.de.
       http:
         paths:
           - path: /

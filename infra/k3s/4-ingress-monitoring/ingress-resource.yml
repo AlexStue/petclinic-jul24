@@ -3,24 +3,23 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-controller
-  namespace: dev
+  annotations:
+    kubernetes.io/ingress.class: haproxy
 spec:
-  ingressClassName: haproxy  # Use this field instead of the deprecated annotation
   rules:
   - http:
-      paths:
-      - path: /web-app
-        pathType: Prefix
-        backend:
-          service:
-            name: nginx-service
-            port:
-              number: 80
-    # - path: /web-app
-    #   pathType: Prefix
-    #   backend:
-    #     service:
-    #       name: lb-service-2
-    #       port:
-    #       number: 80
----
+    paths:
+    - path: /v1/api
+      pathType: Prefix
+      backend:
+        service:
+           name: lb-service-1
+           port:
+             number: 8080
+    - path: /web-app
+      pathType: Prefix
+      backend:
+        service:
+          name: lb-service-2
+          port:
+          number: 80

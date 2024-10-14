@@ -1,0 +1,34 @@
+# service1.yml
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro1-deployment
+  labels:
+    app: micro1-hapi-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: micro1-hapi-app
+  template:
+    metadata:
+      labels:
+        app: micro1-hapi-app
+    spec:
+      containers:
+      - name: micro1-hapi-app
+        image: <microservice-docker-image-name>
+        ports:
+        - containerPort: 8080
+---
+# service 
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-service-1
+spec:
+  selector:
+    app: micro1-hapi-app
+  ports:
+  - port: 8080

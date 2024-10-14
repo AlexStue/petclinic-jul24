@@ -33,30 +33,30 @@ resource "null_resource" "apply_k3s_manifests" {
       
       ### Configs ###
 
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/ingress-secret.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/ingress-secret.yml | tee -a /tmp/kubectl-apply.log
 
       ### Deployments ###
 
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/petclinic-comb.yml | tee -a /tmp/kubectl-apply.log
 
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-ClusterRole.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-exp-NodeExporter.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-svr-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-grfa-comb.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-ClusterRole.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-exp-NodeExporter.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-svr-comb.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-grfa-comb.yml | tee -a /tmp/kubectl-apply.log
 
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/infra/k3s/4-ingress-monitoring/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log
 
       ### restarts ###
 
       #kubectl rollout restart deployment mysqlserver-deployment -n dev
-      kubectl rollout restart deployment petclinic-deployment -n dev
-      kubectl rollout restart deployment prometheus-deployment -n dev
-      kubectl rollout restart deployment alertmanager-deployment -n dev
-      kubectl rollout restart deployment grafana-deployment -n dev
+      #kubectl rollout restart deployment petclinic-deployment -n dev
+      #kubectl rollout restart deployment prometheus-deployment -n dev
+      #kubectl rollout restart deployment alertmanager-deployment -n dev
+      #kubectl rollout restart deployment grafana-deployment -n dev
 
     EOT
   }

@@ -9,7 +9,7 @@ metadata:
   name: petclinic-deployment
   namespace: dev
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: petclinic
@@ -19,26 +19,32 @@ spec:
         app: petclinic
     spec:
       containers:
-      - name: petclinic
-        image: alexstue/jul24-petclinic:latest
+        - name: petclinic
+          image: alexstue/jul24-petclinic:latest
+          ports:
+            - containerPort: 8000
+            - containerPort: 8080
 
-        env:
-        - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://mysql:3306/petclinic
-        - name: SPRING_DATASOURCE_USERNAME
-          value: petclinic
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: petclinicpassword
+          resources:
+            requests:
+              memory: 200Mi
+              cpu: 200m
+            limits:
+              memory: 400Mi
+              cpu: 300m
 
-        resources:
-          requests:
-            memory: 200Mi
-            cpu: 200m
-          limits:
-            memory: 400Mi
-            cpu: 300m
-        ports:
-        - containerPort: 8080 
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: MYSQL_URL
+              value: "jdbc:mysql://mysqlserver/petclinic"
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app
+      volumes:
+        - name: app-volume
+          hostPath:
+            path: /app
 ---
 apiVersion: v1
 kind: Service
@@ -48,10 +54,12 @@ metadata:
 spec:
   selector:
     app: petclinic
-  type: LoadBalancer # NodePort also optional
+  type: LoadBalancer
   ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30001 # 30002 on NodePort Version
 ---

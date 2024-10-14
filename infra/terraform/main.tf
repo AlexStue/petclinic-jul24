@@ -37,6 +37,7 @@ resource "null_resource" "apply_k3s_manifests" {
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/ingress-secret.yml | tee -a /tmp/kubectl-apply.log
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/db-pvc.yml | tee -a /tmp/kubectl-apply.log
 
       ### Deployments ###
 
@@ -53,6 +54,8 @@ resource "null_resource" "apply_k3s_manifests" {
 
       ### restarts ###
 
+      kubectl rollout restart deployment mysqlserver-deployment -n dev
+      kubectl rollout restart deployment petclinic-deployment -n dev
       kubectl rollout restart deployment prometheus-deployment -n dev
       kubectl rollout restart deployment alertmanager-deployment -n dev
       kubectl rollout restart deployment grafana-deployment -n dev

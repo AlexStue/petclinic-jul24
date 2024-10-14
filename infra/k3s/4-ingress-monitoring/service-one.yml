@@ -5,20 +5,20 @@ kind: Deployment
 metadata:
   name: micro1-deployment
   labels:
-    app: micro1-hapi-app
+    app: micro1
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: micro1-hapi-app
+      app: micro1
   template:
     metadata:
       labels:
-        app: micro1-hapi-app
+        app: micro1
     spec:
       containers:
-      - name: micro1-hapi-app
-        image: <microservice-docker-image-name>
+      - name: nginx
+        image: nginx:1.19.10
         ports:
         - containerPort: 8080
 ---
@@ -29,6 +29,6 @@ metadata:
   name: lb-service-1
 spec:
   selector:
-    app: micro1-hapi-app
+    app: micro1
   ports:
   - port: 8080

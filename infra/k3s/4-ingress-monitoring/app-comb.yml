@@ -23,6 +23,7 @@ spec:
       containers:
         - name: petclinic
           image: alexstue/jul24-petclinic:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
             - containerPort: 8080
@@ -58,10 +59,12 @@ spec:
     app: petclinic
   type: LoadBalancer
   ports:
-    - protocol: TCP
+    - name: http-8000
+      protocol: TCP
       port: 8000
       targetPort: 8000
-    - protocol: TCP
+    - name: http-8080
+      protocol: TCP
       port: 8080
       targetPort: 8080
 ---

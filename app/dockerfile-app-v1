@@ -10,7 +10,7 @@ COPY mvnw ./
 COPY pom.xml ./
 
 # Grant execute permissions to the Maven wrapper
-RUN chmod +x mvnw
+RUN chmod +x mvnw && chmod +x .mvn/wrapper/*
 
 # Resolve the project dependencies
 RUN ./mvnw dependency:resolve

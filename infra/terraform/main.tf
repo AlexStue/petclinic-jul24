@@ -37,12 +37,13 @@ resource "null_resource" "apply_k3s_manifests" {
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/ingress-secret.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/db-pvc.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/db-pvc.yml | tee -a /tmp/kubectl-apply.log
 
       ### Deployments ###
 
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/db-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/app-comb.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/db-comb.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/app-comb.yml | tee -a /tmp/kubectl-apply.log
+      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/petclinic-comb.yml | tee -a /tmp/kubectl-apply.log
 
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-ClusterRole.yml | tee -a /tmp/kubectl-apply.log
       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-exp-NodeExporter.yml | tee -a /tmp/kubectl-apply.log
@@ -54,7 +55,7 @@ resource "null_resource" "apply_k3s_manifests" {
 
       ### restarts ###
 
-      kubectl rollout restart deployment mysqlserver-deployment -n dev
+      #kubectl rollout restart deployment mysqlserver-deployment -n dev
       kubectl rollout restart deployment petclinic-deployment -n dev
       kubectl rollout restart deployment prometheus-deployment -n dev
       kubectl rollout restart deployment alertmanager-deployment -n dev

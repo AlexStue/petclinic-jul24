@@ -23,23 +23,20 @@ spec:
   dnsPolicy: ClusterFirstWithHostNet
 ---
 
-
-4. ingress-account.yml
-
-5. ingress-configmap.yml
-
-6. ingress-sercive.yml
-
-7. ingress-class.yml
-
-
+sudo apt-get update
+sudo apt-get install -y curl
+curl -sfL https://get.k3s.io | sh -
+mkdir -p ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $USER:$USER ~/.kube/config
+sudo chmod 644 ~/.kube/config
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 
 
-
-
-
-
-
+http://85.215.98.243:30308
+http://85.215.98.243:32457
+http://85.215.98.243:30100
+http://85.215.98.243/web-app
 
 
 

@@ -39,13 +39,13 @@ handle_lock() {
 # Handle apt-get lock
 handle_lock "/var/lib/dpkg/lock-frontend"
 
-# Download Terraform
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
+# # Download Terraform
+# curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+# sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
 
-# Install Terraform
-sudo apt-get update
-sudo apt-get install -y terraform
+# # Install Terraform
+# sudo apt-get update
+# sudo apt-get install -y terraform
 
 # Check if Repo already exists and clone or update the repository
 REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"

@@ -1,7 +1,9 @@
 # 
 # 1. Deployment
 # 2. Service as LoadBalancer for ingress
-# 
+# docker run --rm -it alexstue/jul24-petclinic:latest /bin/sh
+# kubectl exec -it petclinic-deployment-6f5f74f4f5-v29r7 -n dev -- ls -l /app
+
 ---
 apiVersion: apps/v1
 kind: Deployment

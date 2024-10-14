@@ -30,5 +30,8 @@ WORKDIR /app
 # Copy only the JAR from the build stage to the runtime stage
 COPY --from=builder /app/target/*.jar app.jar
 
+# Grant execute permissions to the app.jar file
+RUN chmod +x /app/app.jar
+
 # Command to run the Spring Boot application
-CMD ["java", "-jar", "app.jar"]  # Update to reflect the current WORKDIR
+CMD ["java", "-jar", "/app/app.jar"]  # Update to reflect the current WORKDIR

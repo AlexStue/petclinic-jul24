@@ -40,8 +40,7 @@ resource "null_resource" "apply_k3s_manifests" {
 
       ### Deployments ###
 
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/petclinic-comb.yml | tee -a /tmp/kubectl-apply.log
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/1-basic-way/nginx-combined.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/petclinic-comb.yml | tee -a /tmp/kubectl-apply.log
       
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-ClusterRole.yml | tee -a /tmp/kubectl-apply.log
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-exp-NodeExporter.yml | tee -a /tmp/kubectl-apply.log
@@ -49,7 +48,7 @@ resource "null_resource" "apply_k3s_manifests" {
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-pmth-almg-comb.yml | tee -a /tmp/kubectl-apply.log
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/mon-grfa-comb.yml | tee -a /tmp/kubectl-apply.log
 
-      kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/infra/k3s/4-ingress-monitoring/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/infra/k3s/4-ingress-monitoring/ingress-traefik.yml | tee -a /tmp/kubectl-apply.log
 
       ### restarts ###
 

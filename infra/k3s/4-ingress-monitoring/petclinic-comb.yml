@@ -35,10 +35,10 @@ metadata:
 spec:
   selector:
     app: petclinic
-  type: LoadBalancer # NodePort also optional
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30001 # 30002 on NodePort Version
+      #nodePort: 30001 # 30002 on NodePort Version
 ---

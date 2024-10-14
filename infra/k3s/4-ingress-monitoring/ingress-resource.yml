@@ -9,14 +9,14 @@ metadata:
 spec:
   rules:
   - http:
-    paths:
-    - path: /web-app
-      pathType: Prefix
-      backend:
-        service:
-           name: lb-service-1
-           port:
-             number: 8080
+      paths:
+      - path: /web-app
+        pathType: Prefix
+        backend:
+          service:
+            name: lb-service-1
+            port:
+              number: 8080
     # - path: /web-app
     #   pathType: Prefix
     #   backend:

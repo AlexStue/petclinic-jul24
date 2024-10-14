@@ -4,9 +4,8 @@ kind: Ingress
 metadata:
   name: ingress-controller
   namespace: dev
-  annotations:
-    kubernetes.io/ingress.class: haproxy
 spec:
+  ingressClassName: haproxy  # Use this field instead of the deprecated annotation
   rules:
   - http:
       paths:

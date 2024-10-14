@@ -1,4 +1,3 @@
-#ingress.yml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -8,18 +7,18 @@ metadata:
 spec:
   rules:
   - http:
-    paths:
-    - path: /app1
-      pathType: Prefix
-      backend:
-        service:
-           name: app1
-           port:
-             number: 8080
-    - path: /app2
-      pathType: Prefix
-      backend:
-        service:
-          name: app2
-          port:
-          number: 80
+      paths:
+      - path: /app1
+        pathType: Prefix
+        backend:
+          service:
+            name: app1
+            port:
+              number: 8080
+      - path: /app2
+        pathType: Prefix
+        backend:
+          service:
+            name: app2
+            port:
+              number: 80

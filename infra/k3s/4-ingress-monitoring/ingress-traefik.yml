@@ -1,26 +1,21 @@
-# 
-# 
-# 
-# 
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-app-ingress
+  name: petclinic-ingress
   namespace: dev
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: "web"
 spec:
-  ingressClassName: nginx
   rules:
   - host: petclinic.dst-jul24.cloudns.be
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: nginx-service
             port:
-              number: 80
+              number: 8080
 ---

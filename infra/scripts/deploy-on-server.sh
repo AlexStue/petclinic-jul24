@@ -55,10 +55,10 @@ DEFAULT_BRANCH="dev-branch"
 if [ -d "$DIR_NAME" ]; then
   echo "Directory $DIR_NAME already exists. Pulling the latest changes from $DEFAULT_BRANCH ..."
   cd "$DIR_NAME" || exit
-  git pull origin "$DEFAULT_BRANCH"
+  sudo git pull origin "$DEFAULT_BRANCH"
 else
   echo "Directory $DIR_NAME does not exist. Cloning the repository..."
-  git clone --branch "$DEFAULT_BRANCH" "$REPO_URL"
+  sudo git clone --branch "$DEFAULT_BRANCH" "$REPO_URL"
 fi
 
 # Navigate to the Terraform directory and initialize terraform

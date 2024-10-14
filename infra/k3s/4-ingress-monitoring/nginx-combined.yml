@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +28,21 @@ spec:
         configMap:
           name: nginx-custom-content
 ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx-service
+#   namespace: dev
+# spec:
+#   selector:
+#     app: nginx
+#   type: ClusterIP
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#       #nodePort: 30002
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -35,12 +51,12 @@ metadata:
 spec:
   selector:
     app: nginx
-  type: ClusterIP
+  type: ClusterIP # NodePort also optional
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
-      #nodePort: 30002
+      port: 8080
+      targetPort: 8080
+      # nodePort: 30001 # 30002 on NodePort Version
 ---
 apiVersion: v1
 kind: ConfigMap

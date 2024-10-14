@@ -10,6 +10,11 @@ kubectl create namespace ingress-nginx
 
 IP
 kubectl get services -o wide -w -n ingress-nginx
+---
+NAME                                 TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE     SELECTOR
+ingress-nginx-controller             LoadBalancer   10.43.89.162   <pending>     80:31144/TCP,443:30620/TCP   5m27s   
+ingress-nginx-controller-admission   ClusterIP      10.43.32.229   <none>        443/TCP                      5m27s   
+---
 
 4. kubectl edit deployment ingress-nginx-controller -n ingress-nginx
 ---

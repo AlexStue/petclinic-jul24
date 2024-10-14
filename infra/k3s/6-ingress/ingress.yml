@@ -1,9 +1,17 @@
+# 
+# 
+# 
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: traefik-ingress
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - petclinic.simply-stu.de
+      secretName: petclinic-tls
   rules:
     - host: petclinic.simply-stu.de
       http:
@@ -15,3 +23,21 @@ spec:
                 name: petclinic-service
                 port:
                   number: 8080
+---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: traefik-ingress
+# spec:
+#   ingressClassName: traefik
+#   rules:
+#     - host: petclinic.simply-stu.de
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: petclinic-service
+#                 port:
+#                   number: 8080

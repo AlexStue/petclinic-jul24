@@ -20,6 +20,7 @@ ping petclinic.simply-stu.de
 curl petclinic.simply-stu.de
 
 
+kubectl create secret tls petclinic-tls --cert=simply-stu.de_ssl_certificate.cer --key=simply-stu.de_private_key.key
 
 
 

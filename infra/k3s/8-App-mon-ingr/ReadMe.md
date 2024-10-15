@@ -5,6 +5,9 @@ http://85.215.98.243:30000
 http://85.215.98.243:31000
 http://85.215.98.243:32000
 
+https://petclinic-dev.simply-stu.de
+
+###
 sudo mv /home/ubuntu/petclinic-jul24/SSL.zip /home/ubuntu/
 sudo mv *.simply-stu.de_private_key.key .simply-stu.de_private_key.key
 ###

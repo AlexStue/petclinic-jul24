@@ -38,7 +38,4 @@ data:
         footer: 'Alertmanager'
         fallback: '{{ .CommonAnnotations.description }}'
         link_names: true
-
-    templates:
-    - /etc/alertmanager/*.tmpl
 ---

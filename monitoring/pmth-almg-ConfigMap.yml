@@ -31,5 +31,5 @@ data:
         require_tls: false
     - name: slack_demo
       slack_configs:
-      - api_url: https://hooks.slack.com/services/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
+      - api_url: https://hooks.slack.com/services/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
         channel: '#devopscube-demo'

@@ -24,3 +24,4 @@ data:
       slack_configs:
       - api_url: 
         channel: '#cicd'
+---

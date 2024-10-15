@@ -154,7 +154,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Panel Title",
+          "title": "CPU Load",
           "type": "timeseries"
         }
       ],
@@ -169,7 +169,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "New dashboard222",
+      "title": "Dashboard Node Stats",
       "uid": "ee0ixaxbayn7kb",
       "version": 1,
       "weekStart": ""

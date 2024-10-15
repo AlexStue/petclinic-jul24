@@ -16,18 +16,17 @@ kubectl rollout restart deployment alertmanager-deployment -n dev
 100 - (max(irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)
 100 - (max(irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
 
-curl -X POST -H 'Content-type: application/json' --data '{"text":"Test message"}' https://hooks.slack.com/services/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
-
-curl -X POST -H 'Content-type: application/json' --data '{"text":"Test message from Alertmanager"}' https://hooks.slack.com/services/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
+curl -X POST -H 'Content-type: application/json' --data '{"text":"Test message"}' https:
 
 
-curl -v -X POST -H 'Content-type: application/json' --data '{"text":"Test message"}' https://hooks.slack.com/services/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
+###
 
+sudo nano /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
+kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
+kubectl apply -f mon-pmth-almg-comb.yml 
+kubectl rollout restart deployment alertmanager-deployment -n monitoring
 
-kubectl logs alertmanager-deployment-7bc5996556-268fx -n dev
-
-
-
+###
 
 
 

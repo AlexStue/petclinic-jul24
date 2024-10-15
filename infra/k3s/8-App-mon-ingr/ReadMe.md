@@ -60,7 +60,7 @@ kubectl get pods -n dev
 kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/backup/grfa-ConfigMap.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/backup/mon-grfa-comb.yml
 
-
+An error occurred within the plugin
 
 
 

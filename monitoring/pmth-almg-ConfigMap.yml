@@ -13,8 +13,7 @@ data:
     receivers:
       - name: 'slack-receiver'
         slack_configs:
-        - api_url: 'https://hooks.slack.com/services/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'
-          channel: '#cicd'
+        - api_url: 'https://hooks.slack.com/services/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'
           send_resolved: true
 
     route:

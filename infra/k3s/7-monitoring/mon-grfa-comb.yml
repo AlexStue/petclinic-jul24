@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: grafana-deployment
+  name: grafana
   namespace: dev
 spec:
   replicas: 1
@@ -65,7 +65,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana-service
+  name: grafana
   namespace: dev
   annotations:
     prometheus.io/scrape: 'true'

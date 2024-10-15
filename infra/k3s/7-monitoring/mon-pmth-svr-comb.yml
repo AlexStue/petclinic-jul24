@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus-deployment
+  name: prometheus
   namespace: dev
   labels:
     app: prometheus-server
@@ -44,7 +44,7 @@ spec:
         - name: prometheus-config-volume
           configMap:
             defaultMode: 420
-            name: prometheus-configmap
+            name: prometheus
   
         - name: prometheus-storage-volume
           emptyDir: {}
@@ -52,14 +52,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus-service
+  name: prometheus
   namespace: dev
   annotations:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '9090'
 spec:
   selector: 
-    app: prometheus-server
+    app: prometheus
   type: NodePort  
   ports:
     - port: 8080

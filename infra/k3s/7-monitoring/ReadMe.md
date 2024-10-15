@@ -23,7 +23,7 @@ curl -X POST -H 'Content-type: application/json' --data '{"text":"Test message"}
 
 sudo nano /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
-kubectl apply -f mon-pmth-almg-comb.yml 
+kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/7-monitoring/mon-pmth-almg-comb.yml 
 kubectl rollout restart deployment alertmanager-deployment -n monitoring
 
 ###

@@ -1,24 +1,27 @@
-apiVersion: v1
 kind: ConfigMap
+apiVersion: v1
 metadata:
-  name: alertmanager-configmap
+  name: alertmanager
   namespace: dev
 data:
-  alertmanager.yml: |
+  config.yml: |-
     global:
-      resolve_timeout: 10s
-      slack_api_url: ''
 
     route:
+      receiver: alert-emailer
       group_by: ['alertname']
       group_wait: 10s
-      group_interval: 1m
-      repeat_interval: 2h
-      receiver: 'slack'
+      repeat_interval: 3m
+      routes:
+        - receiver: slack_demo
+        # Send severity=slack alerts to slack.
+          match:
+            severity: slack
+          group_wait: 10s
+          repeat_interval: 1m
 
     receivers:
-    - name: 'slack'
+    - name: grafana_slack
       slack_configs:
-      - channel: '#cicd'
-        text: 'Alert: {{ .CommonLabels.alertname }}\n{{ .CommonAnnotations.summary }}\n\nDetails: {{ .CommonAnnotations.description }}'
-        send_resolved: true 
+      - api_url: 
+        channel: '#cicd'

@@ -1,4 +1,3 @@
----
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -10,61 +9,27 @@ data:
     templates:
     - '/etc/alertmanager/*.tmpl'
     route:
-      receiver: slack
+      receiver: alert-emailer
       group_by: ['alertname', 'priority']
       group_wait: 10s
-      repeat_interval: 1m
+      repeat_interval: 30m
       routes:
-        - receiver: slack
+        - receiver: slack_demo
         # Send severity=slack alerts to slack.
           match:
             severity: slack
           group_wait: 10s
           repeat_interval: 1m
-
+ 
     receivers:
-    - name: 'slack'
+    - name: alert-emailer
+      email_configs:
+      - to: demo@devopscube.com
+        send_resolved: false
+        from: from-email@email.com
+        smarthost: smtp.eample.com:25
+        require_tls: false
+    - name: slack_demo
       slack_configs:
-      - api_url: https://hooks.slack.com/services/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
-        channel: '#cicd'
----
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: alertmanager-config
-#   namespace: dev
-# data:
-#   alertmanager.yml: |
-#     global:
-#       resolve_timeout: 5m
-#       http_config:
-#         follow_redirects: true
-#         enable_http2: true
-
-#     route:
-#       receiver: slack-receiver
-#       group_by:
-#         - alertname
-#       group_wait: 10s
-#       group_interval: 1m
-#       repeat_interval: 2m
-
-#     receivers:
-#     - name: slack-receiver
-#       slack_configs:
-#       - send_resolved: true
-#         http_config:
-#           follow_redirects: true
-#           enable_http2: true
-#         api_url: 'https://hooks.slack.com/services/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'
-#         username: 'Alertmanager'
-#         color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
-#         title: '{{ .CommonAnnotations.summary }}'
-#         title_link: '{{ .CommonLabels.link }}'
-#         pretext: '{{ .CommonAnnotations.description }}'
-#         text: '{{ .CommonLabels.alertname }} - {{ .CommonLabels.severity }}'
-#         short_fields: false
-#         footer: 'Alertmanager'
-#         fallback: '{{ .CommonAnnotations.description }}'
-#         link_names: true
-# ---
+      - api_url: https://hooks.slack.com/services/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
+        channel: '#devopscube-demo'

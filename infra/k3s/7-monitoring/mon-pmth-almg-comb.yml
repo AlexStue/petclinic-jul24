@@ -6,7 +6,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: alertmanager-deployment
+  name: alertmanager
   namespace: dev
 spec:
   replicas: 1
@@ -23,22 +23,21 @@ spec:
       - name: alertmanager
         image: prom/alertmanager:latest
         args:
-          - "--config.file=/etc/alertmanager/config.yml"  # Make sure this matches the key in the ConfigMap
+          - "--config.file=/etc/alertmanager/config.yml"
           - "--storage.path=/alertmanager"
         ports:
         - name: alertmanager
           containerPort: 9093
         resources:
-          requests:
-            cpu: 50m
-            memory: 100M
-          limits:
-            cpu: 100m
-            memory: 200Mi
+            requests:
+              cpu: 500m
+              memory: 500M
+            limits:
+              cpu: 1
+              memory: 1Gi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/alertmanager
-          subPath: config.yml  # Change this to config.yml
         - name: templates-volume
           mountPath: /etc/alertmanager-templates
         - name: alertmanager
@@ -52,16 +51,15 @@ spec:
           name: alertmanager-templates
       - name: alertmanager
         emptyDir: {}
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: alertmanager-service
+  name: alertmanager
   namespace: dev
   annotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '9093'
+      prometheus.io/scrape: 'true'
+      prometheus.io/port:   '9093'
 spec:
   selector: 
     app: alertmanager

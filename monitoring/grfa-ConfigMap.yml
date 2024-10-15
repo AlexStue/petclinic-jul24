@@ -1,7 +1,12 @@
+# 
+# IMPORTANT: Check URL in line 24 if namespace changed
+# 
+# 
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana
+  name: grafana-configmap
   namespace: dev
   labels:
     grafana_configmap: "1"
@@ -16,12 +21,13 @@ data:
                 "name": "prometheus",
                 "orgId": 1,
                 "type": "prometheus",
-                "url": "http://prometheus-service.monitoring.svc:8080",
+                "url": "http://prometheus.dev.svc:8080",
                 "version": 1
             }
         ]
     }
 
+  # dashboard providers config to point to the mounted dashboard folder
   dashboardProviders.yaml: |-
     apiVersion: 1
     providers:
@@ -153,7 +159,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "Panel Title",
+          "title": "CPU Load in %",
           "type": "timeseries"
         }
       ],
@@ -168,7 +174,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "New dashboard",
+      "title": "Dashboard Node Stats",
       "uid": "ee0ixaxbayn7kb",
       "version": 1,
       "weekStart": ""

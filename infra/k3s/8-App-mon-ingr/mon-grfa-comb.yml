@@ -40,17 +40,17 @@ spec:
 
           # Mount the datasource configuration
           - mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
-            name: grafana
+            name: grafana-configmap
             subPath: prometheus.yaml
 
           # Mount the dashboard providers configuration
           - mountPath: /etc/grafana/provisioning/dashboards/dashboardProviders.yaml
-            name: grafana
+            name: grafana-configmap
             subPath: dashboardProviders.yaml
 
           # Mount the actual dashboards JSON configuration
           - mountPath: /var/lib/grafana/dashboards/dashboard.json
-            name: grafana
+            name: grafana-configmap
             subPath: dashboard.json
 
       volumes:
@@ -58,9 +58,9 @@ spec:
           emptyDir: {}
 
         # Single ConfigMap containing both the datasource, dashboard, and providers config
-        - name: grafana
+        - name: grafana-configmap
           configMap:
-            name: grafana
+            name: grafana-configmap
 ---
 apiVersion: v1
 kind: Service

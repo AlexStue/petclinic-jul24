@@ -41,7 +41,8 @@ kubectl create secret tls petclinic-tls --cert=simply-stu.de_ssl_certificate.cer
 kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/app-combined.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/ingress-resource.yml
 #
-sudo nano /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml # insert WebHook URL
+# insert WebHook URL https://api.slack.com/apps/A07S01W6P1S/install-on-team?
+sudo nano /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml

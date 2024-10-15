@@ -13,10 +13,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - petclinic.simply-stu.de
+        - petclinic-dev.simply-stu.de
       secretName: petclinic-tls
   rules:
-    - host: petclinic.simply-stu.de
+    - host: petclinic-dev.simply-stu.de
       http:
         paths:
           - path: /

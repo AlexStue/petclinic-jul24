@@ -1,0 +1,81 @@
+# 
+# 1. Deployment
+# 2. Service as NodePort: 32000
+# 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      name: grafana
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:latest
+        ports:
+        - name: grafana
+          containerPort: 3000
+        resources:
+          requests:
+            cpu: 20m
+            memory: 120Mi
+          limits:
+            cpu: 50m
+            memory: 200Mi
+
+        # Mount the required volume for Grafana configuration and dashboards
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-storage
+
+          # Mount the datasource configuration
+          - mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
+            name: grafana-configmap
+            subPath: prometheus.yaml
+
+          # Mount the dashboard providers configuration
+          - mountPath: /etc/grafana/provisioning/dashboards/dashboardProviders.yaml
+            name: grafana-configmap
+            subPath: dashboardProviders.yaml
+
+          # Mount the actual dashboards JSON configuration
+          - mountPath: /var/lib/grafana/dashboards/dashboard.json
+            name: grafana-configmap
+            subPath: dashboard.json
+
+      volumes:
+        - name: grafana-storage
+          emptyDir: {}
+
+        # Single ConfigMap containing both the datasource, dashboard, and providers config
+        - name: grafana-configmap
+          configMap:
+            name: grafana-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: dev
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '3000'
+spec:
+  selector: 
+    app: grafana
+  type: NodePort  
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 32000
+---

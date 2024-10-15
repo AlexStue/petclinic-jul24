@@ -10,7 +10,7 @@ http://85.215.98.243:31000
 
 ###
 
-kubectl rollout restart deployment prometheus-deployment -n dev
+kubectl rollout restart deployment prometheus -n dev
 kubectl rollout restart deployment alertmanager-deployment -n dev
 
 100 - (max(irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)

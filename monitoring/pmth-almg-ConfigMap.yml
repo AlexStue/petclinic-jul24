@@ -8,20 +8,19 @@ data:
     global:
 
     route:
-      receiver: alert-emailer
+      receiver: slack
       group_by: ['alertname']
       group_wait: 10s
       repeat_interval: 3m
       routes:
-        - receiver: slack_demo
-        # Send severity=slack alerts to slack.
+        - receiver: slack
           match:
             severity: slack
           group_wait: 10s
           repeat_interval: 1m
 
     receivers:
-    - name: grafana_slack
+    - name: slack
       slack_configs:
       - api_url: 
         channel: '#cicd'

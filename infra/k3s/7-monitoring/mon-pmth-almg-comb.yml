@@ -23,21 +23,22 @@ spec:
       - name: alertmanager
         image: prom/alertmanager:latest
         args:
-          - "--config.file=/etc/alertmanager/config.yml"
+          - "--config.file=/etc/alertmanager/config.yml"  # Make sure this matches the key in the ConfigMap
           - "--storage.path=/alertmanager"
         ports:
         - name: alertmanager
           containerPort: 9093
         resources:
-            requests:
-              cpu: 50m
-              memory: 100M
-            limits:
-              cpu: 100m
-              memory: 200Mi
+          requests:
+            cpu: 50m
+            memory: 100M
+          limits:
+            cpu: 100m
+            memory: 200Mi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/alertmanager
+          subPath: config.yml  # Change this to config.yml
         - name: templates-volume
           mountPath: /etc/alertmanager-templates
         - name: alertmanager
@@ -51,6 +52,7 @@ spec:
           name: alertmanager-templates
       - name: alertmanager
         emptyDir: {}
+
 ---
 apiVersion: v1
 kind: Service

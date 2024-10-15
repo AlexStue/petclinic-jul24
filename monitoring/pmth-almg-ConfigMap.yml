@@ -9,18 +9,22 @@ data:
     global:
     templates:
     - '/etc/alertmanager/*.tmpl'
-    route:
-      receiver: slack_demo
-      group_by: ['alertname', 'priority']
-      group_wait: 10s
-      repeat_interval: 1m
-      routes:
-        - receiver: slack_demo
-          group_wait: 10s
-          repeat_interval: 1m
 
+    # receivers:
+    # - name: slack_demo
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/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
+    #     channel: '#cicd'
     receivers:
-    - name: slack_demo
-      slack_configs:
-      - api_url: https://hooks.slack.com/services/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
-        channel: '#cicd'
+      - name: 'slack-receiver'
+        slack_configs:
+          - api_url: 'https://hooks.slack.com/services/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'
+            channel: '#cicd'
+            send_resolved: true
+
+    route:
+      receiver: 'slack-receiver'
+      group_by: ['alertname']
+      group_wait: 10s
+      group_interval: 1m
+      repeat_interval: 2m

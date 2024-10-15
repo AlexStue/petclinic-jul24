@@ -7,17 +7,13 @@
 
 http://85.215.98.243:30000
 http://85.215.98.243:31000
+http://85.215.98.243:32000
 
 ###
 
-kubectl rollout restart deployment prometheus -n dev
-kubectl rollout restart deployment alertmanager-deployment -n dev
-
-100 - (max(irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)
 100 - (max(irate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
 
-curl -X POST -H 'Content-type: application/json' --data '{"text":"Test message"}' https:
-
+stress --cpu 2 --timeout 30
 
 ###
 

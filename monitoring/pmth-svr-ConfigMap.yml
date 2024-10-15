@@ -12,7 +12,7 @@ metadata:
 data:
   prometheus.rules: |-
     groups:
-    - name: devopscube demo alert
+    - name: demo alert
       rules:
       - alert: High Pod Memory
         expr: sum(container_memory_usage_bytes) > 1
@@ -21,6 +21,15 @@ data:
           severity: slack
         annotations:
           summary: High Memory Usage
+    - name: High CPU Load 90p 20s
+      rules:
+      - alert: High CPU Load 90p 20s
+        expr: (100 - (max(irate(node_cpu_seconds_total{mode="idle"}[30s])) * 100)) > 90
+        for: 20s
+        labels:
+          severity: slack
+        annotations:
+          summary: High CPU Load 90p 20s
   prometheus.yml: |-
     global:
       scrape_interval: 5s

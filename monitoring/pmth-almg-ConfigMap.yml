@@ -1,28 +1,26 @@
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: alertmanager-configmap
-  namespace: dev
+  name: alertmanager-config
+  namespace: monitoring
 data:
   config.yml: |-
     global:
     templates:
     - '/etc/alertmanager/*.tmpl'
     route:
-      receiver: alert-emailer
-    #   group_by: ['alertname', 'priority']
-    #   group_wait: 10s
-    #   repeat_interval: 3m
-    #   routes:
-    #     - receiver: slack_demo
-    #     # Send severity=slack alerts to slack.
-    #       match:
-    #         severity: slack
-    #       group_wait: 10s
-    #       repeat_interval: 1m
+      receiver: slack_demo
+      group_by: ['alertname', 'priority']
+      group_wait: 10s
+      repeat_interval: 1m
+      routes:
+        - receiver: slack_demo
+          group_wait: 10s
+          repeat_interval: 1m
 
     receivers:
-    - name: grafana_slack
+    - name: slack_demo
       slack_configs:
       - api_url: https://hooks.slack.com/services/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
         channel: '#cicd'

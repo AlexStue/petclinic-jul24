@@ -15,6 +15,7 @@ spec:
       app: alertmanager
   template:
     metadata:
+      name: alertmanager
       labels:
         app: alertmanager
     spec:
@@ -22,44 +23,34 @@ spec:
       - name: alertmanager
         image: prom/alertmanager:latest
         args:
-          - "--config.file=/etc/alertmanager/alertmanager.yml"
+          - "--config.file=/etc/alertmanager/config.yml"
           - "--storage.path=/alertmanager"
         ports:
         - name: alertmanager
           containerPort: 9093
         resources:
-          requests:
-            cpu: 20m
-            memory: 50Mi
-          limits:
-            cpu: 40m
-            memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 100M
+            limits:
+              cpu: 100m
+              memory: 200Mi
         volumeMounts:
-        - name: alertmanager-config-volume
+        - name: config-volume
           mountPath: /etc/alertmanager
-
+        - name: templates-volume
+          mountPath: /etc/alertmanager-templates
+        - name: alertmanager
+          mountPath: /alertmanager
       volumes:
-      - name: alertmanager-config-volume
+      - name: config-volume
         configMap:
           name: alertmanager-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: alertmanager-service
-  namespace: dev
-  annotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '9093'
-spec:
-  selector: 
-    app: alertmanager
-  type: NodePort  
-  ports:
-    - port: 9093
-      targetPort: 9093
-      nodePort: 31000
-
+      - name: templates-volume
+        configMap:
+          name: alertmanager-templates
+      - name: alertmanager
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

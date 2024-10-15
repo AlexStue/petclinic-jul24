@@ -1,25 +1,44 @@
 ---
-kind: ConfigMap
 apiVersion: v1
+kind: ConfigMap
 metadata:
   name: alertmanager-config
   namespace: dev
 data:
-  config.yml: |-
+  alertmanager.yml: |
     global:
-    templates:
-    - '/etc/alertmanager/*.tmpl'
-
-    receivers:
-      - name: 'slack-receiver'
-        slack_configs:
-        - api_url: 'https://hooks.slack.com/services/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'
-          send_resolved: true
+      resolve_timeout: 5m
+      http_config:
+        follow_redirects: true
+        enable_http2: true
 
     route:
-      receiver: 'slack-receiver'
-      group_by: ['alertname']
+      receiver: slack-receiver
+      group_by:
+        - alertname
       group_wait: 10s
       group_interval: 1m
       repeat_interval: 2m
+
+    receivers:
+    - name: slack-receiver
+      slack_configs:
+      - send_resolved: true
+        http_config:
+          follow_redirects: true
+          enable_http2: true
+        api_url: 'https://hooks.slack.com/services/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'
+        username: 'Alertmanager'
+        color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+        title: '{{ .CommonAnnotations.summary }}'
+        title_link: '{{ .CommonLabels.link }}'
+        pretext: '{{ .CommonAnnotations.description }}'
+        text: '{{ .CommonLabels.alertname }} - {{ .CommonLabels.severity }}'
+        short_fields: false
+        footer: 'Alertmanager'
+        fallback: '{{ .CommonAnnotations.description }}'
+        link_names: true
+
+    templates:
+    - /etc/alertmanager/*.tmpl
 ---

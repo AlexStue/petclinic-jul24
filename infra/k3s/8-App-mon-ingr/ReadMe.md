@@ -5,13 +5,12 @@ http://85.215.98.243:30000
 http://85.215.98.243:31000
 http://85.215.98.243:32000
 
+sudo mv /home/ubuntu/petclinic-jul24/SSL.zip /home/ubuntu/
+sudo mv *.simply-stu.de_private_key.key .simply-stu.de_private_key.key
 ###
-
 stress --cpu 2 --timeout 30
 kubectl rollout restart deployment grafana -n dev
-
 ###
-
 cd
 sudo rm -r petclinic-jul24
 kubectl delete namespace dev
@@ -30,7 +29,7 @@ else
 fi
 #
 cd
-kubectl create secret tls petclinic-tls --cert=simply-stu.de_ssl_certificate.cer --key=simply-stu.de_private_key.key --namespace=dev
+kubectl create secret tls petclinic-tls --cert=simply-stu.de_ssl_certificate.cer --key=.simply-stu.de_private_key.key --namespace=dev
 #
 kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/app-combined.yml
 kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/ingress-resource.yml
@@ -51,7 +50,8 @@ kubectl get pods -n dev
 
 
 
-
+ts=2024-10-15T19:16:20.531Z caller=coordinator.go:113 level=info component=configuration msg="Loading configuration file" file=/etc/alertmanager/config.yml
+ts=2024-10-15T19:16:20.532Z caller=coordinator.go:118 level=error component=configuration msg="Loading configuration file failed" file=/etc/alertmanager/config.yml
 
 
 

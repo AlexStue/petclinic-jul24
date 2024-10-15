@@ -42,7 +42,7 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: alertmanager-configmap
+          name: alertmanager
       - name: alertmanager
         emptyDir: {}
 ---

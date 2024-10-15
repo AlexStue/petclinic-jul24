@@ -8,12 +8,16 @@ http://85.215.98.243:32000
 https://petclinic-dev.simply-stu.de
 
 ###
+
 sudo mv /home/ubuntu/petclinic-jul24/SSL.zip /home/ubuntu/
 sudo mv *.simply-stu.de_private_key.key .simply-stu.de_private_key.key
+
 ###
-stress --cpu 2 --timeout 30
-kubectl rollout restart deployment grafana -n dev
+
+stress --cpu 2 --timeout 60
+
 ###
+
 cd
 sudo rm -r petclinic-jul24
 kubectl delete namespace dev
@@ -58,8 +62,9 @@ kubectl get pods -n dev
 
 
 
-kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml
-kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-grfa-comb.yml
+
+
+
 
 
 

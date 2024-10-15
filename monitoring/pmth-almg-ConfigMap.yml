@@ -22,5 +22,5 @@ data:
     receivers:
     - name: slack_demo
       slack_configs:
-      - api_url: https://hooks.slack.com/services/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
+      - api_url: https://hooks.slack.com/services/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
         channel: '#cicd'

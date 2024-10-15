@@ -55,11 +55,10 @@ kubectl get pods -n dev
 
 
 
-ts=2024-10-15T19:16:20.531Z caller=coordinator.go:113 level=info component=configuration msg="Loading configuration file" file=/etc/alertmanager/config.yml
-ts=2024-10-15T19:16:20.532Z caller=coordinator.go:118 level=error component=configuration msg="Loading configuration file failed" file=/etc/alertmanager/config.yml
 
 
-
+kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/backup/grfa-ConfigMap.yml
+kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/backup/mon-grfa-comb.yml
 
 
 

@@ -36,6 +36,7 @@ resource "null_resource" "apply_k3s_manifests" {
       #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml
       #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml
       #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
+      #kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-templ-ConfigMap.yml
       #kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/4-ingress-monitoring/ingress-secret.yml
 
       ### Deployments ###

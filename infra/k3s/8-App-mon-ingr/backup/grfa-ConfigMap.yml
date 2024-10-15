@@ -154,7 +154,7 @@ data:
               "refId": "A"
             }
           ],
-          "title": "CPU Load",
+          "title": "CPU Load in %",
           "type": "timeseries"
         }
       ],

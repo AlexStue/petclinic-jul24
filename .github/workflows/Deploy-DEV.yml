@@ -43,8 +43,7 @@ jobs:
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
       run: |
         # Configmaps: Monitoring 
-        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/petclinic-jul24/monitoring/* \
-          ubuntu@$SSH_HOST: ~/petclinic-jul24-deploy
+        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/petclinic-jul24/monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
 
         # Manifests
         #sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./manifests/* \

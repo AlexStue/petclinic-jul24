@@ -74,7 +74,7 @@ jobs:
         SSL_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-          kubectl create secret tls petclinic-tls --cert="$SSL_CERT" --key="$SSL_KEY" --namespace=dev
+          kubectl create secret tls petclinic-tls --cert="${SSL_CERT}" --key="${SSL_KEY}" --namespace=dev
         EOF
   
 

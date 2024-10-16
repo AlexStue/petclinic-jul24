@@ -44,7 +44,7 @@ jobs:
       run: |
         # Configmaps: Monitoring 
         sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r petclinic-jul24/monitoring/* \
-          ubuntu@$SSH_HOST: home/ubuntu/petclinic-jul24-deploy
+          ubuntu@$SSH_HOST: ~/petclinic-jul24-deploy
 
         # Manifests
         #sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./manifests/* \

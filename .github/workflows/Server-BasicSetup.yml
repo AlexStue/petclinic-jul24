@@ -87,8 +87,16 @@ jobs:
               --namespace=dev
             # delete files
             rm tls.key tls.crt
-            # create working-directory
-            mkdir -p /home/ubuntu/petclinic-jul24-deploy
+        EOF
+
+    # Reset working directoy
+    - name: Reset working directoy
+      run: |
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+          # delete working-directory
+          rm -r /home/ubuntu/petclinic-jul24-deploy
+          # create working-directory
+          mkdir -p /home/ubuntu/petclinic-jul24-deploy
         EOF
 
 # Server from scratch installation needed:

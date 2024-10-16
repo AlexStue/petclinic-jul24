@@ -28,12 +28,14 @@ jobs:
         uses: actions/checkout@v3
 
 
-      - name: List first directories
+      # Just to be sure?
+      - name: Switch to the desired branch
         run: |
-          echo "Listing directories in the workspace:"
-          ls -d */ | head -n 10
+          git fetch origin
+          git checkout dev-branch
+          git pull origin dev-branch
 
-  
+
       # Log in via SSH using password to the Server
       - name: Install sshpass
         run: |

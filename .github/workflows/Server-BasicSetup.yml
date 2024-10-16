@@ -58,11 +58,26 @@ jobs:
         echo "K3s installed"
   
 
-    # Create Secret for AlertManager API URL to Slack
+    # Create Secret for AlertManager Slack API URL as YAML ("kubectl create secret" does base64 encoding)
     - name: Create Secret Alertmanager
+      env:
+        SLACK_API_URL: ${{ secrets.ALERTMANAGER_URL_SLACK }}
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-          kubectl create secret generic slack-api-url --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
+          # create secret.yml
+          cat <<EOF > slack-api-url-secret.yml
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: slack-api-url
+            namespace: dev
+          stringData:
+            SLACK_API_URL: ${SLACK_API_URL}
+          EOF
+          # apply secret.yml
+          kubectl apply -f slack-api-url-secret.yml
+          # delete secret.yml
+          rm -f slack-api-url-secret.yaml
         EOF
 
 

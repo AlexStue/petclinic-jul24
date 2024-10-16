@@ -77,9 +77,9 @@ jobs:
           # apply secret.yml
           kubectl apply -f slack-api-url-secret.yml
           # delete secret.yml
-          rm -f slack-api-url-secret.yaml
+          #rm -f slack-api-url-secret.yml
         EOF
-
+      
 
     # Create Secret for Ingress SSL
     - name: Create TLS Secret 

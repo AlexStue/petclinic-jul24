@@ -77,19 +77,23 @@ jobs:
           # Decode the base64 encoded secrets and write to temporary files
           echo "$SSL_CERT" > /tmp/cert.crt
           echo "$SSL_KEY" > /tmp/cert.key
-    
+
+          cat /tmp/cert.crt
+          cat /tmp/cert.key
+
           # Check that the files contain PEM data
-          if ! grep -q "-----BEGIN" /tmp/cert.crt || ! grep -q "-----BEGIN" /tmp/cert.key; then
+          if ! grep -q -- "-----BEGIN" /tmp/cert.crt || ! grep -q -- "-----BEGIN" /tmp/cert.key; then
             echo "The certificate or key does not contain valid PEM data."
             exit 1
           fi
     
           # Create the Kubernetes secret using the files
           kubectl create secret tls petclinic-tls --cert=/tmp/cert.crt --key=/tmp/cert.key --namespace=dev
-    
+
           # Clean up the temporary files
           rm /tmp/cert.crt /tmp/cert.key
         EOF
+  
   
   
 

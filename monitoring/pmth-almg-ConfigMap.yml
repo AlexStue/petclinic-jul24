@@ -20,5 +20,5 @@ data:
     receivers:
     - name: slack
       slack_configs:
-      - api_url: '{{ .Env.SLACK_API_URL }}'
+      - api_url: REPL_SLACK_API_URL
 ---

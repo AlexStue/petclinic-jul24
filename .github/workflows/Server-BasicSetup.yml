@@ -59,25 +59,17 @@ jobs:
   
 
     # Create Secret for AlertManager Slack API URL as YAML ("kubectl create secret" does base64 encoding)
-    - name: Create Secret Alertmanager
+    - name: Create ConfigMap Alertmanager
       env:
         SLACK_API_URL: ${{ secrets.ALERTMANAGER_URL_SLACK }}
       run: |
+        # Transfer the ConfigMap file to the server
+        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r monitoring/pmth-almg-ConfigMap.yml ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+        
+        # Replace the placeholder with the secret value
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << EOF
-          # create secret.yml
-          cat <<EOL > slack-api-url-secret.yml
-        apiVersion: v1
-        kind: Secret
-        metadata:
-          name: slack-api-url
-          namespace: dev
-        stringData:
-          SLACK_API_URL: ${SLACK_API_URL}
-        EOL
-          # apply secret.yml
-          kubectl apply -f slack-api-url-secret.yml
-          # delete secret.yml
-          #rm -f slack-api-url-secret.yml
+        # Use sed to replace the REPL_SLACK_API_URL placeholder with the actual SLACK_API_URL value
+        sed -i "s|REPL_SLACK_API_URL|$SLACK_API_URL|g" ~/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
         EOF
       
 

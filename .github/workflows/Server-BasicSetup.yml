@@ -11,7 +11,10 @@ name: Server-BasicSetup # manuel trigger
 
 on:
   workflow_dispatch:
-
+    inputs:
+      branch:
+        description: 'Branch to run the workflow'
+        default: 'dev-branch'
 jobs:
 
   Job-1-Reset-and-install-BasicSetup:

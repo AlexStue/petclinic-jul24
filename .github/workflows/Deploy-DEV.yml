@@ -1,0 +1,101 @@
+#
+# This Runner deploys or update the DEV-infrastucture on a server
+# 
+#   - Check out the code from the repository
+#   - Extract the server IP from terraform variables.tf 
+#   - Set up SSH with the private key or password to server
+#   - Copy the script "infra/scripts/deploy-on-dts.sh" to server
+# 
+
+name: Deploy-DEV
+
+on:
+  push:
+    branches: [dev-branch]
+    paths:  # Only triggers on changes
+      - 'infra/**'
+      - 'monitoring/**'
+      - .github/workflows/Deploy-DEV.yml
+        
+jobs:
+
+  Job-1-Deploy-DEV:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the code from the repository
+    - name: Checkout code from the repository
+      uses: actions/checkout@v3
+
+
+    # Log in via SSH using password to the Server
+    - name: Install sshpass
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+
+
+    - name: Copy Manifests to Server
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+      run: |
+        # Configmaps: Monitoring 
+        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r /petclinic-jul24/monitoring/* \
+          ubuntu@$SSH_HOST:/home/ubuntu/petclinic-jul24-deploy
+
+        # Manifests
+        #sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./manifests/* \
+        #  ubuntu@$SSH_HOST:~/k8s-manifests/
+
+
+    # - name: Run Manifest
+    #   env:
+    #     SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+    #     SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+    #   run: |
+    #     # Apply the Kubernetes manifests on the remote server
+    #     sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
+    #       ubuntu@$SSH_HOST << 'EOF'
+    #         # Navigate to the directory containing the Kubernetes manifests
+    #         cd ~/k8s-manifests
+
+    #         # Apply the manifest(s) using kubectl
+    #         kubectl apply -f your-manifest.yaml  # Replace with the actual manifest file name
+
+    #         # Optionally apply all manifests in the directory
+    #         # kubectl apply -f .
+    #     EOF
+
+    # # Deploy all Manifests
+    # - name: Deploy all Manifests
+    #   run: |
+    #     echo "Start deploying manifests"
+    #     sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+    #       cd /home/ubuntu/petclinic-jul24-deploy
+    #     EOF
+          
+          
+          
+    #       # App
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/app-combined.yml
+    #       # Ingress
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/ingress-resource.yml
+    #       # Monitoring Configs
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml
+    #       # Monitoring Deployments
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-ClusterRole.yml
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-exp-NodeExporter.yml
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-svr-comb.yml
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-almg-comb.yml
+    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-grfa-comb.yml
+    #     EOF
+    #     echo "Deploying manifests finished"
+
+
+
+    #       EOF

@@ -84,6 +84,7 @@ jobs:
               --key=tls.key \
               --namespace=dev
             rm tls.key tls.crt
+            mkdir -p /home/ubuntu/petclinic-jul24-deploy
         EOF
 
 # Server from scratch installation needed:

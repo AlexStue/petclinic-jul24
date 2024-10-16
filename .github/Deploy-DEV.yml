@@ -32,14 +32,14 @@ jobs:
       uses: actions/checkout@v3
 
 
-    # Extract the server IP from terraform variables.tf 
-    - name: Extract Server IP
-      id: extract_ip
-      run: |
-        SERVER_IP=$(grep -A 3 -E '^variable "server_ip_tf"' infra/terraform/variables.tf | grep 'default' | sed -n 's/.*default *= *"\([^"]*\)".*/\1/p')
-        echo "SERVER_IP=${SERVER_IP}"
-        echo "##[set-output name=server_ip;]${SERVER_IP}"
-        echo "Extracted Server IP: ${SERVER_IP}"
+    # # Extract the server IP from terraform variables.tf 
+    # - name: Extract Server IP
+    #   id: extract_ip
+    #   run: |
+    #     SERVER_IP=$(grep -A 3 -E '^variable "server_ip_tf"' infra/terraform/variables.tf | grep 'default' | sed -n 's/.*default *= *"\([^"]*\)".*/\1/p')
+    #     echo "SERVER_IP=${SERVER_IP}"
+    #     echo "##[set-output name=server_ip;]${SERVER_IP}"
+    #     echo "Extracted Server IP: ${SERVER_IP}"
 
 
     # Log in via SSH using password to the Server
@@ -48,24 +48,58 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y sshpass
 
-    - name: Log in via SSH using password
+    # - name: Log in via SSH using password
+    #   run: |
+    #     sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
+
+
+    # # Copy the script "infra/scripts/deploy-on-server.sh" to the Server
+    # - name: Copy script to server
+    #   run: |
+    #     echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
+    #     sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-server.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
+
+
+    # Deploy all Manifests
+    - name: Deploy all Manifests
       run: |
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ steps.extract_ip.outputs.server_ip }} 'echo "Logged in successfully!"'
-
-
-    # Copy the script "infra/scripts/deploy-on-server.sh" to the Server
-    - name: Copy script to server
-      run: |
-        echo "Copy script to server with IP: ${{ steps.extract_ip.outputs.server_ip }}"
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" scp -o StrictHostKeyChecking=no infra/scripts/deploy-on-server.sh ubuntu@${{ steps.extract_ip.outputs.server_ip }}:/home/ubuntu/
-
-
-    # Run the script "infra/scripts/deploy-on-server.sh" on the Server
-    - name: Run script via SSH
-      run: |
-        SERVER_IP=${{ steps.extract_ip.outputs.server_ip }}
-        echo "Deploying to server with IP: $SERVER_IP"
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SERVER_IP << 'EOF'
-          echo "${{ secrets.SSH_ALEX_SERVER_PW }}" | sudo -S chmod +x /home/ubuntu/deploy-on-server.sh
-          echo "${{ secrets.SSH_ALEX_SERVER_PW }}" | sudo -S /home/ubuntu/deploy-on-server.sh
+        echo "Start deploying manifests"
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+          # App
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/app-combined.yml
+          # Ingress
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/ingress-resource.yml
+          # Monitoring Configs
+          kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml
+          kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
+          kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml
+          # Monitoring Deployments
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-ClusterRole.yml
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-exp-NodeExporter.yml
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-svr-comb.yml
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-almg-comb.yml
+          kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-grfa-comb.yml
         EOF
+        echo "Deploying manifests finished"
+
+
+
+     - name: Copy Manifests and Run Manifest
+        run: |
+          # Create the destination directory on the server
+          sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} 'mkdir -p ~/k8s-manifests'
+
+          # Copy the manifests to the server
+          sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" scp -o StrictHostKeyChecking=no -r ./manifests/* ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }}:~/k8s-manifests/
+
+          # Run the kubectl apply command to deploy the manifest
+          sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+            # Navigate to the directory containing your Kubernetes manifests
+            cd ~/k8s-manifests
+
+            # Run the kubectl apply command to deploy the manifest
+            kubectl apply -f your-manifest.yaml  # Replace with your manifest file name
+
+            # Optionally, you can run multiple manifests if needed
+            # kubectl apply -f another-manifest.yaml
+          EOF

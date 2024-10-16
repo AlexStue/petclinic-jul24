@@ -72,6 +72,8 @@ jobs:
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@$SSH_HOST bash << EOF
         # Use sed to replace the REPL_SLACK_API_URL placeholder with the actual SLACK_API_URL value
         sed -i "s|REPL_SLACK_API_URL|$SLACK_API_URL|g" ~/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
+        # apply the configmap
+        kubectl apply -f /petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
         EOF
       
 

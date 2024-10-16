@@ -68,30 +68,28 @@ jobs:
         
 
     # Create Secret for Ingress SSL
-    - name: Create Secret Ingress SSL
+    - name: Create TLS Secret via SSH
       env:
-        SSL_CERT: ${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }}
-        SSL_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
+        K8S_TLS_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
+        K8S_TLS_CERT: ${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }}
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
       run: |
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-          # Create temporary files for the certificate and key
-          echo "$SSL_CERT" > /tmp/cert.crt
-          echo "$SSL_KEY" > /tmp/cert.key
-    
-          # Check that the files were created successfully
-          if [ ! -s /tmp/cert.crt ] || [ ! -s /tmp/cert.key ]; then
-            echo "Failed to create certificate or key file."
-            exit 1
-          fi
-    
-          # Create the Kubernetes secret using the files
-          kubectl create secret tls petclinic-tls --cert=/tmp/cert.crt --key=/tmp/cert.key --namespace=dev
-    
-          # Clean up the temporary files
-          rm /tmp/cert.crt /tmp/cert.key
-        EOF
-  
+        echo "$K8S_TLS_KEY" | base64 --decode > tls.key
+        echo "$K8S_TLS_CERT" | base64 --decode > tls.crt
 
+        # Use sshpass to login via SSH and run kubectl commands
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
+          ubuntu@$SSH_HOST << EOF
+            # Ensure kubectl is installed and properly configured
+            kubectl create secret tls my-tls-secret \
+              --cert=tls.crt \
+              --key=tls.key \
+              --namespace=dev
+            
+            # Clean up temporary files
+            rm tls.key tls.crt
+        EOF
 
 # Server from scratch installation needed:
 # - docker

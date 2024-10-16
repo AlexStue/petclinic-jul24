@@ -51,11 +51,9 @@ jobs:
           SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
           SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
         run: |
-          
           echo "Configmaps: Monitoring"
           sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
-        
-          Cecho "Manifests: App, Ingress, NodeExporter, Promeutheus, AlertManager, Grafana"
+          echo "Manifests: App, Ingress, NodeExporter, Promeutheus, AlertManager, Grafana"
           sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r infra/k3s/8-App-mon-ingr/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
 
 
@@ -67,13 +65,10 @@ jobs:
           echo "Apply the manifests"
           sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
             ubuntu@$SSH_HOST << 'EOF'
-
               # Navigate to the directory containing the Kubernetes manifests
               cd petclinic-jul24-deploy
-
               # Apply all manifests
               kubectl apply -f .
-              
           EOF
 
     # # Deploy all Manifests

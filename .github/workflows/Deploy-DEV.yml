@@ -63,7 +63,19 @@ jobs:
               # Navigate to the directory containing the Kubernetes manifests
               cd petclinic-jul24-deploy
               # Apply all manifests
-              kubectl apply -f .
+              #kubectl apply -f .
+              # Configs
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-ClusterRole.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/pmth-svr-ConfigMap.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/grfa-ConfigMap.yml
+              # pmth-almg-ConfigMap.yml already active
+              # Deployments
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/app-combined.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/ingress-resource.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-exp-NodeExporter.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-svr-comb.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-almg-comb.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-grfa-comb.yml
           EOF
 
     # # Deploy all Manifests

@@ -24,31 +24,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    # Check out the code from the repository
-    - name: Checkout code from the repository
-      uses: actions/checkout@v3
-
-
-    # Log in via SSH using password to the Server
-    - name: Install sshpass
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y sshpass
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.dev-branch }} # Checkout the branch dynamically
+  
+      # # Check out the code from the repository
+      # - name: Checkout code from the repository
+      #   uses: actions/checkout@v3
 
 
-    - name: Copy Manifests to Server
-      env:
-        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
-        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
-      run: |
-        # Configmaps: Monitoring 
-        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r petclinic-jul24/monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
-        # sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/petclinic-jul24/monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+      # Log in via SSH using password to the Server
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
 
-        # Manifests
-        #sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./manifests/* \
-        #  ubuntu@$SSH_HOST:~/k8s-manifests/
+
+      - name: Copy Manifests to Server
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+          SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+        run: |
+          # Configmaps: Monitoring 
+          sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r petclinic-jul24/monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+          # sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/petclinic-jul24/monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+
+          # Manifests
+          #sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./manifests/* \
+          #  ubuntu@$SSH_HOST:~/k8s-manifests/
 
 
     # - name: Run Manifest 

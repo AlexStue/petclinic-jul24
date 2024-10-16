@@ -118,19 +118,3 @@ jobs:
 # - docker
 # - stress
 # - 
-
-
-# create secret.yml
-cat <<EOF > slack-api-url-secret.yml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: slack-api-url
-  namespace: dev
-stringData:
-  SLACK_API_URL: ${SLACK_API_URL}
-EOF
-# apply secret.yml
-kubectl apply -f slack-api-url-secret.yml
-# delete secret.yml
-#rm -f slack-api-url-secret.yml

@@ -46,15 +46,13 @@ jobs:
           SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
           SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
         run: |
+          
           # Configmaps: Monitoring 
           sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
-      #     # sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ${{ github.workspace }}/petclinic-jul24/monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+        
+          # Manifests: App, Ingress, NodeExporter, Promeutheus, AlertManager, Grafana
+          sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r infra/k3s/8-App-mon-ingr/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
 
-          # Working directory is '/home/runner/work/petclinic-jul24/petclinic-jul24'
-
-          # Manifests
-          #sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./manifests/* \
-          #  ubuntu@$SSH_HOST:~/k8s-manifests/
 
 
     # - name: Run Manifest 

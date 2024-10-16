@@ -1,6 +1,6 @@
 #
 # This Runner deploys or update the DEV-infrastucture on a server
-# 
+# .
 #   - Check out the code from the repository
 #   - Extract the server IP from terraform variables.tf 
 #   - Set up SSH with the private key or password to server

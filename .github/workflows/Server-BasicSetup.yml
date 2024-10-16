@@ -63,7 +63,7 @@ jobs:
       env:
         SLACK_API_URL: ${{ secrets.ALERTMANAGER_URL_SLACK }}
       run: |
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << EOF
           # create secret.yml
           cat <<EOL > slack-api-url-secret.yml
           apiVersion: v1

@@ -69,6 +69,9 @@ jobs:
 
     # Create Secret for Ingress SSL
     - name: Create Secret Ingress SSL
+      env:
+        SSL_CERT: ${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }}
+        SSL_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
           echo "Cert content: ${SSL_CERT:0:50}..."

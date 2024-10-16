@@ -62,12 +62,14 @@ jobs:
     - name: Create ConfigMap Alertmanager
       env:
         SLACK_API_URL: ${{ secrets.ALERTMANAGER_URL_SLACK }}
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
       run: |
         # Transfer the ConfigMap file to the server
         sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r monitoring/pmth-almg-ConfigMap.yml ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
         
         # Replace the placeholder with the secret value
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << EOF
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@$SSH_HOST bash << EOF
         # Use sed to replace the REPL_SLACK_API_URL placeholder with the actual SLACK_API_URL value
         sed -i "s|REPL_SLACK_API_URL|$SLACK_API_URL|g" ~/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
         EOF

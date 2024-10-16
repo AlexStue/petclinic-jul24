@@ -31,8 +31,11 @@ jobs:
       # Just to be sure?
       - name: Switch to the desired branch
         run: |
+          echo "fetch:"
           git fetch origin
+          echo "checkout:"
           git checkout dev-branch
+          echo "pull:"
           git pull origin dev-branch
 
 
@@ -49,31 +52,29 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
         run: |
           
-          # Configmaps: Monitoring 
+          echo "Configmaps: Monitoring"
           sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r monitoring/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
         
-          # Manifests: App, Ingress, NodeExporter, Promeutheus, AlertManager, Grafana
+          Cecho "Manifests: App, Ingress, NodeExporter, Promeutheus, AlertManager, Grafana"
           sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r infra/k3s/8-App-mon-ingr/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
 
 
+      - name: Run Manifest on Server
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+          SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+        run: |
+          echo "Apply the manifests"
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
+            ubuntu@$SSH_HOST << 'EOF'
 
-    # - name: Run Manifest 
-    #   env:
-    #     SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
-    #     SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
-    #   run: |
-    #     # Apply the Kubernetes manifests on the remote server
-    #     sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
-    #       ubuntu@$SSH_HOST << 'EOF'
-    #         # Navigate to the directory containing the Kubernetes manifests
-    #         cd ~/k8s-manifests
+              # Navigate to the directory containing the Kubernetes manifests
+              cd petclinic-jul24-deploy
 
-    #         # Apply the manifest(s) using kubectl
-    #         kubectl apply -f your-manifest.yaml  # Replace with the actual manifest file name
-
-    #         # Optionally apply all manifests in the directory
-    #         # kubectl apply -f .
-    #     EOF
+              # Apply all manifests
+              kubectl apply -f .
+              
+          EOF
 
     # # Deploy all Manifests
     # - name: Deploy all Manifests

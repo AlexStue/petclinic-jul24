@@ -1,5 +1,5 @@
 #
-# This Runner ...
+# This Runner ....
 # 
 #   - # Extract the server IP from terraform variables.tf 
 #   - Set up SSH with the private key or password to server

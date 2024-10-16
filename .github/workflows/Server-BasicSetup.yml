@@ -42,8 +42,8 @@ jobs:
           echo "Logged in successfully!"
           # PreTasks
           kubectl delete namespace dev --ignore-not-found
-          sudo apt-get update
-          sudo apt-get upgrade
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
           # Install K3s
           sudo apt-get install -y curl
           curl -sfL https://get.k3s.io | sh -

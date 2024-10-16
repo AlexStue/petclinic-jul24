@@ -62,7 +62,7 @@ jobs:
     - name: Create Secret Alertmanager
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-          kubectl create secret generic slack-api-secret --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
+          kubectl create secret generic slack-api-url --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
         EOF
 
 

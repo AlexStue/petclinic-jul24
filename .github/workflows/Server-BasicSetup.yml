@@ -78,13 +78,14 @@ jobs:
         #echo "$K8S_TLS_KEY" | base64 --decode > tls.key
         #echo "$K8S_TLS_CERT" | base64 --decode > tls.crt
 
-        echo "$K8S_TLS_KEY" > tls.key
-        echo "$K8S_TLS_CERT" > tls.crt
-
         # Use sshpass to login via SSH and run kubectl commands
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
           ubuntu@$SSH_HOST << EOF
             # Ensure kubectl is installed and properly configured
+            
+            echo "$K8S_TLS_KEY" > tls.key
+            echo "$K8S_TLS_CERT" > tls.crt
+
             kubectl create secret tls my-tls-secret \
               --cert=tls.crt \
               --key=tls.key \

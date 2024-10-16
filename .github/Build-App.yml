@@ -1,5 +1,5 @@
 #
-# This Runner builds die app
+# This Runner is to build die app and uploads to DockerHub.
 # 
 #   - Check out the code from the repository
 #   - Extract the server IP from terraform variables.tf 
@@ -8,18 +8,18 @@
 #   - Run the script "infra/scripts/deploy-on-dts.sh" on server
 # 
 
-name: App-Build
+name: Build-App
 
 on:
   push:
     branches: [dev-branch]
-    paths:   # Only triggers on changes
+    paths:  # Only triggers on changes
       - 'app/**'
-      - .github/workflows/App-Build.yml
+      - .github/workflows/Build-App.yml
         
 jobs:
 
-  job-1-App-Build:
+  Job-1-Build-App:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,6 +40,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+
       # # Build the Docker image using Docker Compose
       # - name: Build the Docker image with Docker Compose
       #   env:
@@ -51,6 +52,7 @@ jobs:
       - name: Build the Docker image with Dockerfile
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest -f app/dockerfile-app-v1 app/
+
 
       # Push the Docker image to DockerHub
       - name: Push the Docker image

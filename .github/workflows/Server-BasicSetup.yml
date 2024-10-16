@@ -1,0 +1,73 @@
+#
+# This Runner ...
+# 
+#   - # Extract the server IP from terraform variables.tf 
+#   - Set up SSH with the private key or password to server
+#   - # Copy the script "infra/scripts/deploy-on-dts.sh" to server
+#   - Run the script "infra/scripts/deploy-on-dts.sh" on server
+# 
+
+name: Server-BasicSetup # manuel trigger
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  Job-1-Reset-and-install-BasicSetup:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Check out the code from the repository
+    - name: Checkout code from the repository
+      uses: actions/checkout@v3
+
+
+    # Log in via SSH to the Server
+    - name: Install sshpass on Runner
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+
+
+    # Reset (delete namespace) and install K3s
+    - name: Run ...
+      run: |
+        echo "Deploying on server"
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} 'echo "Logged in successfully!"' << 'EOF'
+          # PreTasks
+          kubectl delete namespace dev
+          sudo apt-get update
+          # Install K3s
+          sudo apt-get install -y curl
+          curl -sfL https://get.k3s.io | sh -
+          mkdir -p ~/.kube
+          sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+          sudo chown $USER:$USER ~/.kube/config
+          sudo chmod 644 ~/.kube/config
+          sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+          # Create namespace
+          kubectl create namespace dev
+        EOF
+
+
+    # Create Secret for AlertManager API URL to Slack
+    - name: Create Secret Alertmanager
+      run: |
+        kubectl create secret generic slack-api-secret --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
+
+
+    # Create Secret for Ingress SSL
+    - name: Create Secret Ingress SSL
+      run: |
+        kubectl create secret tls petclinic-tls --cert=${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }} --key=${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }} --namespace=dev
+
+
+
+
+# Server from scratch installation needed:
+# - docker
+# - stress
+# - 

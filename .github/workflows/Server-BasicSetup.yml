@@ -20,15 +20,14 @@ jobs:
   Job-1-Reset-and-install-BasicSetup:
 
     runs-on: ubuntu-latest
-
+    
     steps:
 
-    # Check out the code from the repository
+
     - name: Checkout code from the repository
       uses: actions/checkout@v3
 
 
-    # Log in via SSH to the Server
     - name: Install sshpass on Runner
       run: |
         sudo apt-get update
@@ -44,6 +43,7 @@ jobs:
           # PreTasks
           kubectl delete namespace dev --ignore-not-found
           sudo apt-get update
+          sudo apt-get upgrade
           # Install K3s
           sudo apt-get install -y curl
           curl -sfL https://get.k3s.io | sh -
@@ -58,14 +58,13 @@ jobs:
         echo "K3s installed"
   
 
-
     # Create Secret for AlertManager API URL to Slack
     - name: Create Secret Alertmanager
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
           kubectl create secret generic slack-api-secret --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
         EOF
-        
+
 
     # Create Secret for Ingress SSL
     - name: Create TLS Secret 

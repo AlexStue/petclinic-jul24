@@ -69,10 +69,28 @@ jobs:
 
     # Create Secret for Ingress SSL
     - name: Create Secret Ingress SSL
+      env:
+        SSL_CERT: ${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }}
+        SSL_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
       run: |
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-          kubectl create secret tls petclinic-tls --cert=${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }} --key=${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }} --namespace=dev
+          # Create temporary files for the certificate and key
+          echo "$SSL_CERT" > /tmp/cert.crt
+          echo "$SSL_KEY" > /tmp/cert.key
+    
+          # Check that the files were created successfully
+          if [ ! -s /tmp/cert.crt ] || [ ! -s /tmp/cert.key ]; then
+            echo "Failed to create certificate or key file."
+            exit 1
+          fi
+    
+          # Create the Kubernetes secret using the files
+          kubectl create secret tls petclinic-tls --cert=/tmp/cert.crt --key=/tmp/cert.key --namespace=dev
+    
+          # Clean up the temporary files
+          rm /tmp/cert.crt /tmp/cert.key
         EOF
+  
 
 
 # Server from scratch installation needed:

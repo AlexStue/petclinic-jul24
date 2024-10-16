@@ -74,16 +74,20 @@ jobs:
         SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
       run: |
-        # Use sshpass to login via SSH and run kubectl commands
+        # Use sshpass to login and run code
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
-          ubuntu@$SSH_HOST << EOF            
+          ubuntu@$SSH_HOST << EOF
+            # create files
             echo "$K8S_TLS_KEY" > tls.key
             echo "$K8S_TLS_CERT" > tls.crt
+            # create secret
             kubectl create secret tls petclinic-tls \
               --cert=tls.crt \
               --key=tls.key \
               --namespace=dev
+            # delete files
             rm tls.key tls.crt
+            # create working-directory
             mkdir -p /home/ubuntu/petclinic-jul24-deploy
         EOF
 

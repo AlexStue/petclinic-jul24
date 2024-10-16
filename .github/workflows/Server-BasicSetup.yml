@@ -54,20 +54,23 @@ jobs:
           # Create namespace
           kubectl create namespace dev
         EOF
+        echo "K3s installed"
 
 
     # Create Secret for AlertManager API URL to Slack
     - name: Create Secret Alertmanager
       run: |
-        kubectl create secret generic slack-api-secret --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
-
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} << 'EOF'
+          kubectl create secret generic slack-api-secret --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
+        EOF
+        
 
     # Create Secret for Ingress SSL
     - name: Create Secret Ingress SSL
       run: |
-        kubectl create secret tls petclinic-tls --cert=${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }} --key=${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }} --namespace=dev
-
-
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} << 'EOF'
+          kubectl create secret tls petclinic-tls --cert=${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }} --key=${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }} --namespace=dev
+        EOF
 
 
 # Server from scratch installation needed:

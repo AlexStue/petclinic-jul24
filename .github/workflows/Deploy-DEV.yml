@@ -27,11 +27,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Switch to the desired branch
-        run: |
-          git fetch origin
-          git checkout dev-branch
-          git pull origin dev-branch
+      # - name: Switch to the desired branch
+      #   run: |
+      #     git fetch origin
+      #     git checkout dev-branch
+      #     git pull origin dev-branch
   
       - name: List first directories
         run: |

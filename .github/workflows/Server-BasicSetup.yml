@@ -36,12 +36,13 @@ jobs:
 
 
     # Reset (delete namespace) and install K3s
-    - name: Run ...
+    - name: Deploy K3s on server
       run: |
         echo "Deploying on server"
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} 'echo "Logged in successfully!"' << 'EOF'
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+          echo "Logged in successfully!"
           # PreTasks
-          kubectl delete namespace dev
+          kubectl delete namespace dev --ignore-not-found
           sudo apt-get update
           # Install K3s
           sudo apt-get install -y curl
@@ -55,6 +56,7 @@ jobs:
           kubectl create namespace dev
         EOF
         echo "K3s installed"
+  
 
 
     # Create Secret for AlertManager API URL to Slack

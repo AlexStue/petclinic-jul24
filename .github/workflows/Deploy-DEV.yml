@@ -51,7 +51,7 @@ jobs:
         #  ubuntu@$SSH_HOST:~/k8s-manifests/
 
 
-    # - name: Run Manifest
+    # - name: Run Manifest 
     #   env:
     #     SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
     #     SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}

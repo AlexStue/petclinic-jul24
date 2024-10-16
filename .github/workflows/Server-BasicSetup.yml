@@ -62,17 +62,21 @@ jobs:
     # Create Secret for AlertManager API URL to Slack
     - name: Create Secret Alertmanager
       run: |
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} << 'EOF'
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
           kubectl create secret generic slack-api-secret --from-literal=api_url=${{ secrets.ALERTMANAGER_URL_SLACK }} --namespace dev
         EOF
         
 
     # Create Secret for Ingress SSL
     - name: Create Secret Ingress SSL
+      env:
+        SSL_CERT: ${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }}
+        SSL_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
       run: |
-        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} << 'EOF'
-          kubectl create secret tls petclinic-tls --cert=${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }} --key=${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }} --namespace=dev
+        sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
+          kubectl create secret tls petclinic-tls --cert="$SSL_CERT" --key="$SSL_KEY" --namespace=dev
         EOF
+  
 
 
 # Server from scratch installation needed:

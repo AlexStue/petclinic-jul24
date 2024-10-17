@@ -1,6 +1,6 @@
 #
 # This Runner deploys or update the staging-infrastucture on a server
-# 
+# .
 #   - Just to be sure (sets used repo on runner to staging-branch)
 #   - Install sshpass
 #   - Copy Manifests to Server

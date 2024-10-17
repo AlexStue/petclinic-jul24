@@ -15,7 +15,7 @@ spec:
         - petclinic-dev.simply-stu.de
       secretName: petclinic-tls
   rules:
-    - host: petclinic-staging.simply-stu.de
+    - host: petclinic-dev.simply-stu.de
       http:
         paths:
           - path: /

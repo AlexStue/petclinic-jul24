@@ -1,17 +1,17 @@
 #
-# This Runner deploys or update the staging-infrastucture on a server
+# This Runner deploys or update the prod-infrastucture on a server
 # .
-#   - Just to be sure (sets used repo on runner to staging-branch)
+#   - Just to be sure (sets used repo on runner to prod-branch)
 #   - Install sshpass
 #   - Copy Manifests to Server
 #   - Run Manifest on Server
 # 
 
-name: Deploy-Staging
+name: Deploy-prod
 
 on:
   push:
-    branches: [staging-branch]
+    branches: [prod-branch-main]
     paths:  # Only triggers on changes
       - 'infra/**'
       - 'monitoring/**'
@@ -19,7 +19,7 @@ on:
         
 jobs:
 
-  Job-1-Deploy-Staging:
+  Job-1-Deploy-prod:
 
     runs-on: ubuntu-latest
 
@@ -31,7 +31,7 @@ jobs:
       - name: Just to be sure
         run: |
           echo "checkout:"
-          git checkout staging-branch
+          git checkout prod-branch-main
 
 
       - name: Install sshpass

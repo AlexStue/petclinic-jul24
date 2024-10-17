@@ -80,7 +80,7 @@ jobs:
         SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
       run: |
-        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no infra/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+        sshpass -p "$SSH_PASSWORD" scp -r -o StrictHostKeyChecking=no infra/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
 
 
     - name: Create ConfigMap for Alertmanager

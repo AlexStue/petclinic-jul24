@@ -5,10 +5,7 @@ provider "local" {}
 resource "null_resource" "apply_k3s_manifests" {
   provisioner "local-exec" {
     command = <<-EOT
-      echo "Creating Kubernetes dev"
-      #export KUBECONFIG=~/.kube/config
-      kubectl create namespace dev || echo "Namespace 'dev' already exists"
-      echo "Applying Kubernetes deployments" | tee -a /tmp/kubectl-apply.log
+      echo "Applying Kubernetes deployments"
       
       ### Configs ###
 

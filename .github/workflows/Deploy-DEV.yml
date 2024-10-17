@@ -71,4 +71,7 @@ jobs:
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-svr-comb.yml
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-almg-comb.yml
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-grfa-comb.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mysql-setup/db-configmap.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mysql-setup/db-secret.yml
+              kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mysql-setup/db-mysql.yml
           EOF

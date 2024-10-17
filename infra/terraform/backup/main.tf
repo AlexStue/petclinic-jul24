@@ -1,27 +1,6 @@
 provider "local" {}
 
 #-----------------------------------------------------------------
-# # Install k3s
-# resource "null_resource" "k3s_setup" {
-#   provisioner "local-exec" {
-#     command = <<-EOT
-#       echo "Provisioning local Ubuntu machine"
-#       sudo apt-get update
-#       sudo apt-get install -y curl
-#       curl -sfL https://get.k3s.io | sh -
-#       mkdir -p ~/.kube
-#       sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-#       sudo chown $USER:$USER ~/.kube/config
-#       sudo chmod 644 ~/.kube/config
-#       sudo chmod 644 /etc/rancher/k3s/k3s.yaml
-#     EOT
-#   }
-#   triggers = {
-#     always_run = "${timestamp()}"
-#   }
-# }
-
-#-----------------------------------------------------------------
 # Deploy k3s namespace DEV
 resource "null_resource" "apply_k3s_manifests" {
   provisioner "local-exec" {
@@ -64,5 +43,4 @@ resource "null_resource" "apply_k3s_manifests" {
   triggers = {
     always_run = "${timestamp()}"
   }
-  # depends_on = [null_resource.k3s_setup]
 }

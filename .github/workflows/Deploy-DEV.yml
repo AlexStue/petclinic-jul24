@@ -1,10 +1,10 @@
 #
 # This Runner deploys or update the DEV-infrastucture on a server
-# ...
-#   - Check out the code from the repository
-#   - Extract the server IP from terraform variables.tf 
-#   - Set up SSH with the private key or password to server
-#   - Copy the script "infra/scripts/deploy-on-dts.sh" to server
+# 
+#   - Just to be sure (sets used repo on runner to dev-branch)
+#   - Install sshpass
+#   - Copy Manifests to Server
+#   - Run Manifest on Server
 # 
 
 name: Deploy-DEV
@@ -34,7 +34,6 @@ jobs:
           git checkout dev-branch
 
 
-      # Log in via SSH using password to the Server
       - name: Install sshpass
         run: |
           sudo apt-get update
@@ -60,10 +59,6 @@ jobs:
           echo "Apply the manifests"
           sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
             ubuntu@$SSH_HOST << 'EOF'
-              # Navigate to the directory containing the Kubernetes manifests
-              cd petclinic-jul24-deploy
-              # Apply all manifests
-              #kubectl apply -f .
               # Configs
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-ClusterRole.yml
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/pmth-svr-ConfigMap.yml
@@ -77,34 +72,3 @@ jobs:
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-pmth-almg-comb.yml
               kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/mon-grfa-comb.yml
           EOF
-
-    # # Deploy all Manifests
-    # - name: Deploy all Manifests
-    #   run: |
-    #     echo "Start deploying manifests"
-    #     sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-    #       cd /home/ubuntu/petclinic-jul24-deploy
-    #     EOF
-          
-          
-          
-    #       # App
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/app-combined.yml
-    #       # Ingress
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/ingress-resource.yml
-    #       # Monitoring Configs
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-svr-ConfigMap.yml
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/pmth-almg-ConfigMap.yml
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/monitoring/grfa-ConfigMap.yml
-    #       # Monitoring Deployments
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-ClusterRole.yml
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-exp-NodeExporter.yml
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-svr-comb.yml
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-pmth-almg-comb.yml
-    #       kubectl apply -f /home/ubuntu/petclinic-jul24/infra/k3s/8-App-mon-ingr/mon-grfa-comb.yml
-    #     EOF
-    #     echo "Deploying manifests finished"
-
-
-
-    #       EOF

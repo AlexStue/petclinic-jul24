@@ -1,6 +1,6 @@
 # 
 # IMPORTANT: Check URL in line 24 if namespace changed
-# 
+#   in "url": "http://prometheus.dev.svc:8080"
 # 
 ---
 apiVersion: v1

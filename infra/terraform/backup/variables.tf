@@ -3,20 +3,20 @@ variable "server_ip_tf" {
   default     = "85.215.98.243"
 }
 
-variable "ssh_user" {
-  description = "SSH username to access the server."
-  type        = string
-  default     = "ubuntu"
-}
+# variable "ssh_user" {
+#   description = "SSH username to access the server."
+#   type        = string
+#   default     = "ubuntu"
+# }
 
-variable "ssh_private_key" {
-  description = "SSH private key for authenticating."
-  type        = string
-  default     = "./path/to/id_rsa"
-}
+# variable "ssh_private_key" {
+#   description = "SSH private key for authenticating."
+#   type        = string
+#   default     = "./path/to/id_rsa"
+# }
 
-variable "example_variable" {
-  description = "An example variable"
-  type        = string
-  default     = "default_value"
-}
+# variable "example_variable" {
+#   description = "An example variable"
+#   type        = string
+#   default     = "default_value"
+# }

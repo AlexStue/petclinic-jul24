@@ -39,13 +39,15 @@ handle_lock() {
 # Handle apt-get lock
 handle_lock "/var/lib/dpkg/lock-frontend"
 
-# # Download Terraform
-# curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-# sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
 
-# # Install Terraform
-# sudo apt-get update
-# sudo apt-get install -y terraform
+# Download Terraform
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
+
+# Install Terraform
+sudo apt-get update
+sudo apt-get install -y terraform
+
 
 # Check if Repo already exists and clone or update the repository
 REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
@@ -60,6 +62,7 @@ else
   echo "Directory $DIR_NAME does not exist. Cloning the repository..."
   sudo git clone --branch "$DEFAULT_BRANCH" "$REPO_URL"
 fi
+
 
 # Navigate to the Terraform directory and initialize terraform
 cd /home/ubuntu/petclinic-jul24/infra/terraform

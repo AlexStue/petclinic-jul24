@@ -59,6 +59,10 @@ kubectl get pods -n dev
 
 
 
+sudo chown $USER /etc/rancher/k3s/k3s.yaml
+sudo chmod 600 /etc/rancher/k3s/k3s.yaml
+sudo usermod -aG k3s $USER
+sudo k3s server --write-kubeconfig-mode 640
 
 
 

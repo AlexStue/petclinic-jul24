@@ -70,6 +70,7 @@ jobs:
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
           sudo apt-get update
           sudo apt-get install -y terraform
+          rm -r /home/ubuntu/petclinic-jul24-deploy
           mkdir /home/ubuntu/petclinic-jul24-deploy
         EOF
 

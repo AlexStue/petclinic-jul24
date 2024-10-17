@@ -1,18 +1,19 @@
 #
-# This Runner .......
+# This Runner is to reset the server:
 # 
-#   - # Extract the server IP from terraform variables.tf 
-#   - Set up SSH with the private key or password to server
-#   - # Copy the script "infra/scripts/deploy-on-dts.sh" to server
-#   - Run the script "infra/scripts/deploy-on-dts.sh" on server
+#   - Install sshpass on Runner
+#   - Reset (delete namespace) and install K3s
+#   - Create Secret for AlertManager Slack API URL as YAML ("kubectl create secret" does base64 encoding urgh)
+#   - Create Secret for Ingress SSL
+#   - Reset ( delete & create) working directoy
 # 
 
-name: Server-BasicSetup # manuel trigger
+name: Server-BasicSetup
 
 on:
   push:
     branches: [dev-branch]
-    paths:  # Only triggers on changes
+    paths:  # Only triggers on changes of:
       - .github/workflows/Server-BasicSetup.yml
 
 jobs:
@@ -39,7 +40,6 @@ jobs:
       run: |
         echo "Deploying on server"
         sshpass -p "${{ secrets.SSH_ALEX_SERVER_PW }}" ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SSH_ALEX_SERVER_IP }} bash << 'EOF'
-          echo "Logged in successfully!"
           # PreTasks
           kubectl delete namespace dev --ignore-not-found
           sudo apt-get update -y
@@ -59,7 +59,7 @@ jobs:
         echo "K3s installed"
   
 
-    # Create Secret for AlertManager Slack API URL as YAML ("kubectl create secret" does base64 encoding)
+    # Create Secret for AlertManager Slack API URL as YAML ("kubectl create secret" does base64 encoding urgh)
     - name: Create ConfigMap Alertmanager
       env:
         SLACK_API_URL: ${{ secrets.ALERTMANAGER_URL_SLACK }}
@@ -71,10 +71,10 @@ jobs:
         
         # Replace the placeholder with the secret value
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@$SSH_HOST bash << EOF
-        # Use sed to replace the REPL_SLACK_API_URL placeholder with the actual SLACK_API_URL value
-        sed -i "s|REPL_SLACK_API_URL|$SLACK_API_URL|g" ~/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
-        # apply the configmap
-        kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
+          # Use sed to replace the REPL_SLACK_API_URL placeholder with the actual SLACK_API_URL value
+          sed -i "s|REPL_SLACK_API_URL|$SLACK_API_URL|g" ~/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
+          # apply the configmap
+          kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
         EOF
       
 
@@ -110,6 +110,7 @@ jobs:
           # create working-directory
           mkdir -p /home/ubuntu/petclinic-jul24-deploy
         EOF
+
 
 # Server from scratch installation needed:
 # - docker

@@ -1,17 +1,17 @@
 #
-# This Runner deploys or update the DEV-infrastucture on a server
+# This Runner deploys or update the staging-infrastucture on a server
 # 
-#   - Just to be sure (sets used repo on runner to dev-branch)
+#   - Just to be sure (sets used repo on runner to staging-branch)
 #   - Install sshpass
 #   - Copy Manifests to Server
 #   - Run Manifest on Server
 # 
 
-name: Deploy-DEV
+name: Deploy-Staging
 
 on:
   push:
-    branches: [dev-branch]
+    branches: [staging-branch]
     paths:  # Only triggers on changes
       - 'infra/**'
       - 'monitoring/**'
@@ -19,7 +19,7 @@ on:
         
 jobs:
 
-  Job-1-Deploy-DEV:
+  Job-1-Deploy-Staging:
 
     runs-on: ubuntu-latest
 
@@ -31,7 +31,7 @@ jobs:
       - name: Just to be sure
         run: |
           echo "checkout:"
-          git checkout dev-branch
+          git checkout staging-branch
 
 
       - name: Install sshpass

@@ -12,7 +12,7 @@ name: Server-BasicSetup
 
 on:
   push:
-    branches: [staging-branch]
+    branches: [prod-branch-main]
     paths:  # Only triggers on changes of:
       - .github/workflows/Server-BasicSetup.yml
 
@@ -43,6 +43,7 @@ jobs:
           # PreTasks
           kubectl delete namespace dev --ignore-not-found
           kubectl delete namespace staging --ignore-not-found
+          ## deletion of prod-namespace only manually
           sudo apt-get update -y
           sudo apt-get upgrade -y
           # Install K3s
@@ -55,7 +56,7 @@ jobs:
           sudo chmod 644 /etc/rancher/k3s/k3s.yaml
           sudo chown ubuntu:ubuntu /etc/rancher/k3s/k3s.yaml
           # Create namespace
-          kubectl create namespace staging
+          kubectl create namespace prod
         EOF
         echo "K3s installed"
   
@@ -97,7 +98,7 @@ jobs:
             kubectl create secret tls petclinic-tls \
               --cert=tls.crt \
               --key=tls.key \
-              --namespace=staging
+              --namespace=prod
             # delete files
             rm tls.key tls.crt
         EOF

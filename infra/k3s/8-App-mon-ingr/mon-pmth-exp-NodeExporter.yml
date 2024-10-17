@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
   name: node-exporter
-  namespace: staging
+  namespace: prod
 spec:
   selector:
     matchLabels:
@@ -63,7 +63,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: node-exporter
-  namespace: staging
+  namespace: prod
   annotations:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '9100'

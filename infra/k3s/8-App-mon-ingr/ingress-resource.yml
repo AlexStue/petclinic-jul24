@@ -1,13 +1,13 @@
 # 
 # secret:
-# kubectl create secret tls petclinic-tls --cert=simply-stu.de_ssl_certificate.cer --key=simply-stu.de_private_key.key --namespace=staging
+# kubectl create secret tls petclinic-tls --cert=simply-stu.de_ssl_certificate.cer --key=simply-stu.de_private_key.key --namespace=prod
 # 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: traefik-ingress
-  namespace: staging
+  namespace: prod
 spec:
   ingressClassName: traefik
   tls:

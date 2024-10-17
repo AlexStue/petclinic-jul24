@@ -5,12 +5,14 @@
 #   - uild the Docker image using Docker Compose
 #   - Push the Docker image to DockerhHub
 # 
+# BIULD APP IN PROD?
+# 
 
 name: Build-App
 
 on:
   push:
-    branches: [staging-branch]
+    branches: [prod-branch----]
     paths:  # Only triggers on changes
       - 'app/**'
       - .github/workflows/Build-App.yml

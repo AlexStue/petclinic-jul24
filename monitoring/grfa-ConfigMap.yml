@@ -1,13 +1,13 @@
 # 
 # IMPORTANT: Check URL in line 24 if namespace changed
-#   in "url": "http://prometheus.dev.svc:8080"
+#   in "url": "http://prometheus.staging.svc:8080"
 # 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana
-  namespace: dev
+  namespace: staging
   labels:
     grafana_configmap: "1"
 data:
@@ -21,7 +21,7 @@ data:
                 "name": "prometheus",
                 "orgId": 1,
                 "type": "prometheus",
-                "url": "http://prometheus.dev.svc:8080",
+                "url": "http://prometheus.staging.svc:8080",
                 "version": 1
             }
         ]

@@ -9,7 +9,7 @@ metadata:
   name: prometheus
   labels:
     name: prometheus
-  namespace: dev
+  namespace: staging
 data:
   prometheus.rules: |-
     groups:

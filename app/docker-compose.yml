@@ -4,7 +4,7 @@ services:
   petclinic:
     build:
       context: .
-      dockerfile: dockerfile-app-v1
+      dockerfile: dockerfile-app-v2
       #target: development
     image: ${DOCKERHUB_IMAGE_NAME}
     ports:

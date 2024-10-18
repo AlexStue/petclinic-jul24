@@ -9,16 +9,16 @@ COPY .mvn/ .mvn
 COPY mvnw ./
 COPY pom.xml ./
 
-# Grant execute permissions to the Maven wrapper # RUN chmod +x ./mvnw
-RUN chmod +x mvnw && chmod +x .mvn/wrapper/* 
+# Grant execute permissions to the Maven wrapper
+RUN chmod +x ./mvnw
 
-# Resolve dependencies
-RUN ./mvnw dependency:resolve
+# Resolve dependencies (cache this step for faster future builds)
+RUN ./mvnw dependency:go-offline
 
 # Copy the source code into the container
-COPY src/ src
+COPY src ./src
 
-# Compile and package the application (creates a JAR file in /target directory) # RUN ./mvnw package -DskipTests
+# Compile and package the application (creates a JAR file in /target directory)
 RUN ./mvnw package -DskipTests
 
 # Stage 2: Run the application (without Maven)

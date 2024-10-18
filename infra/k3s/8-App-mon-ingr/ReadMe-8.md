@@ -13,6 +13,8 @@ WebHook URL from https://api.slack.com/apps/A07S01W6P1S/install-on-team?
 
 ###
 
+kubectl rollout restart deployment petclinic -n dev
+
 stress --cpu 2 --timeout 60
 
 ###

@@ -44,11 +44,11 @@ jobs:
       # # Build the Docker image using Docker Compose
       - name: Build the Docker image with Docker Compose
         env:
-          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:2.0
+          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
         run: |
           docker-compose -f app/docker-compose.yml build
 
-          
+
       # Build the Docker image using Dockerfile
       # - name: Build the Docker image with Dockerfile
       #   run: |
@@ -58,4 +58,4 @@ jobs:
       # Push the Docker image to DockerHub
       - name: Push the Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:2.0
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest

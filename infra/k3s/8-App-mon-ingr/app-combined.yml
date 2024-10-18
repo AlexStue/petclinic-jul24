@@ -20,7 +20,8 @@ spec:
     spec:
       containers:
       - name: petclinic
-        image: alexstue/jul24-petclinic:1.0
+        image: alexstue/jul24-petclinic:test
+        imagePullPolicy: Always
         resources:
           requests:
             memory: 250Mi

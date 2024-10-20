@@ -56,5 +56,5 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: ClusterIP # tried before with loadbalancer 
+  type: LoadBalancer # tried before with loadbalancer 
 ---

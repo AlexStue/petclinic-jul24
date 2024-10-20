@@ -12,7 +12,7 @@ name: Build-App
 
 on:
   push:
-    branches: [dev-branch]
+    branches: [dev-db-branch]
     paths:  # Only triggers on changes
       - 'app/**'
       - .github/workflows/Build-App.yml
@@ -44,7 +44,7 @@ jobs:
       # # Build the Docker image using Docker Compose
       - name: Build the Docker image with Docker Compose
         env:
-          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db
         run: |
           docker-compose -f app/docker-compose.yml build
 
@@ -52,10 +52,10 @@ jobs:
       # Build the Docker image using Dockerfile
       # - name: Build the Docker image with Dockerfile
       #   run: |
-      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest -f app/dockerfile-app-v2 app/
+      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db -f app/dockerfile-app-v2 app/
 
 
       # Push the Docker image to DockerHub
       - name: Push the Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db

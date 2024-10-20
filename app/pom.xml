@@ -69,22 +69,26 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Databases - Uses H2 by default -->
+    <!-- Databases - Uses mysql only for now is this working with k3s?-->
+    <!-- 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>runtime</scope>
     </dependency>
+    -->
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!-- 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
+    -->
 
     <!-- Caching -->
     <dependency>

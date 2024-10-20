@@ -1,7 +1,7 @@
 #
 # This Runner deploys or update the DEV-infrastucture on a server
 # 
-#   - Just to be sure (sets used repo on runner to dev-branch)
+#   - Just to be sure (sets used repo on runner to dev--db-branch)
 #   - Install sshpass
 #   - Copy Manifests to Server
 #   - Run Manifest on Server
@@ -11,7 +11,7 @@ name: Deploy-DEV
 
 on:
   push:
-    branches: [dev-branch]
+    branches: [dev-db-branch]
     paths:  # Only triggers on changes
       - 'infra/**'
       - 'monitoring/**'
@@ -31,7 +31,7 @@ jobs:
       - name: Just to be sure
         run: |
           echo "checkout:"
-          git checkout dev-branch
+          git checkout dev-db-branch
 
 
       - name: Install sshpass

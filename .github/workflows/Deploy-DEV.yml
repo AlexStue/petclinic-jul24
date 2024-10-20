@@ -33,7 +33,7 @@ jobs:
     - name: Just to be sure
       run: |
         echo "checkout:"
-        git checkout dev-branch
+        git checkout dev-db-branch
   
     - name: Install sshpass on Runner
       run: |

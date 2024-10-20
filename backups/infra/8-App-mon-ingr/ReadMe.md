@@ -25,7 +25,7 @@ kubectl create namespace dev
 #
 REPO_URL="https://github.com/AlexStue/petclinic-jul24.git"
 DIR_NAME="petclinic-jul24"
-DEFAULT_BRANCH="dev-branch"
+DEFAULT_BRANCH="dev-db-branch"
 if [ -d "$DIR_NAME" ]; then
   echo "Directory $DIR_NAME already exists. Pulling the latest changes from $DEFAULT_BRANCH ..."
   cd "$DIR_NAME" || exit

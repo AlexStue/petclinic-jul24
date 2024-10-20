@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: petclinic-db-mysql
-  namespace: default
+  name: mysql
+  namespace: dev
   annotations:
     service.binding/type: "mysql"
-    service.binding/host: "petclinic-db-mysql.default.svc.cluster.local"
+    service.binding/host: "mysql.default.svc.cluster.local"
     service.binding/port: "3306"
 spec:
-  serviceName: "petclinic-db-mysql"
+  serviceName: "mysql"
   replicas: 1
   selector:
     matchLabels:
-      app: petclinic-db-mysql
+      app: mysql
   template:
     metadata:
       labels:
-        app: petclinic-db-mysql
+        app: mysql
     spec:
       containers:
       - name: mysql
@@ -48,23 +48,24 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: MYSQL_DATABASE
-        volumeMounts:
-        - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
-      volumes:
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: mysql-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: petclinic-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: petclinic-db-mysql
-  namespace: default
+  name: mysql
+  namespace: dev
 spec:  # Fix indentation here
   type: ClusterIP  # Specify type if necessary
   ports:
     - port: 3306  # The port that the service will expose
       targetPort: 3306  # The port that the container listens on
   selector:
-    app: petclinic-db-mysql  # Ensure to select the correct pod
+    app: mysql  # Ensure to select the correct pod

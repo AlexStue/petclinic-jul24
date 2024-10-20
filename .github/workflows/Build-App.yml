@@ -12,7 +12,7 @@ name: Build-App
 
 on:
   push:
-    branches: [dev-branch]
+    branches: [mysql-branch]
     paths:  # Only triggers on changes
       - 'app/**'
       - .github/workflows/Build-App.yml

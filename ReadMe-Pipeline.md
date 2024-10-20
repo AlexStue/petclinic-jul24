@@ -61,9 +61,9 @@ To run the pipeline you have to do some steps:
     - .github/workflows/Build-App.yml
     
 3. Open the started applications on thise adresses:
-  - Application Petclinic: your domain from config, for example "http(s)://petclinic(-dev).<Domain>.de"
-  - Prometheus on Nodeport: http://<Server-IP>:30000
-  - Alertmanager on Nodeport: http://<Server-IP>:31000
-  - Grafana on Nodeport: http://<Server-IP>:32000
+  - Application Petclinic: your domain from config, for example "http(s)://petclinic(-dev)."Domain".de"
+  - Prometheus on Nodeport: http://"Server-IP":30000
+  - Alertmanager on Nodeport: http://"Server-IP":31000
+  - Grafana on Nodeport: http://"Server-IP":32000
 
 ---

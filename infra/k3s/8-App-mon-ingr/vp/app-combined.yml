@@ -1,0 +1,60 @@
+# 
+# 1. Deployment
+# 2. Service as LoadBalancer not ClusterIP
+# 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-dep
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: petclinic-dep
+  template:
+    metadata:
+      labels:
+        app: petclinic-dep
+    spec:
+      containers:
+      - name: petclinic-dep
+        image: alexstue/jul24-petclinic:latest-db
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: 250Mi
+            cpu: 500m
+          limits:
+            memory: 500Mi
+            cpu: 1000m
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SERVER_PORT
+          value: "8080"
+        - name: MYSQL_URL
+          value: "jdbc:mysql://mysql:3306/petclinic"  # Update this to match your MySQL service
+        volumeMounts:
+        - name: app-volume
+          mountPath: /app
+      volumes:
+      - name: app-volume
+        hostPath:
+          path: .  # The path to your application files
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-service
+  namespace: dev
+spec:
+  selector:
+    app: petclinic-dep
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer # tried before with loadbalancer 
+---

@@ -1,0 +1,37 @@
+# Stage 1: Build the application using Maven
+FROM eclipse-temurin:17-jdk-jammy AS builder
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy Maven wrapper and pom.xml files from the current context inside the app directory
+COPY .mvn/ .mvn
+COPY mvnw ./
+COPY pom.xml ./
+
+# Grant execute permissions to the Maven wrapper
+RUN chmod +x ./mvnw
+
+# Resolve dependencies (cache this step for faster future builds)
+RUN ./mvnw dependency:go-offline
+
+# Copy the source code into the container
+COPY src ./src
+
+# Compile and package the application (creates a JAR file in /target directory)
+RUN ./mvnw package -DskipTests
+
+# Stage 2: Run the application (without Maven)
+FROM eclipse-temurin:17-jdk-jammy
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy only the JAR from the build stage to the runtime stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Grant execute permissions to the app.jar file
+RUN chmod +x /app/app.jar
+
+# Command to run the Spring Boot application
+CMD ["java", "-jar", "/app/app.jar"]  # Update to reflect the current WORKDIR

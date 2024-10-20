@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-stf
+  namespace: dev
+  annotations:
+    service.binding/type: "mysql"
+    service.binding/host: "mysql.default.svc.cluster.local"
+    service.binding/port: "3306"
+spec:
+  serviceName: "mysql-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-stf
+  template:
+    metadata:
+      labels:
+        app: mysql-stf
+    spec:
+      containers:
+      - name: mysql-stf
+        image: mysql/mysql-server:8.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306  
+          protocol: TCP
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "true"
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_DATABASE
+              # added it to my config file
+#   volumeClaimTemplates:
+#   - metadata:
+#       name: petclinic-storage
+#     spec:
+#       accessModes: [ "ReadWriteOnce" ]
+#       resources:
+#         requests:
+#           storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: dev
+spec:
+  type: ClusterIP  # Specify service type
+  ports:
+    - port: 3306  # The port that the service will expose
+      targetPort: 3306  # The port that the container listens on
+  selector:
+    app: mysql-stf  # Ensure to select the correct pod

@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql
+  name: mysql-stf
   namespace: dev
   annotations:
     service.binding/type: "mysql"
     service.binding/host: "mysql.default.svc.cluster.local"
     service.binding/port: "3306"
 spec:
-  serviceName: "mysql"
+  serviceName: "mysql-service"
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: mysql-stf
   template:
     metadata:
       labels:
-        app: mysql
+        app: mysql-stf
     spec:
       containers:
-      - name: mysql
+      - name: mysql-stf
         image: mysql/mysql-server:8.0
         imagePullPolicy: IfNotPresent
         ports:
@@ -61,12 +61,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql-service
   namespace: dev
-spec:  # Fix indentation here
-  type: ClusterIP  # Specify type if necessary
+spec:
+  type: ClusterIP  # Specify service type
   ports:
     - port: 3306  # The port that the service will expose
       targetPort: 3306  # The port that the container listens on
   selector:
-    app: mysql  # Ensure to select the correct pod
+    app: mysql-stf  # Ensure to select the correct pod

@@ -14,7 +14,8 @@ resource "null_resource" "apply_k3s_manifests" {
       kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/secrets/db-secret.yml
       kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/vp/app-combined.yml
       kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/vp/ingress-combined.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/vp/db-combined.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/vp/db-combined.yml      
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/vp/db-config.yml
       kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-ClusterRole.yml
       kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-exp-NodeExporter.yml
       kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-svr-comb.yml

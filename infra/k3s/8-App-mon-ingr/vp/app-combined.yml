@@ -31,6 +31,18 @@ spec:
             cpu: 1000m
         ports:
         - containerPort: 8080
+        env:
+        - name: SERVER_PORT
+          value: "8080"
+        - name: MYSQL_URL
+          value: "jdbc:mysql://mysql:3306/petclinic"  # Update this to match your MySQL service
+        volumeMounts:
+        - name: app-volume
+          mountPath: /app
+      volumes:
+      - name: app-volume
+        hostPath:
+          path: .  # The path to your application files
 ---
 apiVersion: v1
 kind: Service

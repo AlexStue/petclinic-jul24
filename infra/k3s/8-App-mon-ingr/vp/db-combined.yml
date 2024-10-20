@@ -48,14 +48,15 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: MYSQL_DATABASE
-  volumeClaimTemplates:
-  - metadata:
-      name: petclinic-storage
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
+              # added it to my config file
+#   volumeClaimTemplates:
+#   - metadata:
+#       name: petclinic-storage
+#     spec:
+#       accessModes: [ "ReadWriteOnce" ]
+#       resources:
+#         requests:
+#           storage: 1Gi
 ---
 apiVersion: v1
 kind: Service

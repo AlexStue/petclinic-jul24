@@ -52,7 +52,7 @@ jobs:
       # Build the Docker image using Dockerfile
       # - name: Build the Docker image with Dockerfile
       #   run: |
-      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db -f app/dockerfile-app-v2 app/
+      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db -f app/dockerfile-app-v3 app/
 
 
       # Push the Docker image to DockerHub

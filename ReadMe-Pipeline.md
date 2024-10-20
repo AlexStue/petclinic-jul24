@@ -17,7 +17,7 @@ Combining these two main appartments brings several benefits:
 
 The Pipeline of DevOps is also known as CI/CD-Pipline. "Constant Integration and Continuous Delivery" describes best the automation to gain speed and quality in deploying applications.
 
-Tools that we have used are:
+Tools that we have used:
 - Slack for planning and communication
 - GitHub for Code
 - GitHub Actions to

@@ -1,5 +1,5 @@
-## New repo from zip for DevOps project  
-## Original repo: https://github.com/spring-projects/spring-petclinic
+
+# Original repo: https://github.com/spring-projects/spring-petclinic
 
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
 

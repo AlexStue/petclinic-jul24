@@ -14,7 +14,7 @@ name: Deploy-DEV
 
 on:
   push:
-    branches: [dev-branch]
+    branches: [dev-db-branch]
     paths:  # Only triggers on changes
       - 'infra/**'
       - .github/workflows/Deploy-DEV.yml

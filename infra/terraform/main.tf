@@ -11,13 +11,13 @@ resource "null_resource" "apply_k3s_manifests" {
 
       ### Deployments ###
 
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/app-combined.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/ingress-resource.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-ClusterRole.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-exp-NodeExporter.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-svr-comb.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-pmth-almg-comb.yml
-      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/8-App-mon-ingr/mon-grfa-comb.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/app-combined.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/ingress-resource.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-ClusterRole.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-exp-NodeExporter.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-svr-comb.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-almg-comb.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-grfa-comb.yml
 
       ### restarts ###
 

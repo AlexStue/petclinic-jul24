@@ -28,10 +28,10 @@ jobs:
         uses: actions/checkout@v3
 
       # Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      # - name: Install Docker Compose
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y docker-compose
 
       # Log in to DockerHub
       - name: Log in to DockerHub
@@ -42,11 +42,11 @@ jobs:
 
 
       # # Build the Docker image using Docker Compose
-      - name: Build the Docker image with Docker Compose
-        env:
-          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db
-        run: |
-          docker-compose -f app/docker-compose.yml build
+      # - name: Build the Docker image with Docker Compose
+      #   env:
+      #     DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest+db
+      #   run: |
+      #     docker-compose -f app/docker-compose.yml build
 
 
       # Build the Docker image using Dockerfile

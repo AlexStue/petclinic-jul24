@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: petclinic
-        image: alexstue/jul24-petclinic:latest+db
+        image: alexstue/jul24-petclinic:latest-db
         # imagePullPolicy: Always
         resources:
           requests:

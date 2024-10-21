@@ -1,0 +1,149 @@
+#
+# This Runner deploys or update the DEV-infrastucture on a server
+# 
+# - Install sshpass on Runner
+# - Install K3s on Server
+# - Install Terraform on Server
+# - Copy files from infra/ to Server
+# - Create ConfigMap for Alertmanager ("kubectl create secret" does base64 encoding urgh)
+# - Create Secret for Ingress SSL
+# - Initialice and run Terraform
+# 
+
+name: terraform
+
+on:
+  push:
+    branches: [dev-branch]
+    paths:  # Only triggers on changes
+      #- 'infra/**'
+      - .github/workflows/Terraform-apply.yml
+        
+jobs:
+
+  Job-1-Deploy-DEV:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout code from the repository
+      uses: actions/checkout@v3
+
+    - name: Just to be sure
+      run: |
+        echo "checkout:"
+        git checkout dev-branch
+  
+    - name: Install sshpass on Runner
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+
+
+    - name: Install K3s on Server
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+      run: |
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
+          # PreTasks
+          kubectl delete namespace dev --ignore-not-found
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
+          # Install K3s
+          sudo apt-get install -y curl
+          curl -sfL https://get.k3s.io | sh -
+          mkdir -p ~/.kube
+          sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+          sudo chown $USER:$USER ~/.kube/config
+          sudo chmod 644 ~/.kube/config
+          sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+          sudo chown ubuntu:ubuntu /etc/rancher/k3s/k3s.yaml
+          # Create namespace
+          kubectl create namespace dev
+        EOF
+
+
+    - name: Install Terraform on Server
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+      run: |
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
+          sudo apt-get update
+          sudo apt-get install -y terraform
+          rm -r /home/ubuntu/petclinic-jul24-deploy
+          mkdir /home/ubuntu/petclinic-jul24-deploy
+        EOF
+
+
+    - name: Copy files from infra/ to Server
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+      run: |
+        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r infra/* ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+
+
+    - name: Create ConfigMap for Alertmanager
+      env:
+        SLACK_API_URL: ${{ secrets.ALERTMANAGER_URL_SLACK }}
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+      run: |
+        # Transfer the ConfigMap file to the server
+        sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r infra/monitoring/pmth-almg-ConfigMap.yml ubuntu@$SSH_HOST:~/petclinic-jul24-deploy
+        
+        # Replace the placeholder with the secret value
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ubuntu@$SSH_HOST bash << EOF
+          # Use sed to replace the REPL_SLACK_API_URL placeholder with the actual SLACK_API_URL value
+          sed -i "s|REPL_SLACK_API_URL|$SLACK_API_URL|g" ~/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
+          # apply the configmap
+          kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/pmth-almg-ConfigMap.yml
+        EOF
+      
+
+    - name: Create Secret for Ingress SSL
+      env:
+        K8S_TLS_KEY: ${{ secrets.SSL_INGRESS_SIMPLYSTU_KEY }}
+        K8S_TLS_CERT: ${{ secrets.SSL_INGRESS_SIMPLYSTU_CERT }}
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+      run: |
+        # Use sshpass to login and run code
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
+          ubuntu@$SSH_HOST << EOF
+            # create files
+            echo "$K8S_TLS_KEY" > tls.key
+            echo "$K8S_TLS_CERT" > tls.crt
+            # create secret
+            kubectl create secret tls petclinic-tls \
+              --cert=tls.crt \
+              --key=tls.key \
+              --namespace=dev
+            # delete files
+            rm tls.key tls.crt
+        EOF
+
+
+    - name: Initialice and run Terraform
+      env:
+        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
+        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
+        TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }} # Terraform Cloud Token
+      run: |
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
+          cd /home/ubuntu/petclinic-jul24-deploy/terraform
+          #
+          # terraform workspace delete "dev"
+          # terraform init
+          # terraform workspace new "dev"
+          # terraform apply -auto-approve
+          terraform init
+          terraform plan -out=tfplan
+          terraform apply -auto-approve tfplan
+        EOF
+

@@ -137,8 +137,11 @@ jobs:
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
           cd /home/ubuntu/petclinic-jul24-deploy/terraform
           #
-          terraform workspace delete "dev"
+          # terraform workspace delete "dev"
+          # terraform init
+          # terraform workspace new "dev"
+          # terraform apply -auto-approve
           terraform init
-          terraform workspace new "dev"
-          terraform apply -auto-approve
+          terraform plan -out=tfplan
+          terraform apply -auto-approve tfplan
         EOF

@@ -17,30 +17,19 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.9.8
+          terraform_version: 1.9.8  # Ensure this is your desired version
+
+      - name: Terraform Login
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
+        run: echo $TFC_TOKEN | terraform login
 
       - name: Terraform Init
-        env:
-          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          TFC_ORG: ${{ secrets.TFC_ORG }}
-          TFC_WORKSPACE: ${{ secrets.TFC_WORKSPACE }}
-        run: |
-          terraform login -token=$TFC_TOKEN
-          terraform init
+        run: terraform init
 
       - name: Terraform Plan
-        env:
-          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          TFC_ORG: ${{ secrets.TFC_ORG }}
-          TFC_WORKSPACE: ${{ secrets.TFC_WORKSPACE }}
-        run: |
-          terraform plan
+        run: terraform plan
 
       - name: Terraform Apply
-        # if: github.event_name == 'push'
-        env:
-          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-          TFC_ORG: ${{ secrets.TFC_ORG }}
-          TFC_WORKSPACE: ${{ secrets.TFC_WORKSPACE }}
-        run: |
-          terraform apply -auto-approve
+        if: github.event_name == 'push'
+        run: terraform apply -auto-approve

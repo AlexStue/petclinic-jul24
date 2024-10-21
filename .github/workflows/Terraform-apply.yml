@@ -133,7 +133,6 @@ jobs:
       env:
         SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
-        TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }} # Terraform Cloud Token
       run: |
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
           cd /home/ubuntu/petclinic-jul24-deploy/terraform
@@ -144,8 +143,8 @@ jobs:
           # terraform apply -auto-approve
 
           # Write the Terraform Cloud token to a credentials file
-          mkdir -p ~/.terraform.d
-          echo '{"credentials": {"app.terraform.io": {"token": "'"$TF_TOKEN_app_terraform_io"'"}}}' > ~/.terraform.d/credentials.tfrc.json
+          #mkdir -p ~/.terraform.d
+          #echo '{"credentials": {"app.terraform.io": {"token": "'"$TF_TOKEN_app_terraform_io"'"}}}' > ~/.terraform.d/credentials.tfrc.json
 
           #terraform login
           terraform init

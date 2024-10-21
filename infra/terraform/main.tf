@@ -15,5 +15,5 @@ provider "kubernetes" {
 
 # Step 4: Use the kubernetes_manifest resource to apply the Kubernetes manifest
 resource "kubernetes_manifest" "mon_grfa_comb" {
-  manifest = yamldecode(file("/home/ubuntu/petclinic-jul24-deploy/k3s/mon-grfa-comb.yml"))
+  manifest = yamldecode(file("${path.module}/manifests/mon-grfa-comb.yml"))
 }

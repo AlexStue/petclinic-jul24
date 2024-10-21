@@ -143,7 +143,7 @@ jobs:
           # terraform workspace new "dev"
           # terraform apply -auto-approve
           terraform init
-          terraform plan -out=tfplan
-          terraform apply -auto-approve tfplan
+          terraform plan #-out=tfplan
+          terraform apply -auto-approve #tfplan
         EOF
 

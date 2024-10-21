@@ -1,13 +1,13 @@
-# terraform { 
-#   cloud { 
+terraform { 
+  cloud { 
     
-#     organization = "alexstue-petclinic-jul24" 
+    organization = "alexstue-petclinic-jul24" 
 
-#     workspaces { 
-#       name = "petclinic-jul24-cli" 
-#     } 
-#   } 
-# }
+    workspaces { 
+      name = "petclinic-jul24-cli" 
+    } 
+  } 
+}
 
 provider "local" {}
 resource "null_resource" "apply_k3s_manifests" {

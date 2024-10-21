@@ -1,11 +1,10 @@
 name: 'Terraform Plan and Apply'
 
 on:
-    push:
-      branches: [dev-branch]
-      paths:  # Only triggers on changes
-        #- 'infra/**'
-        - .github/workflows/Terraform-apply.yml
+  push:
+    branches: [dev-branch]
+    paths:
+      - .github/workflows/Terraform-apply.yml
 
 jobs:
   terraform:
@@ -21,16 +20,20 @@ jobs:
           terraform_version: 1.9.8
 
       - name: Configure Terraform Cloud token
-        run: echo "export TF_TOKEN_app_terraform_io=${{ secrets.TERRAFORM_CLOUD_TOKEN }}" >> $GITHUB_ENV
-  
+        run: echo "TF_TOKEN_app_terraform_io=${{ secrets.TERRAFORM_CLOUD_TOKEN }}" >> $GITHUB_ENV
+
       - name: Terraform Init
         run: |
           cd infra/terraform
           terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: |
+          cd infra/terraform
+          terraform plan -out=tfplan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/dev-branch'
-        run: terraform apply -auto-approve tfplan
+        run: |
+          cd infra/terraform
+          terraform apply -auto-approve tfplan

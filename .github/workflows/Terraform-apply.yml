@@ -147,7 +147,7 @@ jobs:
           mkdir -p ~/.terraform.d
           echo '{"credentials": {"app.terraform.io": {"token": "'"$TF_TOKEN_app_terraform_io"'"}}}' > ~/.terraform.d/credentials.tfrc.json
 
-          terraform login
+          #terraform login
           terraform init
           terraform plan #-out=tfplan
           terraform apply -auto-approve #tfplan

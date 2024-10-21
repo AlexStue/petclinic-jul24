@@ -30,7 +30,9 @@ jobs:
           echo "{\"credentials\":{\"app.terraform.io\":{\"token\":\"$TFC_TOKEN\"}}}" > ~/.terraform.d/credentials.tfrc.json
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd infra/terraform
+          terraform init
 
       - name: Terraform Plan
         run: terraform plan

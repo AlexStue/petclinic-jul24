@@ -42,10 +42,10 @@ jobs:
       - name: Terraform Plan
         run: |
           cd infra/terraform
-          terraform plan
+          terraform plan #-out=tfplan
 
       - name: Terraform Apply
         #if: github.event_name == 'push'
         run: 
           cd infra/terraform
-          terraform apply -auto-approve
+          terraform cloud apply -auto-approve #tfplan

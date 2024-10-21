@@ -17,16 +17,20 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.9.8  # Ensure this is your desired version
+          terraform_version: 1.9.8  # Specify your desired version
+
+      - name: Create Terraform Credentials File
+        env:
+          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}  # GitHub secret for your Terraform Cloud token
+        run: |
+          # Create the necessary directory
+          mkdir -p ~/.terraform.d
+
+          # Create the credentials file with the token
+          echo "{\"credentials\":{\"app.terraform.io\":{\"token\":\"$TFC_TOKEN\"}}}" > ~/.terraform.d/credentials.tfrc.json
 
       - name: Terraform Init
-        env:
-          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-        run: |
-          # Create a credentials file for Terraform
-          mkdir -p ~/.terraform.d
-          echo "{\"credentials\":{\"app.terraform.io\":{\"token\":\"$TFC_TOKEN\"}}}" > ~/.terraform.d/credentials.tfrc.json
-          terraform init
+        run: terraform init
 
       - name: Terraform Plan
         run: terraform plan

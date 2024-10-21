@@ -48,4 +48,4 @@ jobs:
         #if: github.event_name == 'push'
         run: |
           cd infra/terraform
-          terraform cloud apply -auto-approve #tfplan
+          terraform apply -auto-approve #tfplan

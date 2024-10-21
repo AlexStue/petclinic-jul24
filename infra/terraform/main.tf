@@ -27,3 +27,4 @@ output "message" {
   value = "This is an output from Terraform."
 }
 
+

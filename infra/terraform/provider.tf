@@ -8,6 +8,6 @@ terraform {
   }
 }
 
-provider "kubectl" {
-  # Configuration options
-}
+# provider "kubectl" {
+#   # Configuration options
+# }

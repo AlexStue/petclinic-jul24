@@ -8,10 +8,10 @@ terraform {
   } 
 }
 
-# Step 1: Configure the Kubernetes provider
 provider "kubernetes" {
-  config_path = "~/.kube/config" # Use the path to your kubeconfig file
+  config_path = var.KUBECONFIG  # Reference the environment variable
 }
+
 
 # Step 4: Use the kubernetes_manifest resource to apply the Kubernetes manifest
 resource "kubernetes_manifest" "mon_grfa_comb" {

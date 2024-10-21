@@ -24,6 +24,7 @@ Behaviour:
 
 
 
+export KUBECONFIG=~/.kube/config
 
 
 

@@ -142,6 +142,11 @@ jobs:
           # terraform init
           # terraform workspace new "dev"
           # terraform apply -auto-approve
+          
+          # Write the Terraform Cloud token to a credentials file
+          mkdir -p ~/.terraform.d
+          echo '{"credentials": {"app.terraform.io": {"token": "'"$TF_TOKEN_app_terraform_io"'"}}}' > ~/.terraform.d/credentials.tfrc.json
+
           terraform init
           terraform plan #-out=tfplan
           terraform apply -auto-approve #tfplan

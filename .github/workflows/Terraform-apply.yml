@@ -24,7 +24,9 @@ jobs:
         run: echo "export TF_TOKEN_app_terraform_io=${{ secrets.TERRAFORM_CLOUD_TOKEN }}" >> $GITHUB_ENV
   
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd infra/terraform
+          terraform init
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan

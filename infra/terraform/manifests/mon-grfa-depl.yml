@@ -2,7 +2,6 @@
 # 1. Deployment
 # 2. Service as NodePort: 32000
 # 
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -61,21 +60,3 @@ spec:
         - name: grafana
           configMap:
             name: grafana
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: grafana
-  namespace: dev
-  annotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '3000'
-spec:
-  selector: 
-    app: grafana
-  type: NodePort  
-  ports:
-    - port: 3000
-      targetPort: 3000
-      nodePort: 32000
----

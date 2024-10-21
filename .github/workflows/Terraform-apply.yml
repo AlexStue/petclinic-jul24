@@ -1,6 +1,6 @@
 #
 # This Runner deploys or update the DEV-infrastucture on a server
-# ........
+# .........
 # - Install sshpass on Runner
 # - Install K3s on Server
 # - Install Terraform on Server

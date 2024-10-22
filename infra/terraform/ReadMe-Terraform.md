@@ -1,7 +1,7 @@
 
 # ReadMe of Terraform
 
-## Discussion of use of terraform on this small setup: one Node & a view simle manifests
+## Discussion of use of terraform on this small setup: one Node & a view simple manifests
 
 Using Terraform for a single Kubernetes server automated by GitHub Actions without involving any cloud provider can make sense in some situations, but there are pros and cons to consider:
 

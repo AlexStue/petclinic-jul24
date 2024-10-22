@@ -13,15 +13,6 @@ metadata:
 data:
   prometheus.rules: |-
     groups:
-    # - name: test alert
-    #   rules:
-    #   - alert: Test alert: High Pod Memory
-    #     expr: sum(container_memory_usage_bytes) > 1
-    #     for: 1m
-    #     labels:
-    #       severity: slack
-    #     annotations:
-    #       summary: Test alert: High Pod Memory
     - name: High CPU Load 90p 20s
       rules:
       - alert: High CPU Load 90p 20s

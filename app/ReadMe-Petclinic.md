@@ -1,5 +1,17 @@
-## New repo from zip for DevOps project  
-## Original repo: https://github.com/spring-projects/spring-petclinic
+
+# ReadMe of Application Petclinic
+
+changes to original: dockerfile "dockerfile-app-v1 "created and used for docker-image 
+disadvantage recognized: compilation when container is started, this takes a lot of time.
+improvements: 2-stage-dockerfile "dockerfile-app-v2", this compiles the app and uses the app.jar-file for container-image.
+
+Original repo: https://github.com/spring-projects/spring-petclinic
+
+
+
+
+
+-----------------------------------------------------------------------------
 
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)
 

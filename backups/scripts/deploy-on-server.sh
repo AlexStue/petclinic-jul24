@@ -40,11 +40,27 @@ handle_lock() {
 handle_lock "/var/lib/dpkg/lock-frontend"
 
 
-# Download Terraform
+# Download  & install K3s
+# Destroy K3s 
+kubectl delete namespace dev --ignore-not-found
+kubectl delete namespace staging --ignore-not-found
+# Install K3s
+sudo apt-get update -y
+sudo apt-get install -y curl
+curl -sfL https://get.k3s.io | sh -
+mkdir -p ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $USER:$USER ~/.kube/config
+sudo chmod 644 ~/.kube/config
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+sudo chown ubuntu:ubuntu /etc/rancher/k3s/k3s.yaml
+# Create namespace
+kubectl create namespace dev
+
+
+# Download  & install Terraform
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
-
-# Install Terraform
 sudo apt-get update
 sudo apt-get install -y terraform
 

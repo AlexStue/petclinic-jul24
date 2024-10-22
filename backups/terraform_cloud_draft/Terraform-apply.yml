@@ -1,26 +1,27 @@
 #
-# This Runner deploys or update the staging-infrastucture on a server
-# 
+# This Runner deploys or update the DEV-infrastucture on a server
+# .........
 # - Install sshpass on Runner
-# - Reset directory
+# - Install K3s on Server
+# - Install Terraform on Server
 # - Copy files from infra/ to Server
 # - Create ConfigMap for Alertmanager ("kubectl create secret" does base64 encoding urgh)
 # - Create Secret for Ingress SSL
 # - Initialice and run Terraform
 # 
 
-name: Deploy-Staging
+name: terraform
 
 on:
   push:
-    branches: [staging-branch]
+    branches: [dev-branch]
     paths:  # Only triggers on changes
-      - 'infra/**'
-      - .github/workflows/Deploy-DEV.yml
+      #- 'infra/**'
+      - .github/workflows/Terraform-apply.yml
         
 jobs:
 
-  Job-1-Deploy-Staging:
+  Job-1-Deploy-DEV:
 
     runs-on: ubuntu-latest
 
@@ -32,7 +33,7 @@ jobs:
     - name: Just to be sure
       run: |
         echo "checkout:"
-        git checkout staging-branch
+        git checkout dev-branch
   
     - name: Install sshpass on Runner
       run: |
@@ -40,7 +41,7 @@ jobs:
         sudo apt-get install -y sshpass
 
 
-    - name: Reset directory
+    - name: Reset files
       env:
         SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
@@ -94,7 +95,7 @@ jobs:
             kubectl create secret tls petclinic-tls \
               --cert=tls.crt \
               --key=tls.key \
-              --namespace=staging
+              --namespace=dev
             # delete files
             rm tls.key tls.crt
         EOF
@@ -108,11 +109,18 @@ jobs:
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
           cd /home/ubuntu/petclinic-jul24-deploy/terraform
           #
-          terraform workspace delete "staging"
-          terraform init
-          terraform workspace new "staging"
-          terraform apply -auto-approve
+          # terraform workspace delete "dev"
           # terraform init
-          # terraform plan -out=tfplan
-          # terraform apply -auto-approve tfplan
+          # terraform workspace new "dev"
+          # terraform apply -auto-approve
+
+          # Write the Terraform Cloud token to a credentials file
+          #mkdir -p ~/.terraform.d
+          #echo '{"credentials": {"app.terraform.io": {"token": "'"$TF_TOKEN_app_terraform_io"'"}}}' > ~/.terraform.d/credentials.tfrc.json
+
+          #terraform login
+          terraform init
+          terraform plan #-out=tfplan
+          terraform apply -auto-approve #tfplan
         EOF
+

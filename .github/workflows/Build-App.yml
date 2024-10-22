@@ -1,0 +1,48 @@
+#
+# This Runner is to build die app and uploads the docker-imageto DockerHub.
+# 
+#   - Install Docker Compose
+#   - Log in to DockerHub
+#   - Build the Docker image with Dockerfile
+#   - Push the Docker image to DockerhHub
+# 
+
+name: Build-App
+
+on:
+  push:
+    branches: [prod-branch-main]
+    paths:  # Only triggers on changes
+      - 'app/**'
+      - .github/workflows/Build-App.yml
+        
+jobs:
+
+  Job-1-Build-App:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+
+      - name: Build the Docker image with Dockerfile
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:3.0 -f app/dockerfile-app-v2 app/
+
+
+      - name: Push the Docker image to DockerhHub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:3.0

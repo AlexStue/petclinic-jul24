@@ -7,14 +7,14 @@ metadata:
     kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/tls: "true"  # Enabling TLS
-    traefik.ingress.kubernetes.io/tls.secret: "petclinic-secret-tls"  # Referencing your existing TLS secret
+    # traefik.ingress.kubernetes.io/tls.secret: "petclinic-secret-tls"  # not needed as its on the repo in this repo
 spec:
   tls:
   - hosts:
-    - petclinic.ph-rustingheart.dns-dynamic.net
-    secretName: petclinic-secret-tls  # Name of the TLS secret
+    - petclinic-dev.simply-stu.de
+    secretName: petclinic-tls  # Name of the TLS secret
   rules:
-  - host: petclinic.ph-rustingheart.dns-dynamic.net
+  - host: petclinic-dev.simply-stu.de
     http:
       paths:
       - path: /

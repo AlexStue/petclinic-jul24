@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql-stf
-  namespace: dev
+  name: petclinic-db-mysql
+  namespace: default
   annotations:
     service.binding/type: "mysql"
-    service.binding/host: "mysql.default.svc.cluster.local"
+    service.binding/host: "petclinic-db-mysql.default.svc.cluster.local"
     service.binding/port: "3306"
 spec:
-  serviceName: "mysql-service"
+  serviceName: "petclinic-db-mysql"
   replicas: 1
   selector:
     matchLabels:
-      app: mysql-stf
+      app: petclinic-db-mysql
   template:
     metadata:
       labels:
-        app: mysql-stf
+        app: petclinic-db-mysql
     spec:
       containers:
-      - name: mysql-stf
+      - name: mysql
         image: mysql/mysql-server:8.0
         imagePullPolicy: IfNotPresent
         ports:
@@ -48,25 +48,26 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: MYSQL_DATABASE
-              # added it to my config file
-#   volumeClaimTemplates:
-#   - metadata:
-#       name: petclinic-storage
-#     spec:
-#       accessModes: [ "ReadWriteOnce" ]
-#       resources:
-#         requests:
-#           storage: 1Gi
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+      - name: init-scripts
+        configMap:
+          name: db-init-scripts
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-service
-  namespace: dev
-spec:
-  type: ClusterIP  # Specify service type
+  name: petclinic-db-mysql
+  namespace: default
+spec:  # Fix indentation here
+  type: ClusterIP  # Specify type if necessary
   ports:
     - port: 3306  # The port that the service will expose
       targetPort: 3306  # The port that the container listens on
   selector:
-    app: mysql-stf  # Ensure to select the correct pod
+    app: petclinic-db-mysql  # Ensure to select the correct pod

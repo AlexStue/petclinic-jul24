@@ -129,7 +129,7 @@ jobs:
         EOF
 
 
-    - name: Initialice and run Terraform
+    - name: Initialize and run Terraform
       env:
         SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}

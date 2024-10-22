@@ -1,19 +1,20 @@
 
-# Wellcome to our DevOps-Project 
+# Welcome to our DevOps-Project 
 
 ## Introduction to DevOps
 
-This Repo is biuld on our DevOps-Project based on the Datascientest Training for DevOps.
-You will find a Pipeline jusing different tools to run an App on a bare-metal Server.
+This Repo is build on our DevOps-Project based on the Datascientest Training for DevOps.
+You will find a Pipeline using different tools to run an App on a bare-metal Server.
 
-DevOps is the art of automation. It combines the development of new features and bugfixes with the operation of infrastucture to deploy on Server or Cloud as well as keeping configurations updated, maintanance and scaling.
-Combining these two main appartments brings several benefits:
+DevOps is the art of automation. 
+It combines the development of new features and bugfixes with the operation of infrastucture to deploy on the Server or Cloud as well as keeping configurations updated, maintanance and scaling.
+Combining these two main departments brings several benefits:
 
-- Infrastructure als code minimizes sources of errors.
-- Greatly shorten the time from develop to deploy the applications.
+- Infrastructure as Code minimizes sources of errors.
+- Greatly shortens the time from develop to deploy the applications.
 - Testing given and new code is within the automation.
 - Keep data and configurations safe due to automated backups.
-- Get notifications of warings and errors directly and available for the entire team.
+- Get notifications of warnings and errors directly and available for the entire team.
 
 The Pipeline of DevOps is also known as CI/CD-Pipline. "Constant Integration and Continuous Delivery" describes best the automation to gain speed and quality in deploying applications.
 
@@ -27,11 +28,11 @@ Tools that we have used:
 - Kubernetes (K3s) to manage orchestration and connection of the App and Monitoring
 - Prometheus to monitor all Data from Server, Kubernetes, Container and App
 - Alertmanager to get notifications to our Slack-channel
-- Grafana to visualice the data delivered by Prometheus
+- Grafana to visualize the data delivered by Prometheus
 
 ## Run Application: Petclinic on a Server
 
-Our pipline is bild around the famous Spring Petclinic [Petclinic](https://github.com/spring-projects/spring-petclinic) as a [Spring Boot](https://spring.io/guides/gs/spring-boot) application.
+Our pipeline is built around the famous Spring Petclinic [Petclinic](https://github.com/spring-projects/spring-petclinic) as a [Spring Boot](https://spring.io/guides/gs/spring-boot) application.
 To run the pipeline you have to do some steps:
 
 1. Download Repo and use it as your own Repo on GutHub
@@ -61,9 +62,9 @@ To run the pipeline you have to do some steps:
     - .github/workflows/Build-App.yml
     
 3. Open the started applications on thise adresses:
-  - Application Petclinic: your domain from config, for example "http(s)://petclinic(-dev)."Domain".de"
-  - Prometheus on Nodeport: http://"Server-IP":30000
-  - Alertmanager on Nodeport: http://"Server-IP":31000
-  - Grafana on Nodeport: http://"Server-IP":32000
+  - Application Petclinic: your domain from config, for example "http(s)://petclinic(-dev).<Domain>.de"
+  - Prometheus on Nodeport: http://<Server-IP>:30000
+  - Alertmanager on Nodeport: http://<Server-IP>:31000
+  - Grafana on Nodeport: http://<Server-IP>:32000
 
 ---

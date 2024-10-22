@@ -2,8 +2,7 @@
 # This Runner deploys or update the DEV-infrastucture on a server
 # 
 # - Install sshpass on Runner
-# - Install K3s on Server
-# - Install Terraform on Server
+# - Reset directory
 # - Copy files from infra/ to Server
 # - Create ConfigMap for Alertmanager ("kubectl create secret" does base64 encoding urgh)
 # - Create Secret for Ingress SSL
@@ -41,31 +40,7 @@ jobs:
         sudo apt-get install -y sshpass
 
 
-    - name: Install K3s on Server
-      env:
-        SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
-        SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}
-      run: |
-        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ubuntu@$SSH_HOST << 'EOF'
-          # PreTasks
-          kubectl delete namespace dev --ignore-not-found
-          sudo apt-get update -y
-          sudo apt-get upgrade -y
-          # Install K3s
-          sudo apt-get install -y curl
-          curl -sfL https://get.k3s.io | sh -
-          mkdir -p ~/.kube
-          sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-          sudo chown $USER:$USER ~/.kube/config
-          sudo chmod 644 ~/.kube/config
-          sudo chmod 644 /etc/rancher/k3s/k3s.yaml
-          sudo chown ubuntu:ubuntu /etc/rancher/k3s/k3s.yaml
-          # Create namespace
-          kubectl create namespace dev
-        EOF
-
-
-    - name: Install Terraform on Server
+    - name: Reset directory
       env:
         SSH_PASSWORD: ${{ secrets.SSH_ALEX_SERVER_PW }}
         SSH_HOST: ${{ secrets.SSH_ALEX_SERVER_IP }}

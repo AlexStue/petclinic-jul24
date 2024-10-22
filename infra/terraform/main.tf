@@ -1,50 +1,35 @@
-terraform { 
-  cloud { 
-    organization = "alexstue-petclinic-jul24" 
+provider "local" {}
+resource "null_resource" "apply_k3s_manifests" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      echo "Applying Kubernetes deployments"
+      
+      ### Configs ###
 
-    workspaces { 
-      name = "petclinic-jul24-cli" 
-    } 
-  } 
-}
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/monitoring/grfa-ConfigMap.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/monitoring/pmth-svr-ConfigMap.yml
 
+      ### Deployments ###
 
-terraform {
-  required_providers {
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/app-combined.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/ingress-resource.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-ClusterRole.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-exp-NodeExporter.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-svr-comb.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-pmth-almg-comb.yml
+      kubectl apply -f /home/ubuntu/petclinic-jul24-deploy/k3s/mon-grfa-comb.yml
+
+      ### restarts ###
+
+      #kubectl rollout restart deployment mysqlserver-deployment -n dev
+      #kubectl rollout restart deployment petclinic-deployment -n dev
+      #kubectl rollout restart deployment prometheus-deployment -n dev
+      #kubectl rollout restart deployment alertmanager-deployment -n dev
+      #kubectl rollout restart deployment grafana-deployment -n dev
+
+    EOT
+  }
+  triggers = {
+    always_run = "${timestamp()}"
   }
 }
-
-variable "host" {
-  type = string
-}
-
-variable "client_certificate" {
-  type = string
-}
-
-variable "client_key" {
-  type = string
-}
-
-variable "cluster_ca_certificate" {
-  type = string
-}
-
-provider "kubernetes" {
-  host = var.host
-
-  client_certificate     = base64decode(var.client_certificate)
-  client_key             = base64decode(var.client_key)
-  cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
-}
-
-
-# Step 4: Use the kubernetes_manifest resource to apply the Kubernetes manifest
-resource "kubernetes_manifest" "mon_grfa_comb" {
-  manifest = yamldecode(file("${path.module}/manifests/mon-grfa-depl.yml"))
-}
-
-

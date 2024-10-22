@@ -23,7 +23,9 @@ Behaviour:
 
 
 
-
+terraform login
+    ...
+export KUBECONFIG=~/.kube/config
 
 
 

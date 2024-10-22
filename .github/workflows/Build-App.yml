@@ -41,18 +41,18 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
 
-      # # Build the Docker image using Docker Compose
-      - name: Build the Docker image with Docker Compose
-        env:
-          DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
-        run: |
-          docker-compose -f app/docker-compose.yml build
+      # # # Build the Docker image using Docker Compose
+      # - name: Build the Docker image with Docker Compose
+      #   env:
+      #     DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest
+      #   run: |
+      #     docker-compose -f app/docker-compose.yml build
 
 
       # Build the Docker image using Dockerfile
-      # - name: Build the Docker image with Dockerfile
-      #   run: |
-      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest -f app/dockerfile-app-v2 app/
+      - name: Build the Docker image with Dockerfile
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest -f app/dockerfile-app-v2 app/
 
 
       # Push the Docker image to DockerHub

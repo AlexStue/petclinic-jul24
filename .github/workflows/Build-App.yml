@@ -40,7 +40,7 @@ jobs:
 
       - name: Build the Docker image with Dockerfile
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:latest -f app/dockerfile-app-v2 app/
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/jul24-petclinic:3.0 -f app/dockerfile-app-v2 app/
 
 
       - name: Push the Docker image to DockerhHub
